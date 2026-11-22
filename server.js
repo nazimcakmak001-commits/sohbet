@@ -1,4 +1,5 @@
-const http = require("http");
+
+let waiting = null;const http = require("http");
 const fs = require("fs");
 const path = require("path");
 const { WebSocketServer } = require("ws");
@@ -13,7 +14,6 @@ const server = http.createServer((req, res) => {
   res.end(page);
 });
 const wss = new WebSocketServer({ server });
-let waiting = null;
 
 const send = (ws, o) => { if (ws && ws.readyState === 1) ws.send(JSON.stringify(o)); };
 const broadcastCount = () => wss.clients.forEach(c => send(c, { t: "count", n: wss.clients.size }));
