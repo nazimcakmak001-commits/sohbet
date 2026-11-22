@@ -46,13 +46,39 @@ function unpair(ws) {
   ws.partner = null;
   if (p && p.partner === ws) { p.partner = null; send(p, { t: "left" }); }
 }
+function pair(a, b) {
+  a.partner = b; b.partner = a; stats.pairs++;
+  send(a, { t: "paired", name: b.name, sym: b.sym });
+  send(b, { t: "paired", name: a.name, sym: a.sym });
+}
+const lc = x => String(x || "").toLocaleLowerCase("tr");
+function setName(ws, m) {
+  const name = String(m.name || "").trim().replace(/\s+/g, " ");
+  const sym = SYMS.includes(m.sym) ? m.sym : rnd(SYMS);
+  if (name.length < 3 || name.length > 14 || !/^[\p{L}\p{N}_ -]+$/u.test(name))
+    return send(ws, { t: "nameerr", why: "Ad 3-14 karakter olmalı (harf, rakam, boşluk, _ ve -)." });
+  for (const c of wss.clients) if (c !== ws && lc(c.name) === lc(name))
+    return send(ws, { t: "nameerr", why: "Bu ad şu an kullanımda." });
+  ws.name = name; ws.sym = sym;
+  send(ws, { t: "hello", name, sym });
+}
+function sendStatus(ws, names) {
+  if (!Array.isArray(names)) return;
+  const want = new Set(names.slice(0, 50).map(lc)), on = [], free = [];
+  wss.clients.forEach(c => { if (c !== ws && want.has(lc(c.name))) { on.push(c.name); if (c === waiting) free.push(c.name); } });
+  send(ws, { t: "online", on, free });
+}
+function dm(ws, name) {
+  let t = null;
+  wss.clients.forEach(c => { if (c !== ws && lc(c.name) === lc(name)) t = c; });
+  if (!t || t !== waiting) return send(ws, { t: "dmfail" });
+  unpair(ws); waiting = null; pair(ws, t);
+}
 function find(ws) {
   unpair(ws);
   if (waiting && waiting !== ws && waiting.readyState === 1) {
     const o = waiting; waiting = null;
-    ws.partner = o; o.partner = ws; stats.pairs++;
-    send(ws, { t: "paired", name: o.name, sym: o.sym });
-    send(o, { t: "paired", name: ws.name, sym: ws.sym });
+    pair(ws, o);
   } else {
     waiting = ws;
     send(ws, { t: "searching" });
@@ -65,16 +91,18 @@ wss.on("connection", ws => {
   ws.partner = null; ws.alive = true; ws.stamp = [];
   ws.on("pong", () => { ws.alive = true; });
   stats.visits++;
-  send(ws, { t: "hello", name: ws.name, sym: ws.sym });
   broadcastCount();
 
   ws.on("message", raw => {
     const now = Date.now();
     ws.stamp = ws.stamp.filter(x => now - x < 3000);
-    if (ws.stamp.length >= 12) return;
+    if (ws.stamp.length >= 12) return;      // hız sınırı
     ws.stamp.push(now);
     let m; try { m = JSON.parse(raw); } catch { return; }
     if (m.t === "find") find(ws);
+    else if (m.t === "setname") setName(ws, m);
+    else if (m.t === "status") sendStatus(ws, m.names);
+    else if (m.t === "dm") dm(ws, m.name);
     else if (m.t === "msg" && ws.partner) { stats.msgs++; send(ws.partner, { t: "msg", text: String(m.text || "").slice(0, 500) }); }
     else if (m.t === "typing" && ws.partner) send(ws.partner, { t: "typing", v: !!m.v });
   });
