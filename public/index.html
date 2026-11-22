@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Rastgele Sohbet</title>
+<style>
+:root{color-scheme:light;--bg:#eef1f6;--card:#fff;--tx:#18202b;--mut:#6b7686;--ac:#5b5bf0;--them:#e6e9f0;--bd:#dde2ea;--on:#27c46b;--off:#a0a8b5;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root{color-scheme:dark;--bg:#0f1218;--card:#181c25;--tx:#eceff5;--mut:#8c96a6;--them:#262c38;--bd:#262c38;--off:#5d6676}}
+*{box-sizing:border-box}html,body{height:100%;margin:0}
+body{background:var(--bg);color:var(--tx);font:16px/1.4 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+#app{max-width:520px;height:100%;margin:0 auto;display:flex;flex-direction:column;background:var(--card)}
+header{display:flex;align-items:center;justify-content:space-between;padding:10px 14px;border-bottom:1px solid var(--bd)}
+header b{font-size:18px}
+.pill{font-size:13px;background:var(--bg);border:1px solid var(--bd);border-radius:20px;padding:4px 10px}
+.dot{display:inline-block;width:9px;height:9px;border-radius:50%;background:var(--on);margin-right:6px}
+#peer{display:flex;align-items:center;gap:10px;padding:10px 14px;border-bottom:1px solid var(--bd);min-height:58px}
+#psym{font-size:28px;width:40px;height:40px;border-radius:50%;background:var(--bg);display:flex;align-items:center;justify-content:center}
+#pname{font-weight:600}#pstat{font-size:13px;color:var(--mut)}
+#log{flex:1;overflow-y:auto;padding:14px;display:flex;flex-direction:column;gap:6px}
+.m{max-width:78%;padding:8px 12px;border-radius:16px;overflow-wrap:anywhere}
+.m.me{align-self:flex-end;background:var(--ac);color:#fff;border-bottom-right-radius:4px}
+.m.th{align-self:flex-start;background:var(--them);border-bottom-left-radius:4px}
+.sys{align-self:center;color:var(--mut);font-size:13px;text-align:center}
+#bar{display:flex;gap:8px;padding:10px 12px;border-top:1px solid var(--bd)}
+#txt{flex:1;font:inherit;padding:11px 14px;border-radius:22px;border:1px solid var(--bd);background:var(--bg);color:var(--tx);min-width:0}
+button{font:inherit;cursor:pointer;border:0;border-radius:22px;padding:0 16px;background:var(--ac);color:#fff;font-weight:600}
+button.alt{background:var(--bg);color:var(--tx);border:1px solid var(--bd)}
+button:disabled,#txt:disabled{opacity:.5;cursor:default}
+#next{margin:0 12px 10px;padding:11px}
+#demo{margin:8px auto 0;padding:8px 14px;font-size:14px}
+</style>
+</head>
+<body>
+<div id="app">
+  <header><b>💬 Rastgele Sohbet</b><span class="pill"><span class="dot"></span><span id="cnt">1</span> kişi çevrimiçi</span></header>
+  <div id="peer"><div id="psym">❔</div><div><div id="pname">Bağlanıyor…</div><div id="pstat"></div></div></div>
+  <div id="log"></div>
+  <div id="bar"><input id="txt" placeholder="Mesaj yaz…" maxlength="500" autocomplete="off" disabled><button id="send" disabled>Gönder</button></div>
+  <button id="next" class="alt">Sonraki kişi ➜</button>
+</div>
+<script>
+const $=id=>document.getElementById(id);
+const BOT=["Selam! 👋","Nasılsın?","Haha, doğru söylüyorsun.","Bugün ne yapıyorsun?","Bu bir demo botudur, gerçek kişi değil 🙂"];
+const rnd=a=>a[Math.floor(Math.random()*a.length)];
+let ws,bot=false,demoT,botT,typeT,connected=false;
+
+function addMsg(t,c){const d=document.createElement("div");d.className=c==="sys"?"sys":"m "+c;d.textContent=t;$("log").appendChild(d);$("log").scrollTop=1e9}
+function setPeer(sym,name,status,on){
+  $("psym").textContent=sym;$("pname").textContent=name;$("pstat").textContent="";
+  const d=document.createElement("span");d.className="dot";d.style.background=on?"var(--on)":"var(--off)";$("pstat").append(d,status);
+}
+function setInput(on){$("txt").disabled=!on;$("send").disabled=!on;if(on)$("txt").focus()}
+const tx=o=>{if(ws&&ws.readyState===1)ws.send(JSON.stringify(o))};
+
+function connect(){
+  ws=new WebSocket((location.protocol==="https:"?"wss://":"ws://")+location.host);
+  ws.onopen=()=>{connected=true;search()};
+  ws.onclose=()=>{connected=false;setInput(false);setPeer("⚠️","Bağlantı koptu","Yeniden bağlanıyor…",false);setTimeout(connect,2000)};
+  ws.onmessage=e=>{
+    let m;try{m=JSON.parse(e.data)}catch{return}
+    if(m.t==="count")$("cnt").textContent=m.n;
+    else if(m.t==="searching"){clearTimeout(demoT);demoT=setTimeout(showDemo,6000)}
+    else if(m.t==="paired"){clearTimeout(demoT);if($("demo"))$("demo").remove();$("log").innerHTML="";setPeer(m.sym,m.name,"Çevrimiçi",true);addMsg("Bağlandın! Selam ver 👋","sys");setInput(true)}
+    else if(m.t==="msg"){addMsg(m.text,"th");setPeer($("psym").textContent,$("pname").textContent,"Çevrimiçi",true)}
+    else if(m.t==="typing"&&!bot)setPeer($("psym").textContent,$("pname").textContent,m.v?"yazıyor…":"Çevrimiçi",true);
+    else if(m.t==="left"){setPeer($("psym").textContent,$("pname").textContent,"Çevrimdışı",false);addMsg("Karşı taraf ayrıldı. Sonraki kişiye geçebilirsin.","sys");setInput(false)}
+  };
+}
+function search(){
+  clearTimeout(demoT);clearTimeout(botT);bot=false;setInput(false);$("log").innerHTML="";
+  setPeer("🔎","Aranıyor…","Eşleşme bekleniyor",false);addMsg("Biri aranıyor…","sys");
+  tx({t:"find"});
+}
+function showDemo(){
+  if($("demo"))return;const b=document.createElement("button");b.id="demo";b.className="alt";b.textContent="🤖 Demo bot ile dene";
+  b.onclick=()=>{b.remove();bot=true;setPeer("🤖","Demo Bot","Çevrimiçi (demo)",true);addMsg("Demo bot: gerçek biri bulunamadı.","sys");setInput(true)};
+  $("log").appendChild(b);
+}
+function send(){
+  const t=$("txt").value.trim();if(!t)return;$("txt").value="";addMsg(t,"me");
+  if(bot){setPeer("🤖","Demo Bot","yazıyor…",true);botT=setTimeout(()=>{addMsg(rnd(BOT),"th");setPeer("🤖","Demo Bot","Çevrimiçi (demo)",true)},1200+Math.random()*1200)}
+  else{tx({t:"msg",text:t});tx({t:"typing",v:false})}
+}
+$("send").onclick=send;
+$("txt").onkeydown=e=>{if(e.key==="Enter")send()};
+$("txt").oninput=()=>{if(bot)return;tx({t:"typing",v:true});clearTimeout(typeT);typeT=setTimeout(()=>tx({t:"typing",v:false}),1500)};
+$("next").onclick=search;
+connect();
+</script>
+</body>
+</html>
