@@ -2455,61 +2455,6 @@ ${selectedQuestionCards[1] ? '2) ' + selectedQuestionCards[1] : ''}`);
   </div>
 </div>
 
-<script>
-  (function () {
-    const sarkilar = [
-      "Gece Yarısı Taksi - Beton Melodi",
-      "Cam Kenarı Frekansı - Gri Şehir",
-      "Sessiz Koridor - Dijital Pusula",
-      "Sabaha Karşı Radyo - Soğuk Kahve",
-      "Kayıp Sinyal - Arka Koltuk",
-      "Kısa Devre - Neon Yağmur",
-      "Son Durak 03:00 - Boş Sokak",
-      "Ters Köşe - Kırık Plak"
-    ];
-
-    const acilislar = [
-      (b, s) => `${b} burcunun bugünkü enerjisine "${s}" uydu. Karşıdakine "En sevdiğin şarkı bu mu, yoksa ruh haline göre değişiyor mu?" diye sor.`,
-      (b, s) => `Bugün ${b} modunda açılacak parça: "${s}". Sohbeti "Bu şarkıyı duyunca aklına ilk ne geliyor?" sorusuyla başlat.`,
-      (b, s) => `${b} için uydurma ama tam isabet radyo seçimi: "${s}". "Senin burcun ne ve şu an kulaklığında ne çalıyor?" diyerek gir.`,
-      (b, s) => `${b} burcuna özel gece frekansı "${s}" çıktı. Direkt "Sence burçlar mı insanı yönlendiriyor, şarkılar mı?" diye sor.`
-    ];
-
-    const selectEl = document.getElementById("hk-burc-select");
-    const badgeEl = document.getElementById("hk-burc-badge");
-    const songEl = document.getElementById("hk-sarki-text");
-    const uyumEl = document.getElementById("hk-uyum-text");
-    const rastgeleBtn = document.getElementById("hk-rastgele-btn");
-    const kopyalaBtn = document.getElementById("hk-kopyala-btn");
-
-    function guncelle(burc) {
-      const sarki = sarkilar[Math.floor(Math.random() * sarkilar.length)];
-      const sablon = acilislar[Math.floor(Math.random() * acilislar.length)];
-      badgeEl.textContent = `Burç: ${burc}`;
-      songEl.textContent = `En sevdiğin şarkı: ${sarki}`;
-      uyumEl.textContent = sablon(burc, sarki);
-    }
-
-    selectEl.addEventListener("change", () => guncelle(selectEl.value));
-
-    rastgeleBtn.addEventListener("click", () => {
-      const idx = Math.floor(Math.random() * selectEl.options.length);
-      selectEl.selectedIndex = idx;
-      guncelle(selectEl.value);
-    });
-
-    kopyalaBtn.addEventListener("click", async () => {
-      const metin = `${badgeEl.textContent} | ${songEl.textContent} — ${uyumEl.textContent}`;
-      try {
-        await navigator.clipboard.writeText(metin);
-        kopyalaBtn.textContent = "Kopyalandı";
-        setTimeout(() => (kopyalaBtn.textContent = "Sohbete Yapıştır"), 1500);
-      } catch {
-        kopyalaBtn.textContent = "Kopyalanamadı";
-      }
-    });
-  })();
-</script>
 </body>
 </html>
 
