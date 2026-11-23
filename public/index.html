@@ -1,13 +1,13 @@
 <!DOCTYPE html>
 <html lang="tr">
 <head>
-  <meta charset="UTF-8" />
+  <meta charset="UTF-8a" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>hadikonus — Oyna, tanış, sohbet et.</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  
+
   <style>
     :root {
       --bg-main: #F6F5F0;
@@ -475,7 +475,7 @@
       display: flex;
       gap: 10px;
       width: max-content;
-      animation: smoothScroll 34s linear infinite;
+      animation: smoothScroll 38s linear infinite;
     }
 
     .marquee-wrapper:hover .marquee-track,
@@ -514,17 +514,95 @@
     .icon-wordle { background: #DCFCE7; }
     .icon-xox { background: #E0F2FE; }
     .icon-trivia { background: #FFEDD5; }
-    .icon-dice { background: #EDE9FE; }
+    .icon-tavla { background: #EDE9FE; }
     .icon-ship { background: #F3E8FF; }
-    .icon-tavla { background: #FEF08A; }
     .icon-football { background: #D1FAE5; }
+    .icon-penalty { background: #DCFCE7; }
+    .icon-reflex { background: #FEF08A; }
     .icon-memory { background: #FCE7F3; }
-    .icon-draw { background: #CCFBF1; }
+    .icon-draw { background: #E0E7FF; }
+    .icon-country { background: #DBEAFE; }
+    .icon-city { background: #FEF3C7; }
+    .icon-sbhe { background: #E0F2FE; }
+    .icon-color { background: #FCE7F3; }
+    .icon-chain { background: #DCFCE7; }
+    .icon-approx { background: #E0F2FE; }
+    .icon-sinemojik { background: #FEF3C7; }
+    .icon-sorduk { background: #EDE9FE; }
+    .icon-catapult { background: #FFEDD5; }
 
     .game-info { display: flex; flex-direction: column; align-items: flex-start; }
     .game-title { font-size: 13px; font-weight: 700; color: var(--text-dark); }
     .game-tag { font-size: 10px; font-weight: 700; color: var(--text-muted); }
     .game-card.playable .game-tag { color: var(--primary); }
+
+    /* SABİT (KAYMAYAN) KÜÇÜK ŞABLON OYUN KARTLARI */
+    .static-games-row {
+      display: flex;
+      justify-content: space-between;
+      gap: 8px;
+      width: 100%;
+      margin-top: 10px;
+    }
+
+    .static-games-group {
+      display: flex;
+      gap: 6px;
+      flex: 1;
+    }
+
+    .static-game-card {
+      flex: 1 1 0;
+      min-width: 0;
+      background: var(--bg-card);
+      border: 1.5px solid var(--border-soft);
+      border-radius: 14px;
+      padding: 8px 6px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 4px;
+      box-shadow: var(--shadow-sm);
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+
+    .static-game-card:hover {
+      background: #FCFBF9;
+      border-color: #CFCBC0;
+      transform: translateY(-1px);
+    }
+
+    .static-game-card .game-icon {
+      width: 28px;
+      height: 28px;
+      border-radius: 8px;
+      font-size: 14px;
+    }
+
+    .static-game-card .game-info {
+      align-items: center;
+      width: 100%;
+    }
+
+    .static-game-card .game-title {
+      font-size: 11px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      max-width: 100%;
+    }
+
+    .static-game-card .game-tag {
+      font-size: 8.5px;
+      white-space: nowrap;
+    }
+
+    .static-game-card.selected-game {
+      background: var(--primary-light);
+      border-color: var(--primary);
+    }
 
     /* Footer */
     footer { width: 100%; display: flex; flex-direction: column; gap: 12px; margin-top: auto; }
@@ -538,7 +616,7 @@
       max-height: 0; overflow: hidden; transition: max-height 0.25s ease;
       padding: 0 16px; font-size: 12px; line-height: 1.5; color: var(--text-muted); text-align: left;
     }
-    .faq-box.open .faq-content { max-height: 160px; padding-bottom: 14px; }
+    .faq-box.open .faq-content { max-height: 180px; padding-bottom: 14px; }
     .legal-links {
       display: flex; justify-content: center; gap: 8px; font-size: 11.5px; color: var(--text-muted);
     }
@@ -666,13 +744,14 @@
       background: var(--bg-card);
       border: 1px solid var(--border-soft);
       border-radius: 20px;
-      padding: 18px;
+      padding: 16px;
       flex: 1;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: space-between;
       text-align: center;
+      gap: 10px;
     }
 
     .rps-choices {
@@ -680,16 +759,16 @@
       grid-template-columns: repeat(3, 1fr);
       gap: 10px;
       width: 100%;
-      margin-top: 14px;
+      margin-top: 10px;
     }
 
     .rps-btn {
       background: var(--bg-main);
       border: 2px solid var(--border-soft);
       border-radius: 16px;
-      padding: 15px 8px;
+      padding: 14px 8px;
       font-family: inherit;
-      font-size: 28px;
+      font-size: 26px;
       cursor: pointer;
       display: flex;
       flex-direction: column;
@@ -701,20 +780,239 @@
     .rps-btn span { font-size: 12px; font-weight: 700; color: var(--text-dark); }
     .rps-btn:hover { border-color: var(--primary); background: var(--primary-light); transform: translateY(-2px); }
 
+    /* PENALTI OYUNU STİLLERİ */
+    .penalty-pitch {
+      width: 100%;
+      background: linear-gradient(180deg, #1E3A2F 0%, #2D6A4F 42%, #228B22 42%, #2E8B57 100%);
+      border-radius: 16px;
+      padding: 12px;
+      color: #fff;
+      position: relative;
+      overflow: hidden;
+      border: 1.5px solid var(--border-soft);
+    }
+
+    .penalty-goal-box {
+      width: 100%;
+      max-width: 280px;
+      height: 118px;
+      margin: 6px auto 12px;
+      border-top: 5px solid #fff;
+      border-left: 5px solid #fff;
+      border-right: 5px solid #fff;
+      border-radius: 10px 10px 0 0;
+      background:
+        linear-gradient(to right, rgba(255,255,255,0.22) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(255,255,255,0.22) 1px, transparent 1px);
+      background-size: 14px 14px;
+      position: relative;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      grid-template-rows: repeat(2, 1fr);
+      gap: 4px;
+      padding: 4px;
+    }
+
+    .penalty-zone {
+      border: 1px dashed rgba(255, 255, 255, 0.55);
+      border-radius: 7px;
+      background: rgba(0, 0, 0, 0.14);
+      color: #fff;
+      font-family: inherit;
+      font-size: 10.5px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.14s ease;
+      z-index: 2;
+    }
+
+    .penalty-zone:hover, .penalty-zone.active-zone {
+      background: rgba(34, 197, 94, 0.42);
+      border-color: #fff;
+      transform: scale(0.98);
+    }
+
+    .penalty-keeper {
+      position: absolute;
+      bottom: 4px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 30px;
+      transition: all 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+      pointer-events: none;
+      z-index: 3;
+      filter: drop-shadow(0 3px 4px rgba(0,0,0,0.45));
+    }
+
+    .penalty-ball-row {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      margin-top: 6px;
+    }
+
+    .penalty-ball {
+      font-size: 28px;
+      transition: all 0.35s ease;
+      display: inline-block;
+    }
+
+    /* HAFIZA KARTLARI & ÇİZ & TAHMİN STİLLERİ */
+    .memory-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 8px;
+      width: 100%;
+      max-width: 280px;
+      margin: 6px auto;
+    }
+
+    .memory-card {
+      height: 56px;
+      border-radius: 12px;
+      border: 2px solid var(--border-soft);
+      background: var(--bg-main);
+      font-size: 22px;
+      font-weight: 800;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.16s ease;
+      font-family: inherit;
+    }
+
+    .memory-card.flipped,
+    .memory-card.matched {
+      background: var(--primary-light);
+      border-color: var(--primary);
+      transform: scale(0.98);
+    }
+
+    .memory-card.matched {
+      background: #DCFCE7;
+      border-color: #16A34A;
+    }
+
+    .draw-box {
+      width: 100%;
+      background: var(--bg-main);
+      border: 1.5px solid var(--border-soft);
+      border-radius: 16px;
+      padding: 10px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+    }
+
+    #quick-draw-canvas {
+      width: 100%;
+      max-width: 290px;
+      height: 132px;
+      background: #FFFFFF;
+      border: 1.5px solid var(--border-soft);
+      border-radius: 12px;
+      touch-action: none;
+      cursor: crosshair;
+    }
+
+    .draw-guess-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 7px;
+      width: 100%;
+    }
+
+    .draw-guess-btn {
+      background: #FFFFFF;
+      border: 1.5px solid var(--border-soft);
+      border-radius: 11px;
+      padding: 8px 10px;
+      font-family: inherit;
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--text-dark);
+      cursor: pointer;
+      transition: all 0.14s ease;
+    }
+
+    .draw-guess-btn:hover {
+      border-color: var(--primary);
+      background: var(--primary-light);
+    }
+
+    /* REFLEKS TESTİ STİLLERİ */
+    .reflex-pad {
+      width: 100%;
+      min-height: 170px;
+      border-radius: 18px;
+      border: 2px solid var(--border-soft);
+      background: var(--primary-light);
+      color: var(--text-dark);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      padding: 16px;
+      cursor: pointer;
+      font-family: inherit;
+      transition: all 0.15s ease;
+    }
+
+    .reflex-pad.wait-state {
+      background: #FEE2E2;
+      border-color: #EF4444;
+      color: #991B1B;
+    }
+
+    .reflex-pad.go-state {
+      background: #DCFCE7;
+      border-color: #16A34A;
+      color: #14532D;
+    }
+
+    /* ŞANS ÇARKI STİLLERİ */
+    .wheel-stage {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .wheel-pointer {
+      font-size: 22px;
+      line-height: 1;
+      margin-bottom: -6px;
+      z-index: 2;
+    }
+
+    #mini-wheel-canvas {
+      width: 184px;
+      height: 184px;
+      border-radius: 50%;
+      border: 4px solid var(--primary);
+      box-shadow: var(--shadow-md);
+      transition: transform 2.4s cubic-bezier(0.18, 0.88, 0.22, 1);
+    }
+
     /* WORDLE */
     .wordle-grid {
       display: grid;
       grid-template-rows: repeat(5, 1fr);
       gap: 6px;
-      margin: 10px 0;
+      margin: 8px 0;
     }
     .wordle-row { display: grid; grid-template-columns: repeat(5, 1fr); gap: 6px; }
     .wordle-cell {
-      width: 42px; height: 42px;
+      width: 40px; height: 40px;
       border: 2px solid var(--border-soft);
       border-radius: 10px;
       display: flex; align-items: center; justify-content: center;
-      font-size: 18px; font-weight: 800; text-transform: uppercase;
+      font-size: 17px; font-weight: 800; text-transform: uppercase;
       background: #fff;
     }
     .wordle-cell.correct { background: #22C55E; color: #fff; border-color: #22C55E; }
@@ -732,14 +1030,14 @@
       display: grid;
       grid-template-columns: repeat(3, 1fr);
       gap: 8px;
-      margin: 14px 0;
+      margin: 12px 0;
     }
     .xox-cell {
-      width: 72px; height: 72px;
+      width: 68px; height: 68px;
       background: var(--bg-main);
       border: 2px solid var(--border-soft);
       border-radius: 14px;
-      font-size: 30px;
+      font-size: 28px;
       font-weight: 800;
       display: flex; align-items: center; justify-content: center;
       cursor: pointer;
@@ -768,19 +1066,70 @@
     }
     .trivia-btn:hover { border-color: var(--primary); background: var(--primary-light); }
 
+    /* KARŞILIKLI DÜELLO KARTLARI (ÜLKE & ŞEHİR NÜFUSU) */
+    .duel-pick-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      width: 100%;
+      margin-top: 6px;
+    }
+
+    .duel-pick-card {
+      background: var(--bg-main);
+      border: 2px solid var(--border-soft);
+      border-radius: 16px;
+      padding: 14px 10px;
+      font-family: inherit;
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 5px;
+      transition: all 0.15s ease;
+    }
+
+    .duel-pick-card:hover:not(:disabled) {
+      border-color: var(--primary);
+      background: var(--primary-light);
+      transform: translateY(-2px);
+    }
+
+    .duel-pick-title {
+      font-size: 14px;
+      font-weight: 800;
+      color: var(--text-dark);
+    }
+
+    .duel-pick-sub {
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--text-muted);
+    }
+
+    .duel-pop-badge {
+      font-size: 12px;
+      font-weight: 800;
+      color: var(--primary);
+      background: #FFFFFF;
+      padding: 3px 8px;
+      border-radius: 999px;
+      border: 1px solid var(--border-soft);
+    }
+
     /* AMİRAL BATTI */
     .ship-grid {
       display: grid;
       grid-template-columns: repeat(4, 1fr);
       gap: 8px;
-      margin: 12px 0;
+      margin: 10px 0;
     }
     .ship-cell {
-      width: 56px; height: 56px;
+      width: 54px; height: 54px;
       background: #E0F2FE;
       border: 2px solid #BAE6FD;
       border-radius: 12px;
-      font-size: 20px;
+      font-size: 19px;
       font-weight: 800;
       display: flex; align-items: center; justify-content: center;
       cursor: pointer;
@@ -792,14 +1141,14 @@
     .dice-pair {
       display: flex;
       gap: 14px;
-      margin: 14px 0;
+      margin: 12px 0;
     }
     .dice-box {
-      width: 68px; height: 68px;
+      width: 64px; height: 64px;
       background: var(--bg-main);
       border: 2px solid var(--primary);
       border-radius: 16px;
-      font-size: 34px;
+      font-size: 32px;
       display: flex; align-items: center; justify-content: center;
       font-weight: 800;
     }
@@ -810,16 +1159,16 @@
       flex-direction: column;
       gap: 10px;
       width: 100%;
-      margin: 14px 0;
+      margin: 12px 0;
     }
 
     .q-card-item {
       background: var(--bg-main);
       border: 1.5px solid var(--border-soft);
       border-radius: 14px;
-      padding: 14px;
+      padding: 13px;
       text-align: left;
-      font-size: 13.5px;
+      font-size: 13px;
       font-weight: 600;
       cursor: pointer;
       transition: all 0.15s ease;
@@ -916,6 +1265,57 @@
       border-radius: 16px;
       font-size: 13.5px;
       line-height: 1.45;
+      position: relative;
+      user-select: none;
+      transition: transform 0.16s ease;
+    }
+
+    .msg-quote-preview {
+      background: rgba(0, 0, 0, 0.06);
+      border-left: 3px solid var(--primary);
+      border-radius: 8px;
+      padding: 5px 8px;
+      margin-bottom: 6px;
+      font-size: 11.5px;
+      line-height: 1.3;
+    }
+
+    .msg-me .msg-quote-preview {
+      background: rgba(255, 255, 255, 0.16);
+      border-left-color: #FFFFFF;
+    }
+
+    .reply-composer-bar {
+      display: none;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      background: var(--primary-light);
+      border-left: 3.5px solid var(--primary);
+      border-radius: 12px;
+      padding: 8px 11px;
+      margin-bottom: 8px;
+      font-size: 12px;
+    }
+
+    .reply-composer-bar.active {
+      display: flex;
+    }
+
+    .live-score-strip {
+      width: 100%;
+      background: var(--bg-card);
+      border: 1px solid var(--border-soft);
+      border-radius: 14px;
+      padding: 8px 12px;
+      margin-bottom: 10px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 8px;
+      font-size: 12px;
+      font-weight: 700;
+      box-shadow: var(--shadow-sm);
     }
 
     .msg-me {
@@ -1055,17 +1455,24 @@
     <!-- YUKARIDAN AÇILAN KÜÇÜK SEKME: OYUNLARA GÖRE SKOR TABLOSU -->
     <div class="top-drawer" id="score-drawer">
       <div class="drawer-top-row">
-        <span class="drawer-title">🏆 Oyun Skor Tablosu (Sohbetsiz Oyun Modu)</span>
+        <span class="drawer-title">🏆 Güncel Skorlar & Oyun Tablosu</span>
         <button class="pill-icon-btn" onclick="toggleScoreDrawer()" title="Kapat">✕</button>
       </div>
       <div class="game-filter-chips" id="score-game-chips">
-        <button class="g-chip active" data-sgame="all" onclick="filterScores('all')">Tümü</button>
+        <button class="g-chip active" data-sgame="all" onclick="filterScores('all')">Güncel Tümü</button>
+        <button class="g-chip" data-sgame="penalty" onclick="filterScores('penalty')">Penaltı</button>
+        <button class="g-chip" data-sgame="battleship" onclick="filterScores('battleship')">Amiral Battı</button>
+        <button class="g-chip" data-sgame="pop_duel" onclick="filterScores('pop_duel')">Ülke & Şehir</button>
+        <button class="g-chip" data-sgame="flag_duel" onclick="filterScores('flag_duel')">Bayrak Düellosu</button>
+        <button class="g-chip" data-sgame="number_guess" onclick="filterScores('number_guess')">Sayı Tahmini</button>
+        <button class="g-chip" data-sgame="reflex" onclick="filterScores('reflex')">Refleks Testi</button>
+        <button class="g-chip" data-sgame="memory" onclick="filterScores('memory')">Hafıza Kartları</button>
+        <button class="g-chip" data-sgame="draw" onclick="filterScores('draw')">Çiz & Tahmin</button>
         <button class="g-chip" data-sgame="rps" onclick="filterScores('rps')">Taş-Kağıt-Makas</button>
         <button class="g-chip" data-sgame="wordle" onclick="filterScores('wordle')">Wordle</button>
         <button class="g-chip" data-sgame="xox" onclick="filterScores('xox')">XOX</button>
         <button class="g-chip" data-sgame="trivia" onclick="filterScores('trivia')">Hızlı Bilgi</button>
         <button class="g-chip" data-sgame="tavla" onclick="filterScores('tavla')">Tavla Zar</button>
-        <button class="g-chip" data-sgame="battleship" onclick="filterScores('battleship')">Amiral Battı</button>
         <button class="g-chip" data-sgame="football" onclick="filterScores('football')">Futbol Bilmece</button>
       </div>
       <div class="scoreboard-list" id="scoreboard-list"></div>
@@ -1135,117 +1542,310 @@
 
           <div class="marquee-wrapper">
             <div class="marquee-track" id="marquee-track">
-              <!-- Set 1 -->
-              <div class="game-card playable selected-game" data-game="rps" onclick="selectGame('rps')">
-                <div class="game-icon icon-rps">✊</div>
+              <!-- Set 1 (İstenen sıra: Mancınık, Sinemojik, Çiz & Tahmin, Refleks, Ülke & Şehir Düello, Sorduk, Bayrak, Yaklaşık, Tavla Zar + diğer oyunlar) -->
+              <div class="game-card playable" data-game="catapult" onclick="selectGame('catapult')">
+                <div class="game-icon icon-catapult">🏹</div>
                 <div class="game-info">
-                  <span class="game-title">Taş-Kağıt-Makas</span>
-                  <span class="game-tag">Oynanabilir</span>
+                  <span class="game-title">Mancınık</span>
+                  <span class="game-tag">NİŞAN</span>
                 </div>
               </div>
-
-              <div class="game-card playable" data-game="wordle" onclick="selectGame('wordle')">
-                <div class="game-icon icon-wordle">🟩</div>
+              <div class="game-card playable" data-game="sinemojik" onclick="selectGame('sinemojik')">
+                <div class="game-icon icon-sinemojik">🎬</div>
                 <div class="game-info">
-                  <span class="game-title">Wordle (5 Harf)</span>
-                  <span class="game-tag">Oynanabilir</span>
+                  <span class="game-title">Sinemojik</span>
+                  <span class="game-tag">EMOJİ FİLM</span>
                 </div>
               </div>
-
-              <div class="game-card playable" data-game="xox" onclick="selectGame('xox')">
-                <div class="game-icon icon-xox">❌</div>
+              <div class="game-card playable" data-game="draw" onclick="selectGame('draw')">
+                <div class="game-icon icon-draw">🎨</div>
                 <div class="game-info">
-                  <span class="game-title">XOX</span>
-                  <span class="game-tag">Oynanabilir</span>
+                  <span class="game-title">Çiz & Tahmin</span>
+                  <span class="game-tag">OYNA</span>
                 </div>
               </div>
-
-              <div class="game-card playable" data-game="trivia" onclick="selectGame('trivia')">
-                <div class="game-icon icon-trivia">⚡</div>
+              <div class="game-card playable" data-game="reflex" onclick="selectGame('reflex')">
+                <div class="game-icon icon-reflex">⚡</div>
                 <div class="game-info">
-                  <span class="game-title">Hızlı Bilgi</span>
-                  <span class="game-tag">Oynanabilir</span>
+                  <span class="game-title">Refleks Testi</span>
+                  <span class="game-tag">OYNA</span>
                 </div>
               </div>
-
+              <div class="game-card playable" data-game="pop_duel" onclick="selectGame('pop_duel')">
+                <div class="game-icon icon-country">🌍</div>
+                <div class="game-info">
+                  <span class="game-title">Ülke & Şehir</span>
+                  <span class="game-tag">DÜELLO</span>
+                </div>
+              </div>
+              <div class="game-card playable" data-game="sorduk" onclick="selectGame('sorduk')">
+                <div class="game-icon icon-sorduk">🗣️</div>
+                <div class="game-info">
+                  <span class="game-title">Sorduk</span>
+                  <span class="game-tag">ANKET</span>
+                </div>
+              </div>
+              <div class="game-card playable" data-game="flag_duel" onclick="selectGame('flag_duel')">
+                <div class="game-icon icon-city">🚩</div>
+                <div class="game-info">
+                  <span class="game-title">Bayrak Düellosu</span>
+                  <span class="game-tag">DÜELLO</span>
+                </div>
+              </div>
+              <div class="game-card playable" data-game="approx" onclick="selectGame('approx')">
+                <div class="game-icon icon-approx">🎯</div>
+                <div class="game-info">
+                  <span class="game-title">Yaklaşık</span>
+                  <span class="game-tag">TAHMİN</span>
+                </div>
+              </div>
               <div class="game-card playable" data-game="tavla" onclick="selectGame('tavla')">
                 <div class="game-icon icon-tavla">🎲</div>
                 <div class="game-info">
                   <span class="game-title">Tavla Zar</span>
-                  <span class="game-tag">Yeni · Oynanabilir</span>
+                  <span class="game-tag">OYNA</span>
                 </div>
               </div>
-
+              <div class="game-card playable selected-game" data-game="penalty" onclick="selectGame('penalty')">
+                <div class="game-icon icon-penalty">⚽</div>
+                <div class="game-info">
+                  <span class="game-title">Penaltı</span>
+                  <span class="game-tag">KARŞILIKLI</span>
+                </div>
+              </div>
               <div class="game-card playable" data-game="battleship" onclick="selectGame('battleship')">
                 <div class="game-icon icon-ship">🚢</div>
                 <div class="game-info">
                   <span class="game-title">Amiral Battı</span>
-                  <span class="game-tag">Yeni · Oynanabilir</span>
+                  <span class="game-tag">KARŞILIKLI</span>
                 </div>
               </div>
-
-              <div class="game-card playable" data-game="football" onclick="selectGame('football')">
-                <div class="game-icon icon-football">⚽</div>
+              <div class="game-card playable" data-game="number_guess" onclick="selectGame('number_guess')">
+                <div class="game-icon icon-trivia">🔢</div>
                 <div class="game-info">
-                  <span class="game-title">Futbolcu & Takım</span>
-                  <span class="game-tag">Yeni · Oynanabilir</span>
+                  <span class="game-title">Sayı Tahmini</span>
+                  <span class="game-tag">1-100 ARASI</span>
                 </div>
               </div>
-
-              <!-- Set 2 (Kesintisiz Kayma İçin Kopya) -->
-              <div class="game-card playable selected-game" data-game="rps" onclick="selectGame('rps')">
-                <div class="game-icon icon-rps">✊</div>
-                <div class="game-info">
-                  <span class="game-title">Taş-Kağıt-Makas</span>
-                  <span class="game-tag">Oynanabilir</span>
-                </div>
-              </div>
-
               <div class="game-card playable" data-game="wordle" onclick="selectGame('wordle')">
                 <div class="game-icon icon-wordle">🟩</div>
                 <div class="game-info">
-                  <span class="game-title">Wordle (5 Harf)</span>
-                  <span class="game-tag">Oynanabilir</span>
+                  <span class="game-title">Wordle</span>
+                  <span class="game-tag">5 HARF</span>
                 </div>
               </div>
-
+              <div class="game-card playable" data-game="memory" onclick="selectGame('memory')">
+                <div class="game-icon icon-memory">🃏</div>
+                <div class="game-info">
+                  <span class="game-title">Hafıza Kartları</span>
+                  <span class="game-tag">OYNA</span>
+                </div>
+              </div>
+              <div class="game-card playable" data-game="rps" onclick="selectGame('rps')">
+                <div class="game-icon icon-rps">✊</div>
+                <div class="game-info">
+                  <span class="game-title">Taş-Kağıt-Makas</span>
+                  <span class="game-tag">KARŞILIKLI</span>
+                </div>
+              </div>
               <div class="game-card playable" data-game="xox" onclick="selectGame('xox')">
                 <div class="game-icon icon-xox">❌</div>
                 <div class="game-info">
                   <span class="game-title">XOX</span>
-                  <span class="game-tag">Oynanabilir</span>
+                  <span class="game-tag">KARŞILIKLI</span>
                 </div>
               </div>
-
               <div class="game-card playable" data-game="trivia" onclick="selectGame('trivia')">
                 <div class="game-icon icon-trivia">⚡</div>
                 <div class="game-info">
                   <span class="game-title">Hızlı Bilgi</span>
-                  <span class="game-tag">Oynanabilir</span>
+                  <span class="game-tag">OYNA</span>
+                </div>
+              </div>
+              <div class="game-card playable" data-game="football" onclick="selectGame('football')">
+                <div class="game-icon icon-football">🏟️</div>
+                <div class="game-info">
+                  <span class="game-title">Futbol Bilmece</span>
+                  <span class="game-tag">OYNA</span>
                 </div>
               </div>
 
+              <!-- Set 2 (Kesintisiz Akış İçin Kopya) -->
+              <div class="game-card playable" data-game="catapult" onclick="selectGame('catapult')">
+                <div class="game-icon icon-catapult">🏹</div>
+                <div class="game-info">
+                  <span class="game-title">Mancınık</span>
+                  <span class="game-tag">NİŞAN</span>
+                </div>
+              </div>
+              <div class="game-card playable" data-game="sinemojik" onclick="selectGame('sinemojik')">
+                <div class="game-icon icon-sinemojik">🎬</div>
+                <div class="game-info">
+                  <span class="game-title">Sinemojik</span>
+                  <span class="game-tag">EMOJİ FİLM</span>
+                </div>
+              </div>
+              <div class="game-card playable" data-game="draw" onclick="selectGame('draw')">
+                <div class="game-icon icon-draw">🎨</div>
+                <div class="game-info">
+                  <span class="game-title">Çiz & Tahmin</span>
+                  <span class="game-tag">OYNA</span>
+                </div>
+              </div>
+              <div class="game-card playable" data-game="reflex" onclick="selectGame('reflex')">
+                <div class="game-icon icon-reflex">⚡</div>
+                <div class="game-info">
+                  <span class="game-title">Refleks Testi</span>
+                  <span class="game-tag">OYNA</span>
+                </div>
+              </div>
+              <div class="game-card playable" data-game="pop_duel" onclick="selectGame('pop_duel')">
+                <div class="game-icon icon-country">🌍</div>
+                <div class="game-info">
+                  <span class="game-title">Ülke & Şehir</span>
+                  <span class="game-tag">DÜELLO</span>
+                </div>
+              </div>
+              <div class="game-card playable" data-game="sorduk" onclick="selectGame('sorduk')">
+                <div class="game-icon icon-sorduk">🗣️</div>
+                <div class="game-info">
+                  <span class="game-title">Sorduk</span>
+                  <span class="game-tag">ANKET</span>
+                </div>
+              </div>
+              <div class="game-card playable" data-game="flag_duel" onclick="selectGame('flag_duel')">
+                <div class="game-icon icon-city">🚩</div>
+                <div class="game-info">
+                  <span class="game-title">Bayrak Düellosu</span>
+                  <span class="game-tag">DÜELLO</span>
+                </div>
+              </div>
+              <div class="game-card playable" data-game="approx" onclick="selectGame('approx')">
+                <div class="game-icon icon-approx">🎯</div>
+                <div class="game-info">
+                  <span class="game-title">Yaklaşık</span>
+                  <span class="game-tag">TAHMİN</span>
+                </div>
+              </div>
               <div class="game-card playable" data-game="tavla" onclick="selectGame('tavla')">
                 <div class="game-icon icon-tavla">🎲</div>
                 <div class="game-info">
                   <span class="game-title">Tavla Zar</span>
-                  <span class="game-tag">Yeni · Oynanabilir</span>
+                  <span class="game-tag">OYNA</span>
                 </div>
               </div>
-
+              <div class="game-card playable selected-game" data-game="penalty" onclick="selectGame('penalty')">
+                <div class="game-icon icon-penalty">⚽</div>
+                <div class="game-info">
+                  <span class="game-title">Penaltı</span>
+                  <span class="game-tag">KARŞILIKLI</span>
+                </div>
+              </div>
               <div class="game-card playable" data-game="battleship" onclick="selectGame('battleship')">
                 <div class="game-icon icon-ship">🚢</div>
                 <div class="game-info">
                   <span class="game-title">Amiral Battı</span>
-                  <span class="game-tag">Yeni · Oynanabilir</span>
+                  <span class="game-tag">KARŞILIKLI</span>
                 </div>
               </div>
-
-              <div class="game-card playable" data-game="football" onclick="selectGame('football')">
-                <div class="game-icon icon-football">⚽</div>
+              <div class="game-card playable" data-game="number_guess" onclick="selectGame('number_guess')">
+                <div class="game-icon icon-trivia">🔢</div>
                 <div class="game-info">
-                  <span class="game-title">Futbolcu & Takım</span>
-                  <span class="game-tag">Yeni · Oynanabilir</span>
+                  <span class="game-title">Sayı Tahmini</span>
+                  <span class="game-tag">1-100 ARASI</span>
+                </div>
+              </div>
+              <div class="game-card playable" data-game="wordle" onclick="selectGame('wordle')">
+                <div class="game-icon icon-wordle">🟩</div>
+                <div class="game-info">
+                  <span class="game-title">Wordle</span>
+                  <span class="game-tag">5 HARF</span>
+                </div>
+              </div>
+              <div class="game-card playable" data-game="memory" onclick="selectGame('memory')">
+                <div class="game-icon icon-memory">🃏</div>
+                <div class="game-info">
+                  <span class="game-title">Hafıza Kartları</span>
+                  <span class="game-tag">OYNA</span>
+                </div>
+              </div>
+              <div class="game-card playable" data-game="rps" onclick="selectGame('rps')">
+                <div class="game-icon icon-rps">✊</div>
+                <div class="game-info">
+                  <span class="game-title">Taş-Kağıt-Makas</span>
+                  <span class="game-tag">KARŞILIKLI</span>
+                </div>
+              </div>
+              <div class="game-card playable" data-game="xox" onclick="selectGame('xox')">
+                <div class="game-icon icon-xox">❌</div>
+                <div class="game-info">
+                  <span class="game-title">XOX</span>
+                  <span class="game-tag">KARŞILIKLI</span>
+                </div>
+              </div>
+              <div class="game-card playable" data-game="trivia" onclick="selectGame('trivia')">
+                <div class="game-icon icon-trivia">⚡</div>
+                <div class="game-info">
+                  <span class="game-title">Hızlı Bilgi</span>
+                  <span class="game-tag">OYNA</span>
+                </div>
+              </div>
+              <div class="game-card playable" data-game="football" onclick="selectGame('football')">
+                <div class="game-icon icon-football">🏟️</div>
+                <div class="game-info">
+                  <span class="game-title">Futbol Bilmece</span>
+                  <span class="game-tag">OYNA</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Kayan şeridin altında sol tarafta 3, sağ tarafta 3 küçük sabit oyun şablonu -->
+          <div class="static-games-row" id="static-games-row">
+            <div class="static-games-group">
+              <div class="static-game-card selected-game" data-game="penalty" onclick="selectGame('penalty')">
+                <div class="game-icon icon-penalty">⚽</div>
+                <div class="game-info">
+                  <span class="game-title">Penaltı</span>
+                  <span class="game-tag">KARŞILIKLI</span>
+                </div>
+              </div>
+              <div class="static-game-card" data-game="wordle" onclick="selectGame('wordle')">
+                <div class="game-icon icon-wordle">🟩</div>
+                <div class="game-info">
+                  <span class="game-title">Wordle</span>
+                  <span class="game-tag">5 HARF</span>
+                </div>
+              </div>
+              <div class="static-game-card" data-game="battleship" onclick="selectGame('battleship')">
+                <div class="game-icon icon-ship">🚢</div>
+                <div class="game-info">
+                  <span class="game-title">Amiral</span>
+                  <span class="game-tag">KARŞILIKLI</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="static-games-group">
+              <div class="static-game-card" data-game="xox" onclick="selectGame('xox')">
+                <div class="game-icon icon-xox">❌</div>
+                <div class="game-info">
+                  <span class="game-title">XOX</span>
+                  <span class="game-tag">KARŞILIKLI</span>
+                </div>
+              </div>
+              <div class="static-game-card" data-game="rps" onclick="selectGame('rps')">
+                <div class="game-icon icon-rps">✊</div>
+                <div class="game-info">
+                  <span class="game-title">TKM</span>
+                  <span class="game-tag">KARŞILIKLI</span>
+                </div>
+              </div>
+              <div class="static-game-card" data-game="number_guess" onclick="selectGame('number_guess')">
+                <div class="game-icon icon-trivia">🔢</div>
+                <div class="game-info">
+                  <span class="game-title">Sayı</span>
+                  <span class="game-tag">1-100</span>
                 </div>
               </div>
             </div>
@@ -1253,1173 +1853,2620 @@
         </div>
       </div>
 
+      <!-- Footer -->
       <footer>
         <div class="faq-box" id="faq-box">
-          <button class="faq-header" id="faq-toggle">
-            <span>❔ Merak Ettikleriniz · Nasıl çalışır?</span>
-            <span>▼</span>
+          <button class="faq-header" onclick="toggleFaq()">
+            <span>Sıkça Sorulan Sorular</span>
+            <span id="faq-arrow">⌄</span>
           </button>
           <div class="faq-content">
-            <strong>Yakınımda Özelliği:</strong> Tarayıcı konum izni verirsen enlem/boylam koordinatlarınla yakınındaki kullanıcılarla eşleşir.<br>
-            <strong>Konuşmak İstemeyenler İçin:</strong> Oyun ekranında veya yukarıdaki 🏆 Skorlar sekmesinde skor kasabilir, sohbete geçmeden devam edebilirsin.
+            <strong>hadikonus</strong>'ta ister sohbet etmeden mini oyun oynayıp skor yapabilir, ister seçtiğin oyunla eşleşip sohbete geçebilirsin. Sağ üstteki 🏆 Skorlar sekmesinden oyunlara göre puanlarını görebilirsin.
           </div>
         </div>
-
         <div class="legal-links">
-          <span>18+</span><span>·</span>
-          <a href="#" onclick="showToast('Kullanım Koşulları')">Kullanım Koşulları</a><span>·</span>
-          <a href="#" onclick="showToast('Gizlilik: Konum ve mesajlar saklanmaz.')">Gizlilik</a>
+          <a href="#gizlilik" onclick="showToast('Gizlilik Politikası yakında eklenecek.'); return false;">Gizlilik</a>
+          <span>•</span>
+          <a href="#kosullar" onclick="showToast('Kullanım Koşulları yakında eklenecek.'); return false;">Koşullar</a>
+          <span>•</span>
+          <a href="#iletisim" onclick="showToast('İletişim: destek@hadikonus.app'); return false;">İletişim</a>
         </div>
       </footer>
     </div>
 
-    <!-- KULLANICI ADI OLUŞTURMA MODALI -->
-    <div class="modal-overlay" id="nickname-modal">
-      <div class="modal-card">
-        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:14px;">
-          <h3 style="font-size:17px; font-weight:800;">Kullanıcı Adı Oluştur</h3>
-          <button class="pill-icon-btn" onclick="closeNicknameModal()">✕</button>
-        </div>
-
-        <label style="font-size:12px; font-weight:700; color:var(--text-muted);">Avatar Seç</label>
-        <div class="emoji-picker-grid" id="emoji-picker-grid"></div>
-
-        <label style="font-size:12px; font-weight:700; color:var(--text-muted);">Kullanıcı Adın</label>
-        <div style="display:flex; gap:8px; margin: 6px 0 16px;">
-          <input type="text" id="custom-username-input" class="chat-input" maxlength="20" placeholder="Örn: Gece Yolcusu" />
-          <button class="btn-secondary" onclick="fillRandomInModal()" title="Rastgele Öner">🎲</button>
-        </div>
-
-        <button class="btn-primary" onclick="saveCustomUsername()">Kaydet ve Kullan</button>
-      </div>
-    </div>
-
-    <!-- 2. EŞLEŞME ARANIYOR EKRANI -->
+    <!-- 2. EŞLEŞME BEKLEME EKRANI -->
     <div id="view-matching" class="view">
       <div class="subview-header">
-        <button class="back-btn" onclick="cancelMatchmaking()">← İptal Et</button>
-        <span class="subview-title" id="matching-header-title">Eşleşme Aranıyor</span>
-        <div style="width: 60px;"></div>
+        <button class="back-btn" onclick="cancelMatchmaking()">← İptal</button>
+        <span class="subview-title" id="matching-mode-label">Eşleşme Aranıyor</span>
+        <span style="width:60px;"></span>
       </div>
-      <div class="matching-box">
-        <div class="radar-circle">🔍</div>
-        <div>
-          <h2 style="font-size: 21px; margin-bottom: 8px;" id="matching-status-title">Rakip bekleniyor...</h2>
-          <p style="font-size: 13.5px; color: var(--text-muted); max-width: 310px;" id="matching-status-desc">
-            Şu an sunucuda 1 çevrimiçi kullanıcı (sen) görünüyorsun. Başka biri bağlandığında otomatik eşleşeceksin.
-          </p>
-        </div>
 
-        <div style="margin-top: 18px; padding-top: 16px; border-top: 1px dashed var(--border-soft); width: 100%; max-width: 320px;">
-          <p style="font-size: 11.5px; color: var(--text-muted); margin-bottom: 8px;">
-            Sohbet etmeden tek başına oyun oynamak veya ekranı test etmek istersen:
-          </p>
-          <button class="btn-secondary" style="width: 100%; font-size: 13px;" onclick="previewScreenWithoutOpponent()">
-            🎮 Sohbetsiz Oyun / Önizleme Aç
-          </button>
-        </div>
+      <div class="matching-box">
+        <div class="radar-circle">🔎</div>
+        <h2 id="matching-status-text" style="font-size:20px;">Uygun kişi aranıyor...</h2>
+        <p id="matching-sub-text" style="font-size:13.5px; color:var(--text-muted); max-width:280px;">
+          Seçili mini oyun hazırlanıyor.
+        </p>
+        <button class="btn-secondary" style="margin-top:10px;" onclick="cancelMatchmaking()">Vazgeç</button>
       </div>
     </div>
 
-    <!-- 3. OYUN EKRANI (7 OYNANABİLİR OYUN + SOHBETSİZ SKOR MODU) -->
+    <!-- 3. MİNİ OYUN EKRANI -->
     <div id="view-game" class="view">
       <div class="subview-header">
-        <button class="back-btn" onclick="switchView('view-lobby')">← Çık</button>
-        <span class="subview-title" id="active-game-header">Taş-Kağıt-Makas</span>
-        <button class="back-btn" onclick="openQuestionCards()" style="background: var(--primary-light); color: var(--primary); border-color: var(--primary);">Sohbete Geç →</button>
-      </div>
-
-      <div class="match-banner">
-        <div class="player-chip">
-          <span id="my-game-avatar">🦉</span>
-          <span id="my-game-name">Hızlı Baykuş</span>
-        </div>
-        <span class="vs-badge">SKOR: <span id="current-game-pts">0</span></span>
-        <div class="player-chip">
-          <span id="opp-game-avatar">👤</span>
-          <span id="opp-game-name">Rakip</span>
-        </div>
-      </div>
-
-      <!-- 1. Taş-Kağıt-Makas -->
-      <div id="arena-rps" class="game-arena">
-        <div>
-          <h3 style="font-size: 18px; margin-bottom: 6px;">Hamleni Seç!</h3>
-          <p style="font-size: 13px; color: var(--text-muted);" id="rps-status-text">Kazanınca skorun artar; istersen sohbete geçebilirsin.</p>
-        </div>
-        <div id="rps-result-display" style="font-size: 42px; margin: 14px 0; font-weight: 800;">🤜 🤛</div>
-        <div class="rps-choices">
-          <button class="rps-btn" onclick="playRPS('tas')">✊<span>Taş</span></button>
-          <button class="rps-btn" onclick="playRPS('kagit')">✋<span>Kağıt</span></button>
-          <button class="rps-btn" onclick="playRPS('makas')">✌️<span>Makas</span></button>
-        </div>
-      </div>
-
-      <!-- 2. Wordle -->
-      <div id="arena-wordle" class="game-arena" style="display: none;">
-        <div>
-          <h3 style="font-size: 17px; margin-bottom: 4px;">5 Harfli Kelimeyi Bul</h3>
-          <p style="font-size: 12px; color: var(--text-muted);">Yeşil: Doğru yer · Sarı: Yanlış yer</p>
-        </div>
-        <div class="wordle-grid" id="wordle-grid"></div>
-        <div class="wordle-input-row">
-          <input type="text" id="wordle-input" class="wordle-input" maxlength="5" placeholder="KELİME..." onkeypress="if(event.key==='Enter') submitWordleGuess()" />
-          <button class="send-btn" onclick="submitWordleGuess()">Dene</button>
-        </div>
-      </div>
-
-      <!-- 3. XOX -->
-      <div id="arena-xox" class="game-arena" style="display: none;">
-        <div>
-          <h3 style="font-size: 17px; margin-bottom: 4px;">XOX — Üçlüyü Tamamla</h3>
-          <p style="font-size: 12.5px; color: var(--text-muted);" id="xox-status">Sen (X) başlıyorsun!</p>
-        </div>
-        <div class="xox-board" id="xox-board"></div>
-        <button class="btn-secondary" onclick="initXOX()" style="font-size:12.5px;">Tahtayı Sıfırla</button>
-      </div>
-
-      <!-- 4. Hızlı Bilgi -->
-      <div id="arena-trivia" class="game-arena" style="display: none;">
-        <div>
-          <span style="font-size:11px; font-weight:700; color:var(--primary); background:var(--primary-light); padding:4px 10px; border-radius:999px;">GENEL KÜLTÜR</span>
-          <h3 style="font-size: 16.5px; margin-top: 10px;" id="trivia-question">Soru yükleniyor...</h3>
-        </div>
-        <div class="trivia-options" id="trivia-options"></div>
-        <p style="font-size: 12px; color: var(--text-muted);" id="trivia-feedback">Doğru cevabı seç!</p>
-      </div>
-
-      <!-- 5. Tavla Zar Atma -->
-      <div id="arena-tavla" class="game-arena" style="display: none;">
-        <div>
-          <h3 style="font-size: 17px; margin-bottom: 4px;">Tavla Zar Düellosu</h3>
-          <p style="font-size: 12.5px; color: var(--text-muted);" id="tavla-status">İki zarı at, toplamı yüksek olan skoru alır!</p>
-        </div>
-        <div class="dice-pair">
-          <div class="dice-box" id="dice-1">🎲</div>
-          <div class="dice-box" id="dice-2">🎲</div>
-        </div>
-        <button class="btn-primary" onclick="rollTavlaDice()" style="max-width:240px;">🎲 Zarları At</button>
-      </div>
-
-      <!-- 6. Amiral Battı -->
-      <div id="arena-battleship" class="game-arena" style="display: none;">
-        <div>
-          <h3 style="font-size: 17px; margin-bottom: 4px;">Amiral Battı (4x4 Radar)</h3>
-          <p style="font-size: 12.5px; color: var(--text-muted);" id="ship-status">3 gizli gemiyi bulmak için karelere tıkla!</p>
-        </div>
-        <div class="ship-grid" id="ship-grid"></div>
-        <button class="btn-secondary" onclick="initBattleship()" style="font-size:12.5px;">Yeni Radar</button>
-      </div>
-
-      <!-- 7. Futbolcu & Takım Bilmece -->
-      <div id="arena-football" class="game-arena" style="display: none;">
-        <div>
-          <span style="font-size:11px; font-weight:700; color:#15803D; background:#DCFCE7; padding:4px 10px; border-radius:999px;">⚽ FUTBOLCU & TAKIM BİLMECE</span>
-          <h3 style="font-size: 16.5px; margin-top: 10px;" id="football-question">Bilmece yükleniyor...</h3>
-        </div>
-        <div class="trivia-options" id="football-options"></div>
-        <p style="font-size: 12px; color: var(--text-muted);" id="football-feedback">İpucundan futbolcuyu veya takımı bil!</p>
-      </div>
-    </div>
-
-    <!-- 4. SORU KARTI SEÇİM EKRANI -->
-    <div id="view-cards" class="view">
-      <div class="subview-header">
         <button class="back-btn" onclick="switchView('view-lobby')">← Lobi</button>
-        <span class="subview-title">2 Soru Kartı Seç</span>
-        <div style="width: 50px;"></div>
+        <span class="subview-title" id="active-game-title">Penaltı</span>
+        <button class="back-btn" onclick="openGameInChat()" id="skip-to-chat-btn">Sohbete Geç →</button>
       </div>
-      <p style="font-size: 13.5px; color: var(--text-muted); margin-bottom: 8px;">
-        Sohbeti başlatmak için sorulacak <strong>2 soru kartı</strong> seç:
-      </p>
-      <div class="question-cards-list" id="question-cards-list"></div>
-      <button class="btn-primary" id="btn-confirm-cards" onclick="enterChatRoom(true)" disabled style="opacity: 0.5;">
-        Seçilen Sorularla Sohbete Gir (0/2)
-      </button>
+
+      <div class="match-banner" id="game-match-banner">
+        <div class="player-chip">
+          <span id="game-my-avatar">🦉</span>
+          <span id="game-my-name">Sen</span>
+        </div>
+        <span class="vs-badge" id="game-mode-badge">SOHBETSİZ</span>
+        <div class="player-chip">
+          <span id="game-opp-name">Hedef / Rakip</span>
+          <span id="game-opp-avatar">🎯</span>
+        </div>
+      </div>
+
+      <div class="game-arena" id="game-arena"></div>
+      <div class="live-score-strip" id="live-score-strip">
+        <span>📊 Güncel Skor: <strong>0p</strong></span>
+        <span id="live-score-detail">Henüz puan alınmadı</span>
+      </div>
     </div>
 
-    <!-- 5. CANLI SOHBET EKRANI -->
+    <!-- 4. SOHBET EKRANI -->
     <div id="view-chat" class="view">
       <div class="subview-header">
         <button class="back-btn" onclick="switchView('view-lobby')">← Lobi</button>
-        <span class="subview-title" id="chat-mode-badge">Sohbet Odası</span>
-        <button class="back-btn" onclick="switchView('view-lobby')" style="color: #DC2626;">Ayrıl</button>
+        <span class="subview-title" id="chat-room-label">Sohbet Odası</span>
+        <button class="back-btn" onclick="startMatchmaking('game')" title="Yeni kişiyle eşleş">Yeni Eşleş</button>
       </div>
 
       <div class="chat-header-card">
         <div class="chat-user-info">
-          <span style="font-size: 24px;" id="chat-opp-avatar">👤</span>
+          <span id="chat-partner-avatar" style="font-size:28px;">🦊</span>
           <div>
-            <div style="font-size: 14.5px; font-weight: 800;" id="chat-opp-name">Bağlı Kullanıcı</div>
-            <div style="font-size: 11.5px; color: var(--accent-green); font-weight: 600;">● Odaya bağlı</div>
+            <div style="display:flex; align-items:center; gap:6px;">
+              <strong id="chat-partner-name" style="font-size:14.5px;">Kızıl Tilki</strong>
+              <span id="chat-partner-id" style="font-size:11px; color:var(--primary); font-weight:700;">#1904</span>
+            </div>
+            <div id="chat-partner-status" style="font-size:11.5px; color:var(--accent-green); font-weight:600;">● Çevrimiçi</div>
           </div>
         </div>
 
         <div class="chat-actions">
-          <button class="icon-action-btn" id="btn-fav-user" onclick="toggleFavoriteCurrent()">⭐ Favori</button>
-          <button class="icon-action-btn" id="btn-add-friend-chat" onclick="addCurrentToFriends()">➕ Ekle</button>
+          <button class="icon-action-btn" id="fav-btn" onclick="toggleFavoritePartner()" title="Favorilere ekle">☆ Favori</button>
+          <button class="icon-action-btn" id="add-friend-btn" onclick="addCurrentPartnerAsFriend()">+ Arkadaş</button>
         </div>
+      </div>
+
+      <div class="icebreaker-bar">
+        <button class="icebreaker-chip" onclick="sendIcebreaker('Selam! Hangi oyunu daha çok seviyorsun?')">👋 Selam! Hangi oyun?</button>
+        <button class="icebreaker-chip" onclick="sendIcebreaker('Penaltıda hangi köşeye atıyorsun genelde?')">⚽ Penaltı taktiği</button>
+        <button class="icebreaker-chip" onclick="sendIcebreaker('Hafıza kartlarında kaç hamlede bitirirsin?')">🃏 Hafıza rekoru</button>
+        <button class="icebreaker-chip" onclick="sendIcebreaker('Çiz & Tahmin turunda ne çizelim?')">🎨 Çizim turu</button>
+        <button class="icebreaker-chip" onclick="sendIcebreaker('Kahve mi çay mı?')">☕ Kahve mi çay mı?</button>
       </div>
 
       <div class="chat-messages" id="chat-messages"></div>
 
-      <div class="icebreaker-bar">
-        <button class="icebreaker-chip" onclick="useIcebreaker('Selam! Nasılsın? 👋')">👋 Selam! Nasılsın?</button>
-        <button class="icebreaker-chip" onclick="useIcebreaker('Bir el daha oyun atalım mı? 🎮')">🎮 Bir el daha?</button>
-        <button class="icebreaker-chip" onclick="useIcebreaker('Hangi şehirden katılıyorsun? 🌍')">🌍 Hangi şehir?</button>
-        <button class="icebreaker-chip" onclick="useIcebreaker('En sevdiğin dizi veya film hangisi? 🎬')">🎬 Favori dizi/film?</button>
+      <div class="reply-composer-bar" id="reply-composer-bar">
+        <div style="overflow:hidden;">
+          <div id="reply-target-sender" style="font-weight:800; color:var(--primary); font-size:11px;">Alıntılanan Mesaj</div>
+          <div id="reply-target-text" style="white-space:nowrap; overflow:hidden; text-overflow:ellipsis; color:var(--text-dark);"></div>
+        </div>
+        <button type="button" class="pill-icon-btn" onclick="clearReplyTarget()" title="Alıntıyı kaldır">✕</button>
       </div>
 
-      <div class="chat-input-box">
-        <input type="text" id="chat-input" class="chat-input" placeholder="Mesajını yaz..." onkeypress="if(event.key==='Enter') sendChatMessage()" />
-        <button class="send-btn" onclick="sendChatMessage()">Gönder</button>
-      </div>
+      <form class="chat-input-box" onsubmit="handleSendMessage(event)">
+        <input type="text" class="chat-input" id="chat-input" placeholder="Bir mesaj yaz..." autocomplete="off" required />
+        <button type="submit" class="send-btn">Gönder</button>
+      </form>
     </div>
 
-    <!-- 6. ARKADAŞLARIM EKRANI -->
+    <!-- 5. ARKADAŞLARIM EKRANI -->
     <div id="view-friends" class="view">
       <div class="subview-header">
-        <button class="back-btn" onclick="switchView('view-lobby')">← Geri</button>
-        <span class="subview-title">Arkadaşlarım & Favoriler</span>
-        <div style="width: 50px;"></div>
+        <button class="back-btn" onclick="switchView('view-lobby')">← Lobi</button>
+        <span class="subview-title">Arkadaşlarım</span>
+        <span style="width:60px;"></span>
       </div>
 
-      <div class="add-friend-bar">
-        <input type="text" id="new-friend-input" class="chat-input" placeholder="Kullanıcı adı veya #ID girerek ekle..." onkeypress="if(event.key==='Enter') manualAddFriend()" />
-        <button class="send-btn" onclick="manualAddFriend()">Ekle</button>
-      </div>
+      <form class="add-friend-bar" onsubmit="handleAddFriendById(event)">
+        <input type="text" class="chat-input" id="friend-id-input" placeholder="Arkadaş ID gir (ör. #4821 veya 4821)" required />
+        <button type="submit" class="send-btn">Ekle</button>
+      </form>
 
       <div class="user-list" id="friends-list-container"></div>
     </div>
 
-    <!-- 7. ODA KUR / GİR EKRANI -->
+    <!-- 6. ODA KUR / GİR EKRANI -->
     <div id="view-room" class="view">
       <div class="subview-header">
-        <button class="back-btn" onclick="switchView('view-lobby')">← Geri</button>
-        <span class="subview-title">Özel Oda Kur / Gir</span>
-        <div style="width: 50px;"></div>
+        <button class="back-btn" onclick="switchView('view-lobby')">← Lobi</button>
+        <span class="subview-title">Oda Kur / Gir</span>
+        <span style="width:60px;"></span>
       </div>
 
       <div class="room-card">
-        <h3 style="font-size: 16px; margin-bottom: 6px;">Yeni Oda Oluştur</h3>
-        <p style="font-size: 13px; color: var(--text-muted);">Arkadaşına bu kodu gönder, odaya katıldığında oyun başlasın.</p>
-        <div class="room-code-display" id="generated-room-code">HK-4829</div>
-        <div style="display: flex; gap: 8px;">
-          <button class="btn-secondary" style="flex: 1;" onclick="generateNewRoomCode()">🔄 Yeni Kod</button>
-          <button class="btn-primary" style="flex: 1; padding: 12px;" onclick="copyRoomCode()">📋 Kodu Kopyala</button>
+        <h3 style="font-size:16px; margin-bottom:6px;">Özel Oda Kur</h3>
+        <p style="font-size:13px; color:var(--text-muted);">Arkadaşına oda kodunu gönder, aynı odada buluş.</p>
+        <div class="room-code-display" id="created-room-code">ODA-7492</div>
+        <div style="display:flex; gap:8px; justify-content:center;">
+          <button class="btn-secondary" onclick="generateNewRoomCode()">🎲 Yeni Kod</button>
+          <button class="btn-primary" style="padding:12px 18px; width:auto;" onclick="enterCreatedRoom()">Odaya Gir</button>
         </div>
       </div>
 
-      <div class="room-card">
-        <h3 style="font-size: 16px; margin-bottom: 6px;">Odaya Katıl</h3>
-        <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 12px;">Arkadaşının paylaştığı oda kodunu gir:</p>
-        <div class="chat-input-box">
-          <input type="text" id="join-room-input" class="chat-input" placeholder="Örn: HK-4829" style="text-transform: uppercase;" />
-          <button class="send-btn" onclick="joinExistingRoom()">Katıl</button>
-        </div>
+      <div class="room-card" style="text-align:left;">
+        <h3 style="font-size:15px; margin-bottom:8px;">Mevcut Odaya Gir</h3>
+        <form style="display:flex; gap:8px;" onsubmit="handleJoinRoom(event)">
+          <input type="text" class="chat-input" id="join-room-input" placeholder="Oda kodu (ör. ODA-7492)" required />
+          <button type="submit" class="send-btn">Katıl</button>
+        </form>
       </div>
     </div>
   </div>
 
-  <!-- Toast Bildirim -->
-  <div class="toast" id="toast">Bildirim</div>
+  <!-- KULLANICI ADI DÜZENLEME MODALI -->
+  <div class="modal-overlay" id="nickname-modal">
+    <div class="modal-card">
+      <h3 style="font-size:17px; margin-bottom:6px;">Profilini Düzenle</h3>
+      <p style="font-size:12.5px; color:var(--text-muted);">Avatarını seç ve özel kullanıcı adını yaz.</p>
+
+      <div class="emoji-picker-grid" id="emoji-picker-grid"></div>
+
+      <input type="text" class="chat-input" id="custom-nickname-input" maxlength="22" placeholder="Kullanıcı adın..." style="width:100%; margin-bottom:14px;" />
+
+      <div style="display:flex; gap:8px; justify-content:flex-end;">
+        <button class="btn-secondary" style="padding:10px 14px;" onclick="closeNicknameModal()">İptal</button>
+        <button class="btn-primary" style="padding:10px 18px; width:auto;" onclick="saveCustomNickname()">Kaydet</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- TOAST BİLDİRİMİ -->
+  <div class="toast" id="toast"></div>
 
   <script>
-    // DURUM YÖNETİMİ
-    let onlineCount = 1;
-    let userTagId = localStorage.getItem("hadikonus_userid") || ("#" + Math.floor(1000 + Math.random() * 9000));
-    localStorage.setItem("hadikonus_userid", userTagId);
+    // =========================================================================
+    // 1. TEMEL VERİLER & DURUM YÖNETİMİ
+    // =========================================================================
+    const AVATARS = ["🦉", "🦊", "🐼", "🐨", "🐯", "🐙", "🐧", "🦁", "🐸", "🦄", "🐺", "🐢"];
+    const ADJECTIVES = ["Hızlı", "Sessiz", "Neşeli", "Meraklı", "Bilge", "Çevik", "Sakin", "Parlak", "Gizemli", "Kibar"];
+    const NOUNS = ["Baykuş", "Tilki", "Panda", "Koala", "Kaplan", "Ahtapot", "Penguen", "Aslan", "Kurbağa", "Martı"];
 
-    let savedProfile = JSON.parse(localStorage.getItem("hadikonus_profile") || "null");
-    let currentUser = savedProfile || { name: "Hızlı Baykuş", emoji: "🦉" };
-    let tempSelectedEmoji = currentUser.emoji;
-
-    let currentOpponent = null;
-    let matchMode = "game";
-    let matchPref = "global"; // 'global' veya 'nearby'
-    let userCoords = null;
-    let selectedGame = "rps";
-    let selectedQuestionCards = [];
-    let friendsList = JSON.parse(localStorage.getItem("hadikonus_friends") || "[]");
-
-    // Oyunlara Göre Skorlar (LocalStorage)
-    const defaultScores = {
-      rps: 0,
-      wordle: 0,
-      xox: 0,
-      trivia: 0,
-      tavla: 0,
-      battleship: 0,
-      football: 0
-    };
-    let gameScores = JSON.parse(localStorage.getItem("hadikonus_scores") || "null") || { ...defaultScores };
-    let activeScoreFilter = "all";
-
-    const gameLabels = {
-      rps: "✊ Taş-Kağıt-Makas",
-      wordle: "🟩 Wordle",
-      xox: "❌ XOX",
-      trivia: "⚡ Hızlı Bilgi",
-      tavla: "🎲 Tavla Zar",
-      battleship: "🚢 Amiral Battı",
-      football: "⚽ Futbolcu & Takım"
+    const GAME_META = {
+      penalty: { name: "Penaltı", icon: "⚽" },
+      battleship: { name: "Amiral Battı", icon: "🚢" },
+      pop_duel: { name: "Ülke & Şehir Düellosu", icon: "🌍" },
+      flag_duel: { name: "Bayrak Düellosu", icon: "🚩" },
+      number_guess: { name: "Sayı Tahmini", icon: "🔢" },
+      reflex: { name: "Refleks Testi", icon: "⚡" },
+      memory: { name: "Hafıza Kartları", icon: "🃏" },
+      draw: { name: "Çiz & Tahmin", icon: "🎨" },
+      rps: { name: "Taş-Kağıt-Makas", icon: "✊" },
+      wordle: { name: "Wordle", icon: "🟩" },
+      xox: { name: "XOX", icon: "❌" },
+      trivia: { name: "Hızlı Bilgi", icon: "⚡" },
+      tavla: { name: "Tavla Zar", icon: "🎲" },
+      football: { name: "Futbol Bilmece", icon: "🏟️" },
+      approx: { name: "Yaklaşık", icon: "🎯" },
+      sinemojik: { name: "Sinemojik", icon: "🎬" },
+      sorduk: { name: "Sorduk", icon: "🗣️" },
+      catapult: { name: "Mancınık", icon: "🏹" }
     };
 
-    function addScore(gameKey, pts) {
-      gameScores[gameKey] = (gameScores[gameKey] || 0) + pts;
-      localStorage.setItem("hadikonus_scores", JSON.stringify(gameScores));
-      updateCurrentGameScoreBanner();
-      renderScoreboard();
-    }
-
-    function updateCurrentGameScoreBanner() {
-      const el = document.getElementById("current-game-pts");
-      if (el) el.textContent = gameScores[selectedGame] || 0;
-    }
-
-    function toggleScoreDrawer() {
-      const drawer = document.getElementById("score-drawer");
-      drawer.classList.toggle("open");
-      if (drawer.classList.contains("open")) renderScoreboard();
-    }
-
-    function filterScores(filterKey) {
-      activeScoreFilter = filterKey;
-      document.querySelectorAll(".g-chip").forEach(c => c.classList.toggle("active", c.dataset.sgame === filterKey));
-      renderScoreboard();
-    }
-
-    function renderScoreboard() {
-      const listEl = document.getElementById("scoreboard-list");
-      listEl.innerHTML = "";
-      const keys = activeScoreFilter === "all" ? Object.keys(gameLabels) : [activeScoreFilter];
-      keys.forEach(k => {
-        const row = document.createElement("div");
-        row.className = "score-row";
-        row.innerHTML = `
-          <span style="font-weight:700;">${gameLabels[k]}</span>
-          <span style="font-weight:800; color:var(--primary);">${gameScores[k] || 0} Puan</span>
-        `;
-        listEl.appendChild(row);
-      });
-    }
-
-    // GERÇEK KONUM İZNİ İSTEME (Geolocation API)
-    function selectGlobalMatch() {
-      matchPref = "global";
-      document.getElementById("pref-global").classList.add("active");
-      document.getElementById("pref-nearby").classList.remove("active");
-      document.getElementById("location-status-badge").classList.remove("show");
-      showToast("🌍 Herkesle genel eşleşme seçildi.");
-    }
-
-    function requestNearbyLocation() {
-      if (!navigator.geolocation) {
-        showToast("Tarayıcınız konum özelliğini desteklemiyor.");
-        return;
+    const SBHE_ROUNDS = [
+      {
+        letter: "A",
+        city: "Ankara",
+        plant: "Adaçayı",
+        animal: "Aslan",
+        object: "Anahtar",
+        cityOpts: ["Ankara", "Bursa", "İzmir"],
+        plantOpts: ["Lale", "Adaçayı", "Meşe"],
+        animalOpts: ["Aslan", "Kartal", "Balina"],
+        objectOpts: ["Kalem", "Anahtar", "Saat"]
+      },
+      {
+        letter: "K",
+        city: "Konya",
+        plant: "Karanfil",
+        animal: "Kaplan",
+        object: "Kalem",
+        cityOpts: ["Konya", "Mardin", "Sivas"],
+        plantOpts: ["Karanfil", "Nane", "Zambak"],
+        animalOpts: ["Martı", "Kaplan", "Tilki"],
+        objectOpts: ["Bardak", "Tarayıcı", "Kalem"]
+      },
+      {
+        letter: "M",
+        city: "Mardin",
+        plant: "Menekşe",
+        animal: "Martı",
+        object: "Masa",
+        cityOpts: ["Mardin", "Adana", "Edirne"],
+        plantOpts: ["Menekşe", "Papatya", "Fesleğen"],
+        animalOpts: ["Martı", "Kedi", "Ayı"],
+        objectOpts: ["Masa", "Tabak", "Gözlük"]
       }
-      showToast("📍 Konum izni isteniyor...");
-      navigator.geolocation.getCurrentPosition(
-        (pos) => {
-          userCoords = {
-            lat: pos.coords.latitude,
-            lon: pos.coords.longitude
-          };
-          matchPref = "nearby";
-          document.getElementById("pref-nearby").classList.add("active");
-          document.getElementById("pref-global").classList.remove("active");
-          const badge = document.getElementById("location-status-badge");
-          badge.classList.add("show");
-          document.getElementById("coords-short").textContent = `(${userCoords.lat.toFixed(2)}, ${userCoords.lon.toFixed(2)})`;
-          showToast("📍 Konum izni verildi! Yakınımdakiler modu aktif.");
-        },
-        (err) => {
-          matchPref = "global";
-          document.getElementById("pref-global").classList.add("active");
-          document.getElementById("pref-nearby").classList.remove("active");
-          document.getElementById("location-status-badge").classList.remove("show");
-          if (err.code === 1) {
-            showToast("Konum izni reddedildi. Herkesle eşleşme modunda kalındı.");
-          } else {
-            showToast("Konum alınamadı, tekrar deneyin.");
-          }
-        },
-        { enableHighAccuracy: false, timeout: 8000 }
-      );
-    }
-
-    // VERİLER
-    const allQuestions = [
-      "Hayatında en çok gurur duyduğun an hangisi?",
-      "Şu an dünyanın herhangi bir yerinde olabilsen nereyi seçerdin?",
-      "Sence bir insanda ilk dikkat çeken özellik nedir?",
-      "Gece yarısı canın en çok ne çeker?",
-      "Son zamanlarda izlediğin en iyi dizi veya film hangisi?"
     ];
 
-    const wordleWords = ["KAHVE", "DENİZ", "KİTAP", "MÜZİK", "GÜNEŞ", "BULUT", "ÇİÇEK"];
-    let targetWord = "KAHVE";
-    let wordleGuesses = [];
-
-    const triviaPool = [
-      { q: "Güneş sistemindeki en büyük gezegen hangisidir?", opts: ["Satürn", "Jüpiter", "Mars"], ans: 1 },
-      { q: "Türkiye'nin en yüksek dağı hangisidir?", opts: ["Erciyes", "Uludağ", "Ağrı Dağı"], ans: 2 },
-      { q: "Satrançta en fazla hareket kabiliyetine sahip taş hangisidir?", opts: ["Vezir", "Kale", "At"], ans: 0 },
-      { q: "Bir yılda kaç hafta vardır?", opts: ["48", "52", "54"], ans: 1 }
+    const CITY_POP_DATA = [
+      { name: "İstanbul", icon: "🌉", pop: 15650000, region: "Marmara" },
+      { name: "Ankara", icon: "🏛️", pop: 5800000, region: "İç Anadolu" },
+      { name: "İzmir", icon: "🌊", pop: 4480000, region: "Ege" },
+      { name: "Bursa", icon: "🏔️", pop: 3210000, region: "Marmara" },
+      { name: "Antalya", icon: "☀️", pop: 2690000, region: "Akdeniz" },
+      { name: "Adana", icon: "🌶️", pop: 2270000, region: "Akdeniz" },
+      { name: "Konya", icon: "🌾", pop: 2300000, region: "İç Anadolu" },
+      { name: "Gaziantep", icon: "🥜", pop: 2160000, region: "Güneydoğu" }
     ];
 
-    const footballPool = [
-      { q: "7 Ballon d'Or/Altın Top kazanan ve 2022 Dünya Kupası'nı kaldıran efsane kimdir?", opts: ["Cristiano Ronaldo", "Lionel Messi", "Luka Modrić"], ans: 1 },
-      { q: "Şampiyonlar Ligi tarihinde en çok şampiyonluk yaşayan kulüp hangisidir?", opts: ["Real Madrid", "AC Milan", "Bayern Münih"], ans: 0 },
-      { q: "'Çubuklu' formasıyla bilinen ve Kadıköy'de oynayan kulüp hangisidir?", opts: ["Beşiktaş", "Galatasaray", "Fenerbahçe"], ans: 2 },
-      { q: "2002 Dünya Kupası'nda Türkiye'ye 3.'lüğü getiren altın golü atan futbolcu kimdir?", opts: ["İlhan Mansız", "Hakan Şükür", "Hasan Şaş"], ans: 0 }
+    const COUNTRY_POP_DATA = [
+      { name: "Türkiye", flag: "🇹🇷", pop: 85370000, region: "Avrasya" },
+      { name: "Almanya", flag: "🇩🇪", pop: 84400000, region: "Avrupa" },
+      { name: "Fransa", flag: "🇫🇷", pop: 68100000, region: "Avrupa" },
+      { name: "İngiltere", flag: "🇬🇧", pop: 67700000, region: "Avrupa" },
+      { name: "İtalya", flag: "🇮🇹", pop: 58850000, region: "Avrupa" },
+      { name: "Japonya", flag: "🇯🇵", pop: 124500000, region: "Asya" },
+      { name: "Brezilya", flag: "🇧🇷", pop: 203000000, region: "Güney Amerika" },
+      { name: "Kanada", flag: "🇨🇦", pop: 40700000, region: "Kuzey Amerika" }
     ];
 
-    const adjectives = ["Hızlı", "Uykulu", "Kurnaz", "Neşeli", "Gizemli", "Cesur", "Sakin", "Dombili", "Gezgin", "Meraklı"];
-    const animals = [
-      { name: "Baykuş", emoji: "🦉" }, { name: "Su Samuru", emoji: "🦦" },
-      { name: "Tilki", emoji: "🦊" }, { name: "Panda", emoji: "🐼" },
-      { name: "Kedi", emoji: "🐱" }, { name: "Penguen", emoji: "🐧" },
-      { name: "Koala", emoji: "🐨" }, { name: "Kirpi", emoji: "🦔" },
-      { name: "Kurt", emoji: "🐺" }, { name: "Aslan", emoji: "🦁" },
-      { name: "Yunus", emoji: "🐬" }, { name: "Ejderha", emoji: "🐉" }
+    const FLAG_DUEL_DATA = [
+      { country: "Türkiye", flag: "🇹🇷", hint: "Ay ve yıldız" },
+      { country: "Japonya", flag: "🇯🇵", hint: "Beyaz zemin üzerinde kırmızı daire" },
+      { country: "Brezilya", flag: "🇧🇷", hint: "Yeşil zemin, sarı eşkenar dörtgen ve mavi küre" },
+      { country: "Almanya", flag: "🇩🇪", hint: "Siyah, kırmızı ve altın sarısı yatay şeritler" },
+      { country: "Fransa", flag: "🇫🇷", hint: "Mavi, beyaz ve kırmızı dikey şeritler" },
+      { country: "İtalya", flag: "🇮🇹", hint: "Yeşil, beyaz ve kırmızı dikey şeritler" },
+      { country: "Kanada", flag: "🇨🇦", hint: "Ortada kırmızı akçaağaç yaprağı" },
+      { country: "İngiltere", flag: "🇬🇧", hint: "Aziz George haçı" }
     ];
 
-    // Profil UI
-    function renderUserProfile() {
-      document.getElementById("nickname-text").textContent = currentUser.name;
-      document.getElementById("avatar-emoji").textContent = currentUser.emoji;
-      document.getElementById("user-tag-id").textContent = userTagId;
-      localStorage.setItem("hadikonus_profile", JSON.stringify(currentUser));
-    }
+    const MEMORY_EMOJIS = ["⚽", "🚢", "🌍", "🏙️", "⚡", "🎨"];
+    const DRAW_PROMPTS = [
+      { word: "Kedi", options: ["Kedi", "Güneş", "Pizza", "Roket"] },
+      { word: "Güneş", options: ["Ağaç", "Güneş", "Araba", "Balık"] },
+      { word: "Roket", options: ["Ev", "Kupa", "Roket", "Elma"] }
+    ];
 
-    function copyMyId() {
-      const fullTag = `${currentUser.name} ${userTagId}`;
-      navigator.clipboard?.writeText(fullTag);
-      showToast(`Kimliğin kopyalandı: ${fullTag}`);
-    }
-
-    function openNicknameModal() {
-      tempSelectedEmoji = currentUser.emoji;
-      document.getElementById("custom-username-input").value = currentUser.name;
-      const grid = document.getElementById("emoji-picker-grid");
-      grid.innerHTML = "";
-      animals.forEach(a => {
-        const btn = document.createElement("div");
-        btn.className = `emoji-opt ${a.emoji === tempSelectedEmoji ? 'selected' : ''}`;
-        btn.textContent = a.emoji;
-        btn.onclick = () => {
-          tempSelectedEmoji = a.emoji;
-          document.querySelectorAll('.emoji-opt').forEach(el => el.classList.remove('selected'));
-          btn.classList.add('selected');
-        };
-        grid.appendChild(btn);
-      });
-      document.getElementById("nickname-modal").classList.add("open");
-    }
-
-    function closeNicknameModal() {
-      document.getElementById("nickname-modal").classList.remove("open");
-    }
-
-    function fillRandomInModal() {
-      const adj = adjectives[Math.floor(Math.random() * adjectives.length)];
-      const ani = animals[Math.floor(Math.random() * animals.length)];
-      document.getElementById("custom-username-input").value = `${adj} ${ani.name}`;
-      tempSelectedEmoji = ani.emoji;
-      document.querySelectorAll('.emoji-opt').forEach(el => {
-        el.classList.toggle('selected', el.textContent === tempSelectedEmoji);
-      });
-    }
-
-    function saveCustomUsername() {
-      const val = document.getElementById("custom-username-input").value.trim();
-      if (!val) {
-        showToast("Lütfen bir kullanıcı adı yazın!");
-        return;
+    function createShuffledMemoryDeck() {
+      const deck = [...MEMORY_EMOJIS, ...MEMORY_EMOJIS].map((emoji, id) => ({ id, emoji }));
+      for (let i = deck.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [deck[i], deck[j]] = [deck[j], deck[i]];
       }
-      currentUser = { name: val, emoji: tempSelectedEmoji };
-      renderUserProfile();
-      closeNicknameModal();
-      showToast(`Kullanıcı adın "${val}" olarak güncellendi!`);
-    }
-
-    document.getElementById("reroll-btn").addEventListener("click", () => {
-      const adj = adjectives[Math.floor(Math.random() * adjectives.length)];
-      const ani = animals[Math.floor(Math.random() * animals.length)];
-      currentUser = { name: `${adj} ${ani.name}`, emoji: ani.emoji };
-      renderUserProfile();
-    });
-
-    function setOnlineCount(count) {
-      onlineCount = count;
-      document.getElementById("online-status").textContent = `${onlineCount} çevrimiçi`;
-    }
-
-    function switchView(viewId) {
-      document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
-      document.getElementById(viewId).classList.add('active');
-      if (viewId === 'view-friends') renderFriendsList();
+      return deck;
     }
 
     function showToast(msg) {
-      const t = document.getElementById('toast');
-      t.textContent = msg;
-      t.classList.add('show');
-      setTimeout(() => t.classList.remove('show'), 2600);
+      const toast = document.getElementById("toast");
+      if (!toast) return;
+      toast.textContent = msg;
+      toast.classList.add("show");
+      clearTimeout(toast._hideTimer);
+      toast._hideTimer = setTimeout(() => toast.classList.remove("show"), 2200);
     }
 
-    function selectGame(gameKey) {
-      selectedGame = gameKey;
-      document.querySelectorAll('.game-card.playable').forEach(c => {
-        c.classList.toggle('selected-game', c.dataset.game === gameKey);
-      });
-      updateCurrentGameScoreBanner();
-      showToast(`Seçili oyun: ${gameLabels[gameKey] || gameKey}`);
+    function switchView(viewId) {
+      document.querySelectorAll(".view").forEach((el) => el.classList.remove("active"));
+      const target = document.getElementById(viewId);
+      if (target) target.classList.add("active");
     }
 
-    function startMatchmaking(mode) {
-      matchMode = mode;
-      const titleEl = document.getElementById("matching-header-title");
-      const statusTitle = document.getElementById("matching-status-title");
-      const statusDesc = document.getElementById("matching-status-desc");
-
-      const locTag = matchPref === "nearby" ? " · 📍 Yakınımda" : "";
-      if (mode === "direct") {
-        titleEl.textContent = `Direkt Eşleşme${locTag}`;
-      } else {
-        titleEl.textContent = `${gameLabels[selectedGame] || "Oyun"}${locTag}`;
-      }
-
-      if (onlineCount <= 1) {
-        statusTitle.textContent = "Rakip bekleniyor...";
-        statusDesc.textContent = `Şu an sunucuda ${onlineCount} çevrimiçi kullanıcı (sen) görünüyorsun${locTag}. Başka biri bağlandığında otomatik eşleşeceksin.`;
-      } else {
-        statusTitle.textContent = "Uygun kullanıcı aranıyor...";
-        statusDesc.textContent = `Şu an ${onlineCount} kişi çevrimiçi${locTag}. Eşleşme sağlanıyor...`;
-      }
-
-      switchView('view-matching');
+    function updateProfileUI() {
+      const avEl = document.getElementById("avatar-emoji");
+      const nameEl = document.getElementById("nickname-text");
+      const tagEl = document.getElementById("user-tag-id");
+      const myAv = document.getElementById("game-my-avatar");
+      const myName = document.getElementById("game-my-name");
+      if (avEl) avEl.textContent = state.profile.avatar;
+      if (nameEl) nameEl.textContent = state.profile.name;
+      if (tagEl) tagEl.textContent = state.profile.tag;
+      if (myAv) myAv.textContent = state.profile.avatar;
+      if (myName) myName.textContent = state.profile.name;
     }
 
-    function cancelMatchmaking() {
-      switchView('view-lobby');
-    }
-
-    function previewScreenWithoutOpponent() {
-      currentOpponent = {
-        name: "Skor Modu",
-        emoji: "🏆",
-        isFavorite: false,
-        isFriend: false
-      };
-
-      if (matchMode === 'direct') {
-        selectedQuestionCards = [];
-        enterChatRoom(false);
-      } else {
-        setupGameArena();
-        switchView('view-game');
-      }
-    }
-
-    // 7 OYUN ALANI KURULUMU
-    function setupGameArena() {
-      document.getElementById("my-game-avatar").textContent = currentUser.emoji;
-      document.getElementById("my-game-name").textContent = currentUser.name;
-      document.getElementById("opp-game-avatar").textContent = currentOpponent ? currentOpponent.emoji : "🏆";
-      document.getElementById("opp-game-name").textContent = currentOpponent ? currentOpponent.name : "Skor Modu";
-      updateCurrentGameScoreBanner();
-
-      const arenas = ["arena-rps", "arena-wordle", "arena-xox", "arena-trivia", "arena-tavla", "arena-battleship", "arena-football"];
-      arenas.forEach(id => document.getElementById(id).style.display = "none");
-
-      document.getElementById("active-game-header").textContent = gameLabels[selectedGame] || "Oyun";
-
-      if (selectedGame === 'wordle') {
-        document.getElementById("arena-wordle").style.display = "flex";
-        initWordle();
-      } else if (selectedGame === 'xox') {
-        document.getElementById("arena-xox").style.display = "flex";
-        initXOX();
-      } else if (selectedGame === 'trivia') {
-        document.getElementById("arena-trivia").style.display = "flex";
-        initTrivia();
-      } else if (selectedGame === 'tavla') {
-        document.getElementById("arena-tavla").style.display = "flex";
-      } else if (selectedGame === 'battleship') {
-        document.getElementById("arena-battleship").style.display = "flex";
-        initBattleship();
-      } else if (selectedGame === 'football') {
-        document.getElementById("arena-football").style.display = "flex";
-        initFootball();
-      } else {
-        document.getElementById("arena-rps").style.display = "flex";
-        document.getElementById("rps-result-display").textContent = "🤜 🤛";
-        document.getElementById("rps-status-text").textContent = "Kazanınca +10 skor kazanırsın; istersen sağ üstten sohbete geçebilirsin.";
-      }
-    }
-
-    // 1. Taş-Kağıt-Makas
-    function playRPS(userChoice) {
-      const choices = ['tas', 'kagit', 'makas'];
-      const icons = { tas: '✊', kagit: '✋', makas: '✌️' };
-      const oppChoice = choices[Math.floor(Math.random() * choices.length)];
-      document.getElementById("rps-result-display").textContent = `${icons[userChoice]}  vs  ${icons[oppChoice]}`;
-
-      if (userChoice === oppChoice) {
-        document.getElementById("rps-status-text").textContent = "Berabere! Tekrar hamle seç.";
-        return;
-      }
-
-      const userWins = (userChoice === 'tas' && oppChoice === 'makas') ||
-                       (userChoice === 'kagit' && oppChoice === 'tas') ||
-                       (userChoice === 'makas' && oppChoice === 'kagit');
-
-      if (userWins) {
-        addScore("rps", 10);
-        document.getElementById("rps-status-text").textContent = "🎉 Kazandın! +10 Skor eklendi. İstersen sohbete geçebilir veya oynamaya devam edebilirsin.";
-      } else {
-        document.getElementById("rps-status-text").textContent = "Bu eli kaybettin! Tekrar deneyebilirsin.";
-      }
-    }
-
-    // 2. Wordle
-    function initWordle() {
-      targetWord = wordleWords[Math.floor(Math.random() * wordleWords.length)];
-      wordleGuesses = [];
-      const grid = document.getElementById("wordle-grid");
-      grid.innerHTML = "";
-      for (let r = 0; r < 5; r++) {
-        const row = document.createElement("div");
-        row.className = "wordle-row";
-        for (let c = 0; c < 5; c++) {
-          const cell = document.createElement("div");
-          cell.className = "wordle-cell";
-          cell.id = `w-cell-${r}-${c}`;
-          row.appendChild(cell);
-        }
-        grid.appendChild(row);
-      }
-      document.getElementById("wordle-input").value = "";
-    }
-
-    function submitWordleGuess() {
-      const inputEl = document.getElementById("wordle-input");
-      const guess = inputEl.value.trim().toLocaleUpperCase('tr-TR');
-      if (guess.length !== 5) {
-        showToast("Lütfen 5 harfli bir kelime girin!");
-        return;
-      }
-      const rowIdx = wordleGuesses.length;
-      if (rowIdx >= 5) return;
-
-      wordleGuesses.push(guess);
-      for (let i = 0; i < 5; i++) {
-        const cell = document.getElementById(`w-cell-${rowIdx}-${i}`);
-        cell.textContent = guess[i];
-        if (guess[i] === targetWord[i]) cell.classList.add("correct");
-        else if (targetWord.includes(guess[i])) cell.classList.add("present");
-        else cell.classList.add("absent");
-      }
-      inputEl.value = "";
-
-      if (guess === targetWord) {
-        addScore("wordle", 25);
-        showToast("🎉 Doğru kelime! +25 Skor eklendi.");
-      } else if (wordleGuesses.length === 5) {
-        showToast(`Kelime: ${targetWord} idi!`);
-      }
-    }
-
-    // 3. XOX
-    let xoxCells = Array(9).fill("");
-    function initXOX() {
-      xoxCells = Array(9).fill("");
-      document.getElementById("xox-status").textContent = "Sen (X) başlıyorsun!";
-      const board = document.getElementById("xox-board");
-      board.innerHTML = "";
-      for (let i = 0; i < 9; i++) {
-        const cell = document.createElement("div");
-        cell.className = "xox-cell";
-        cell.onclick = () => makeXOXMove(i);
-        board.appendChild(cell);
-      }
-    }
-
-    function makeXOXMove(idx) {
-      if (xoxCells[idx] !== "") return;
-      xoxCells[idx] = "X";
-      renderXOX();
-      if (checkXOXWin("X")) {
-        addScore("xox", 15);
-        document.getElementById("xox-status").textContent = "🎉 Kazandın! +15 Skor eklendi.";
-        return;
-      }
-      const empty = xoxCells.map((v, i) => v === "" ? i : null).filter(v => v !== null);
-      if (empty.length === 0) {
-        document.getElementById("xox-status").textContent = "Berabere! Tahtayı sıfırla.";
-        return;
-      }
-      const oppMove = empty[Math.floor(Math.random() * empty.length)];
-      xoxCells[oppMove] = "O";
-      renderXOX();
-      if (checkXOXWin("O")) {
-        document.getElementById("xox-status").textContent = "Rakip kazandı! Tekrar deneyebilirsin.";
-      }
-    }
-
-    function renderXOX() {
-      const cells = document.getElementById("xox-board").children;
-      xoxCells.forEach((val, i) => {
-        cells[i].textContent = val;
-        cells[i].className = `xox-cell ${val === 'X' ? 'x-mark' : (val === 'O' ? 'o-mark' : '')}`;
-      });
-    }
-
-    function checkXOXWin(p) {
-      const wins = [[0,1,2],[3,4,5],[6,7,8],[0,3,6],[1,4,7],[2,5,8],[0,4,8],[2,4,6]];
-      return wins.some(line => line.every(idx => xoxCells[idx] === p));
-    }
-
-    // 4. Hızlı Bilgi
-    let currentTrivia = null;
-    function initTrivia() {
-      currentTrivia = triviaPool[Math.floor(Math.random() * triviaPool.length)];
-      document.getElementById("trivia-question").textContent = currentTrivia.q;
-      document.getElementById("trivia-feedback").textContent = "Doğru cevabı seç!";
-      const box = document.getElementById("trivia-options");
-      box.innerHTML = "";
-      currentTrivia.opts.forEach((opt, i) => {
-        const btn = document.createElement("button");
-        btn.className = "trivia-btn";
-        btn.textContent = opt;
-        btn.onclick = () => {
-          if (i === currentTrivia.ans) {
-            addScore("trivia", 15);
-            btn.style.background = "#DCFCE7";
-            btn.style.borderColor = "#22C55E";
-            document.getElementById("trivia-feedback").textContent = "🎉 Doğru! +15 Skor eklendi.";
-          } else {
-            btn.style.background = "#FEE2E2";
-            btn.style.borderColor = "#EF4444";
-            document.getElementById("trivia-feedback").textContent = "Yanlış cevap, tekrar dene!";
-          }
-        };
-        box.appendChild(btn);
-      });
-    }
-
-    // 5. Tavla Zar Atma
-    const diceFaces = ["⚀", "⚁", "⚂", "⚃", "⚄", "⚅"];
-    function rollTavlaDice() {
-      const d1 = Math.floor(Math.random() * 6) + 1;
-      const d2 = Math.floor(Math.random() * 6) + 1;
-      const oppSum = Math.floor(Math.random() * 10) + 2;
-      const mySum = d1 + d2;
-
-      document.getElementById("dice-1").textContent = diceFaces[d1 - 1];
-      document.getElementById("dice-2").textContent = diceFaces[d2 - 1];
-
-      if (mySum >= oppSum) {
-        addScore("tavla", mySum);
-        document.getElementById("tavla-status").textContent = `🎉 Zarın: ${mySum} (Rakip: ${oppSum}) → +${mySum} Skor!`;
-      } else {
-        document.getElementById("tavla-status").textContent = `Zarın: ${mySum} (Rakip: ${oppSum}) → Bu el rakipte.`;
-      }
-    }
-
-    // 6. Amiral Battı
-    let shipPositions = [];
-    let foundShips = 0;
-    function initBattleship() {
-      foundShips = 0;
-      shipPositions = [];
-      while (shipPositions.length < 3) {
-        const r = Math.floor(Math.random() * 16);
-        if (!shipPositions.includes(r)) shipPositions.push(r);
-      }
-      document.getElementById("ship-status").textContent = "3 gizli gemiyi vur (0/3)";
-      const grid = document.getElementById("ship-grid");
-      grid.innerHTML = "";
-      for (let i = 0; i < 16; i++) {
-        const cell = document.createElement("div");
-        cell.className = "ship-cell";
-        cell.textContent = "🌊";
-        cell.onclick = () => {
-          if (cell.classList.contains("hit") || cell.classList.contains("miss")) return;
-          if (shipPositions.includes(i)) {
-            cell.classList.add("hit");
-            cell.textContent = "💥";
-            foundShips++;
-            addScore("battleship", 15);
-            document.getElementById("ship-status").textContent = `Gemi vuruldu! (${foundShips}/3)`;
-            if (foundShips === 3) {
-              showToast("🚢 Tüm gemiler batırıldı! Bonus +15 Skor.");
-              addScore("battleship", 15);
-            }
-          } else {
-            cell.classList.add("miss");
-            cell.textContent = "💨";
-          }
-        };
-        grid.appendChild(cell);
-      }
-    }
-
-    // 7. Futbolcu & Takım Bilmece
-    let currentFootball = null;
-    function initFootball() {
-      currentFootball = footballPool[Math.floor(Math.random() * footballPool.length)];
-      document.getElementById("football-question").textContent = currentFootball.q;
-      document.getElementById("football-feedback").textContent = "Doğru futbolcu veya takımı seç!";
-      const box = document.getElementById("football-options");
-      box.innerHTML = "";
-      currentFootball.opts.forEach((opt, i) => {
-        const btn = document.createElement("button");
-        btn.className = "trivia-btn";
-        btn.textContent = opt;
-        btn.onclick = () => {
-          if (i === currentFootball.ans) {
-            addScore("football", 20);
-            btn.style.background = "#DCFCE7";
-            btn.style.borderColor = "#22C55E";
-            document.getElementById("football-feedback").textContent = "⚽ Gol! +20 Skor eklendi.";
-          } else {
-            btn.style.background = "#FEE2E2";
-            btn.style.borderColor = "#EF4444";
-            document.getElementById("football-feedback").textContent = "Direkten döndü, tekrar dene!";
-          }
-        };
-        box.appendChild(btn);
-      });
-    }
-
-    // Soru Kartları & Sohbet
-    function openQuestionCards() {
-      selectedQuestionCards = [];
-      const container = document.getElementById("question-cards-list");
-      container.innerHTML = "";
-      allQuestions.forEach((q) => {
-        const div = document.createElement("div");
-        div.className = "q-card-item";
-        div.textContent = q;
-        div.onclick = () => toggleQuestionCard(div, q);
-        container.appendChild(div);
-      });
-      updateCardConfirmBtn();
-      switchView('view-cards');
-    }
-
-    function toggleQuestionCard(el, questionText) {
-      if (selectedQuestionCards.includes(questionText)) {
-        selectedQuestionCards = selectedQuestionCards.filter(item => item !== questionText);
-        el.classList.remove("selected");
-      } else {
-        if (selectedQuestionCards.length >= 2) {
-          showToast("En fazla 2 soru kartı seçebilirsin!");
-          return;
-        }
-        selectedQuestionCards.push(questionText);
-        el.classList.add("selected");
-      }
-      updateCardConfirmBtn();
-    }
-
-    function updateCardConfirmBtn() {
-      const btn = document.getElementById("btn-confirm-cards");
-      btn.textContent = `Seçilen Sorularla Sohbete Gir (${selectedQuestionCards.length}/2)`;
-      btn.disabled = selectedQuestionCards.length === 0;
-      btn.style.opacity = selectedQuestionCards.length === 0 ? "0.5" : "1";
-    }
-
-    function enterChatRoom(withCards) {
-      const opp = currentOpponent || { name: "Kullanıcı", emoji: "👤", isFavorite: false, isFriend: false };
-      document.getElementById("chat-opp-avatar").textContent = opp.emoji;
-      document.getElementById("chat-opp-name").textContent = opp.name;
-      document.getElementById("chat-mode-badge").textContent = withCards ? "Oyun Sonrası Sohbet" : "Direkt Sohbet";
-      updateChatUserButtons();
-
-      const msgBox = document.getElementById("chat-messages");
-      msgBox.innerHTML = "";
-
-      addSystemMessage(withCards
-        ? "Seçilen soru kartlarıyla sohbet odası açıldı."
-        : "Oyunsuz direkt sohbet odasına bağlanıldı.");
-
-      if (withCards && selectedQuestionCards.length > 0) {
-        addSystemMessage(`📌 Seçilen Soru Kartları:
-1) ${selectedQuestionCards[0]}
-${selectedQuestionCards[1] ? '2) ' + selectedQuestionCards[1] : ''}`);
-      }
-
-      switchView('view-chat');
-    }
-
-    function addSystemMessage(text) {
-      const msgBox = document.getElementById("chat-messages");
-      const div = document.createElement("div");
-      div.className = "msg-system";
-      div.style.whiteSpace = "pre-line";
-      div.textContent = text;
-      msgBox.appendChild(div);
-      msgBox.scrollTop = msgBox.scrollHeight;
-    }
-
-    function addChatMessage(text, sender) {
-      const msgBox = document.getElementById("chat-messages");
-      const div = document.createElement("div");
-      div.className = `msg-bubble ${sender === 'me' ? 'msg-me' : 'msg-other'}`;
-      div.textContent = text;
-      msgBox.appendChild(div);
-      msgBox.scrollTop = msgBox.scrollHeight;
-    }
-
-    function useIcebreaker(text) {
-      document.getElementById("chat-input").value = text;
-      sendChatMessage();
-    }
-
-    function sendChatMessage() {
-      const input = document.getElementById("chat-input");
-      const text = input.value.trim();
-      if (!text) return;
-      addChatMessage(text, 'me');
-      input.value = "";
-    }
-
-    // Arkadaşlar & Favoriler
-    function saveFriends() {
-      localStorage.setItem("hadikonus_friends", JSON.stringify(friendsList));
-      updateFriendsBadge();
-    }
-
-    function updateChatUserButtons() {
-      if (!currentOpponent) return;
-      const favBtn = document.getElementById("btn-fav-user");
-      const addBtn = document.getElementById("btn-add-friend-chat");
-
-      favBtn.className = `icon-action-btn ${currentOpponent.isFavorite ? 'fav-active' : ''}`;
-      favBtn.textContent = currentOpponent.isFavorite ? "⭐ Favoride" : "⭐ Favori";
-
-      addBtn.className = `icon-action-btn ${currentOpponent.isFriend ? 'friend-added' : ''}`;
-      addBtn.textContent = currentOpponent.isFriend ? "✓ Eklendi" : "➕ Ekle";
-    }
-
-    function toggleFavoriteCurrent() {
-      if (!currentOpponent) return;
-      currentOpponent.isFavorite = !currentOpponent.isFavorite;
-      if (currentOpponent.isFavorite && !currentOpponent.isFriend) {
-        addCurrentToFriends(true);
-      } else {
-        const existing = friendsList.find(f => f.name === currentOpponent.name);
-        if (existing) existing.isFavorite = currentOpponent.isFavorite;
-        saveFriends();
-      }
-      updateChatUserButtons();
-      showToast(currentOpponent.isFavorite ? "Favorilere eklendi." : "Favorilerden çıkarıldı.");
-    }
-
-    function addCurrentToFriends(silent = false) {
-      if (!currentOpponent || currentOpponent.isFriend) return;
-      currentOpponent.isFriend = true;
-      friendsList.unshift({
-        id: Date.now(),
-        name: currentOpponent.name,
-        emoji: currentOpponent.emoji,
-        isFavorite: currentOpponent.isFavorite
-      });
-      saveFriends();
-      updateChatUserButtons();
-      if (!silent) showToast(`${currentOpponent.name} arkadaş listene eklendi.`);
+    function rerollIdentity() {
+      const adj = ADJECTIVES[Math.floor(Math.random() * ADJECTIVES.length)];
+      const noun = NOUNS[Math.floor(Math.random() * NOUNS.length)];
+      const av = AVATARS[Math.floor(Math.random() * AVATARS.length)];
+      const num = Math.floor(1000 + Math.random() * 9000);
+      state.profile = { name: `${adj} ${noun}`, avatar: av, tag: `#${num}` };
+      updateProfileUI();
+      showToast(`Yeni kimlik: ${state.profile.avatar} ${state.profile.name}`);
     }
 
     function updateFriendsBadge() {
       const badge = document.getElementById("friends-count-badge");
-      if (friendsList.length > 0) {
-        badge.style.display = "inline-block";
-        badge.textContent = friendsList.length;
-      } else {
-        badge.style.display = "none";
+      if (!badge) return;
+      badge.textContent = String(state.friends.length);
+      badge.style.display = state.friends.length > 0 ? "inline-block" : "none";
+    }
+
+    function recordGameScore(gameKey, points, note) {
+      const pts = Number(points) || 0;
+      state.scores.unshift({
+        game: gameKey,
+        points: pts,
+        note: note || "",
+        player: state.profile.name,
+        time: new Date().toLocaleTimeString("tr-TR", { hour: "2-digit", minute: "2-digit" })
+      });
+      state.scores = state.scores.slice(0, 40);
+      updateLiveScoreUI(gameKey, pts, note);
+      renderScoreboard();
+    }
+
+    function updateLiveScoreUI(gameKey, lastPoints, lastNote) {
+      const totalPts = state.scores.reduce((acc, s) => acc + (Number(s.points) || 0), 0);
+      const gamePts = state.scores
+        .filter((s) => s.game === gameKey)
+        .reduce((acc, s) => acc + (Number(s.points) || 0), 0);
+      const strip = document.getElementById("live-score-strip");
+      const detail = document.getElementById("live-score-detail");
+      const meta = GAME_META[gameKey] || { icon: "🎮", name: "Oyun" };
+      if (strip) {
+        strip.firstElementChild.innerHTML = `📊 Güncel Skor: <strong>${gamePts}p</strong> <span style="opacity:0.75;">(Toplam ${totalPts}p)</span>`;
       }
+      if (detail) {
+        detail.textContent = lastPoints ? `${meta.icon} +${lastPoints}p • ${lastNote}` : "Henüz puan alınmadı";
+      }
+    }
+
+    function renderScoreboard() {
+      const listEl = document.getElementById("scoreboard-list");
+      if (!listEl) return;
+      const filtered = state.activeScoreFilter === "all"
+        ? state.scores
+        : state.scores.filter((item) => item.game === state.activeScoreFilter);
+
+      if (!filtered.length) {
+        listEl.innerHTML = `<div class="score-row"><span>Henüz güncel skor yok. Bir oyun oyna!</span><span>0p</span></div>`;
+        return;
+      }
+
+      const totalFiltered = filtered.reduce((acc, item) => acc + (Number(item.points) || 0), 0);
+      const summaryRow = `
+        <div class="score-row" style="background:var(--primary-light); color:var(--primary);">
+          <span><strong>Güncel Toplam Skor</strong> (${filtered.length} kayıt)</span>
+          <strong>${totalFiltered}p</strong>
+        </div>
+      `;
+
+      listEl.innerHTML = summaryRow + filtered.slice(0, 12).map((item) => {
+        const meta = GAME_META[item.game] || { icon: "🎮", name: item.game };
+        return `
+          <div class="score-row">
+            <span>${meta.icon} <strong>${meta.name}</strong> • ${item.note} <span style="opacity:0.65;">(${item.time})</span></span>
+            <strong>+${item.points}p</strong>
+          </div>
+        `;
+      }).join("");
+    }
+
+    function selectGame(gameKey) {
+      if (!GAME_META[gameKey]) return;
+      state.selectedGame = gameKey;
+      document.querySelectorAll("[data-game]").forEach((card) => {
+        card.classList.toggle("selected-game", card.getAttribute("data-game") === gameKey);
+      });
+      resetGameState(gameKey);
+      renderActiveGame();
+      switchView("view-game");
+    }
+
+    function openGameInChat() {
+      switchView("view-chat");
+    }
+
+    function toggleScoreDrawer() {
+      const drawer = document.getElementById("score-drawer");
+      if (drawer) drawer.classList.toggle("open");
+    }
+
+    function filterScores(gameFilter) {
+      state.activeScoreFilter = gameFilter || "all";
+      document.querySelectorAll("#score-game-chips .g-chip").forEach((btn) => {
+        btn.classList.toggle("active", btn.getAttribute("data-sgame") === state.activeScoreFilter);
+      });
+      renderScoreboard();
+    }
+
+    const state = {
+      profile: {
+        name: "Hızlı Baykuş",
+        avatar: "🦉",
+        tag: "#4821"
+      },
+      matchPref: "global", // "global" | "nearby"
+      location: null,
+      matchType: "game", // "game" | "direct"
+      selectedGame: "penalty",
+      matchTimer: null,
+      currentPartner: null,
+      friends: [],
+      favorites: [],
+      scores: [],
+      activeScoreFilter: "all",
+      chatHistory: [],
+      replyingTo: null,
+      tempSelectedEmoji: "🦉",
+
+      // Oyun durumları
+      wordle: { target: "KALEM", guesses: [], won: false, over: false },
+      xox: { board: Array(9).fill(null), over: false },
+      trivia: { index: 0, score: 0, finished: false },
+      football: { index: 0, score: 0, finished: false },
+      battleship: {
+        passAndPlay: false,
+        activePlayer: 0, // 0: Sen / Oyuncu 1, 1: Rakip / Oyuncu 2
+        boards: [
+          Array.from({ length: 12 }, () => ({ hasShip: false, fired: false })),
+          Array.from({ length: 12 }, () => ({ hasShip: false, fired: false }))
+        ],
+        hits: [0, 0], // [Oyuncu 0'ın rakibe verdiği hasar, Oyuncu 1'in rakibe verdiği hasar]
+        shots: [0, 0],
+        over: false,
+        statusMsg: "Sıra sende! Rakip denizdeki 3 gemiyi vur."
+      },
+      penalty: {
+        passAndPlay: false,
+        role: "shooter",
+        activePlayer: 0,
+        selectedZone: null,
+        myGoals: 0,
+        oppGoals: 0,
+        myShots: 0,
+        oppShots: 0,
+        maxShotsPerSide: 3,
+        busy: false,
+        finished: false,
+        lastMsg: "Karşılıklı penaltı düellosu başladı! Sıra sende."
+      },
+      popDuel: {
+        passAndPlay: false,
+        activePlayer: 0,
+        category: "country", // "country" | "city"
+        round: 0,
+        maxRounds: 5,
+        scores: [0, 0],
+        pair: [null, null],
+        revealed: false,
+        finished: false,
+        feedback: "Nüfusu daha yüksek olanı seç!"
+      },
+      flagDuel: {
+        passAndPlay: false,
+        activePlayer: 0,
+        round: 0,
+        maxRounds: 5,
+        scores: [0, 0],
+        target: null,
+        options: [],
+        revealed: false,
+        finished: false,
+        feedback: "Bayrağın hangi ülkeye ait olduğunu bil!"
+      },
+      numberGuess: {
+        secret: 50,
+        min: 1,
+        max: 100,
+        attempts: 0,
+        maxAttempts: 7,
+        won: false,
+        over: false,
+        feedback: "1 ile 100 arasında gizli sayıyı bul!"
+      },
+      reflex: {
+        phase: "idle", // "idle" | "waiting" | "go" | "done"
+        startTime: 0,
+        lastMs: null,
+        bestMs: null,
+        round: 0,
+        timer: null
+      },
+      memory: {
+        cards: [],
+        flipped: [],
+        matched: [],
+        moves: 0,
+        locked: false,
+        completed: false
+      },
+      draw: {
+        round: 0,
+        maxRounds: DRAW_PROMPTS.length,
+        score: 0,
+        targetWord: "Kedi",
+        options: ["Kedi", "Güneş", "Pizza", "Roket"],
+        drawing: false,
+        hasDrawn: false,
+        finished: false,
+        feedback: "Yukarıdaki kelimeyi tuvale çiz ve tahminini seç!"
+      },
+      approx: {
+        index: 0,
+        score: 0,
+        finished: false,
+        feedback: "En yakın tahmini yap ve puan kap!"
+      },
+      sinemojik: {
+        index: 0,
+        score: 0,
+        finished: false,
+        feedback: "Emojilerden hangi film olduğunu bul!"
+      },
+      sorduk: {
+        index: 0,
+        score: 0,
+        finished: false,
+        feedback: "100 kişiye sorduk: en popüler yanıt hangisi?"
+      },
+      catapult: {
+        angle: 45,
+        power: 65,
+        targetDist: 65,
+        shots: 0,
+        score: 0,
+        won: false,
+        feedback: "Açı ve gücü ayarla, hedef kaleyi vur!"
+      }
+    };
+
+    // =========================================================================
+    // 7. MİNİ OYUNLAR (KARŞILIKLI PENALTI, KARŞILIKLI AMİRAL BATTI, ÜLKE & ŞEHİR NÜFUSU DÜELLOSU + DİĞERLERİ)
+    // =========================================================================
+    function formatPopulation(num) {
+      return Number(num || 0).toLocaleString("tr-TR");
+    }
+
+    function pickDistinctPair(list, previousPair = []) {
+      const prevNames = new Set((previousPair || []).filter(Boolean).map((x) => x.name));
+      const pool = list.filter((item) => !prevNames.has(item.name));
+      const source = pool.length >= 2 ? pool : list;
+      const idxA = Math.floor(Math.random() * source.length);
+      let idxB = Math.floor(Math.random() * (source.length - 1));
+      if (idxB >= idxA) idxB += 1;
+      return [source[idxA], source[idxB]];
+    }
+
+    function createShipsBoard() {
+      const cells = Array.from({ length: 12 }, () => ({ hasShip: false, fired: false }));
+      const indices = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11];
+      for (let i = indices.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [indices[i], indices[j]] = [indices[j], indices[i]];
+      }
+      indices.slice(0, 3).forEach((pos) => {
+        cells[pos].hasShip = true;
+      });
+      return cells;
+    }
+
+    function getActiveActorLabel(passAndPlay, activePlayer) {
+      if (passAndPlay) {
+        return activePlayer === 0 ? "Oyuncu 1" : "Oyuncu 2";
+      }
+      if (activePlayer === 0) {
+        return state.profile.name || "Sen";
+      }
+      return state.currentPartner?.name || "Rakip";
+    }
+
+    function resetGameState(gameKey) {
+      if (gameKey === "penalty") {
+        const prevPnp = Boolean(state.penalty?.passAndPlay);
+        state.penalty = {
+          passAndPlay: prevPnp,
+          role: "shooter",
+          activePlayer: 0,
+          selectedZone: null,
+          myGoals: 0,
+          oppGoals: 0,
+          myShots: 0,
+          oppShots: 0,
+          maxShotsPerSide: 3,
+          busy: false,
+          finished: false,
+          lastMsg: prevPnp
+            ? "2 Kişilik Karşılıklı Penaltı: Oyuncu 1 şut çekiyor, Oyuncu 2 kaleci!"
+            : "Karşılıklı penaltı düellosu başladı! Şut köşesi seç."
+        };
+      } else if (gameKey === "battleship") {
+        const prevPnp = Boolean(state.battleship?.passAndPlay);
+        state.battleship = {
+          passAndPlay: prevPnp,
+          activePlayer: 0,
+          boards: [createShipsBoard(), createShipsBoard()],
+          hits: [0, 0],
+          shots: [0, 0],
+          over: false,
+          statusMsg: "Sıra sende! Rakip denizdeki 3 gemiyi vur."
+        };
+      } else if (gameKey === "pop_duel") {
+        const prevPnp = Boolean(state.popDuel?.passAndPlay);
+        const nextCat = Math.random() < 0.5 ? "country" : "city";
+        const dataset = nextCat === "country" ? COUNTRY_POP_DATA : CITY_POP_DATA;
+        state.popDuel = {
+          passAndPlay: prevPnp,
+          activePlayer: 0,
+          category: nextCat,
+          round: 0,
+          maxRounds: 5,
+          scores: [0, 0],
+          pair: pickDistinctPair(dataset),
+          revealed: false,
+          finished: false,
+          feedback: nextCat === "country"
+            ? "Ülke Nüfusu Turu: Nüfusu daha fazla olan ülkeyi seç!"
+            : "Şehir Nüfusu Turu: Nüfusu daha fazla olan şehri seç!"
+        };
+      } else if (gameKey === "flag_duel") {
+        const prevPnp = Boolean(state.flagDuel?.passAndPlay);
+        const roundPack = buildFlagRound();
+        state.flagDuel = {
+          passAndPlay: prevPnp,
+          activePlayer: 0,
+          round: 0,
+          maxRounds: 5,
+          scores: [0, 0],
+          target: roundPack.target,
+          options: roundPack.options,
+          revealed: false,
+          finished: false,
+          feedback: "Bayrağı tanı ve doğru ülkeyi seç!"
+        };
+      } else if (gameKey === "number_guess") {
+        state.numberGuess = {
+          secret: 1 + Math.floor(Math.random() * 100),
+          min: 1,
+          max: 100,
+          attempts: 0,
+          maxAttempts: 7,
+          won: false,
+          over: false,
+          feedback: "1 ile 100 arasında bir sayı tahmin et!"
+        };
+      } else if (gameKey === "reflex") {
+        if (state.reflex.timer) clearTimeout(state.reflex.timer);
+        state.reflex = {
+          phase: "idle",
+          startTime: 0,
+          lastMs: null,
+          bestMs: state.reflex.bestMs,
+          round: 0,
+          timer: null
+        };
+      } else if (gameKey === "memory") {
+        state.memory = {
+          cards: createShuffledMemoryDeck(),
+          flipped: [],
+          matched: [],
+          moves: 0,
+          locked: false,
+          completed: false
+        };
+      } else if (gameKey === "draw") {
+        const first = DRAW_PROMPTS[0];
+        state.draw = {
+          round: 0,
+          maxRounds: DRAW_PROMPTS.length,
+          score: 0,
+          targetWord: first.word,
+          options: [...first.options],
+          drawing: false,
+          hasDrawn: false,
+          finished: false,
+          feedback: "Yukarıdaki kelimeyi tuvale çiz ve tahminini seç!"
+        };
+      } else if (gameKey === "approx") {
+        state.approx = {
+          index: 0,
+          score: 0,
+          finished: false,
+          feedback: "En yakın tahmini yap ve puan kap!"
+        };
+      } else if (gameKey === "sinemojik") {
+        state.sinemojik = {
+          index: 0,
+          score: 0,
+          finished: false,
+          feedback: "Emojilerden hangi film olduğunu bul!"
+        };
+      } else if (gameKey === "sorduk") {
+        state.sorduk = {
+          index: 0,
+          score: 0,
+          finished: false,
+          feedback: "100 kişiye sorduk: en popüler yanıt hangisi?"
+        };
+      } else if (gameKey === "catapult") {
+        const targetDist = 35 + Math.floor(Math.random() * 55);
+        state.catapult = {
+          angle: 45,
+          power: 55,
+          targetDist,
+          shots: 0,
+          score: 0,
+          won: false,
+          feedback: `Hedef mesafe: ${targetDist}m. Açı ve gücü ayarlayıp fırlat!`
+        };
+      }
+    }
+
+    function renderActiveGame() {
+      const key = state.selectedGame || "penalty";
+      const meta = GAME_META[key] || GAME_META.penalty;
+      const titleEl = document.getElementById("active-game-title");
+      const modeBadge = document.getElementById("game-mode-badge");
+      const oppNameEl = document.getElementById("game-opp-name");
+      const oppAvEl = document.getElementById("game-opp-avatar");
+
+      if (titleEl) titleEl.textContent = meta.name;
+      if (modeBadge) modeBadge.textContent = state.currentPartner ? "EŞLEŞMELİ" : "SOHBETSİZ";
+      if (oppNameEl) oppNameEl.textContent = state.currentPartner?.name || "Rakip";
+      if (oppAvEl) oppAvEl.textContent = state.currentPartner?.avatar || "🎯";
+
+      if (key === "penalty") renderPenaltyGame();
+      else if (key === "battleship") renderBattleshipGame();
+      else if (key === "pop_duel") renderCombinedPopulationDuelGame();
+      else if (key === "flag_duel") renderFlagDuelGame();
+      else if (key === "number_guess") renderNumberGuessGame();
+      else if (key === "reflex") renderReflexGame();
+      else if (key === "memory") renderMemoryGame();
+      else if (key === "draw") renderDrawGame();
+      else if (key === "rps") renderRpsGame();
+      else if (key === "wordle") renderWordleGame();
+      else if (key === "xox") renderXoxGame();
+      else if (key === "trivia") renderTriviaGame();
+      else if (key === "tavla") renderTavlaGame();
+      else if (key === "football") renderFootballGame();
+      else if (key === "approx") renderApproxGame();
+      else if (key === "sinemojik") renderSinemojikGame();
+      else if (key === "sorduk") renderSordukGame();
+      else if (key === "catapult") renderCatapultGame();
+    }
+
+    function togglePassAndPlayMode(gameKey) {
+      if (gameKey === "penalty") {
+        state.penalty.passAndPlay = !state.penalty.passAndPlay;
+        resetGameState("penalty");
+        renderPenaltyGame();
+      } else if (gameKey === "battleship") {
+        state.battleship.passAndPlay = !state.battleship.passAndPlay;
+        resetGameState("battleship");
+        renderBattleshipGame();
+      } else if (gameKey === "pop_duel") {
+        state.popDuel.passAndPlay = !state.popDuel.passAndPlay;
+        resetGameState("pop_duel");
+        renderCombinedPopulationDuelGame();
+      } else if (gameKey === "flag_duel") {
+        state.flagDuel.passAndPlay = !state.flagDuel.passAndPlay;
+        resetGameState("flag_duel");
+        renderFlagDuelGame();
+      }
+    }
+
+    // --- ŞEHİR - BİTKİ - HAYVAN - EŞYA ---
+    function renderSbheGame() {
+      const s = state.sbhe;
+      const arena = document.getElementById("game-arena");
+      const currentRound = SBHE_ROUNDS[s.roundIndex % SBHE_ROUNDS.length];
+      const p1Label = state.profile.name || "Sen";
+      const p2Label = state.currentPartner?.name || "Rakip";
+
+      const renderCatRow = (label, key, opts) => `
+        <div style="width:100%; text-align:left;">
+          <div style="font-size:11.5px; font-weight:800; color:var(--text-muted); margin-bottom:4px;">${label}</div>
+          <div style="display:grid; grid-template-columns:repeat(3, 1fr); gap:6px;">
+            ${opts.map((opt) => `
+              <button
+                type="button"
+                class="g-chip ${s.picks[key] === opt ? "active" : ""}"
+                style="width:100%; text-align:center;"
+                onclick="pickSbheOption('${key}', '${opt}')"
+              >${opt}</button>
+            `).join("")}
+          </div>
+        </div>
+      `;
+
+      arena.innerHTML = `
+        <div style="width:100%; display:flex; justify-content:space-between; font-size:12px; font-weight:700;">
+          <span>🌿 Tek Harf: <strong style="color:var(--primary); font-size:15px;">"${currentRound.letter}"</strong></span>
+          <span>${p1Label} vs ${p2Label} • ${s.score}p</span>
+        </div>
+
+        ${renderCatRow("🏙️ Şehir", "city", currentRound.cityOpts)}
+        ${renderCatRow("🌱 Bitki", "plant", currentRound.plantOpts)}
+        ${renderCatRow("🐾 Hayvan", "animal", currentRound.animalOpts)}
+        ${renderCatRow("📦 Eşya", "object", currentRound.objectOpts)}
+
+        <p style="font-size:12px; font-weight:700; color:var(--text-dark);">${s.feedback}</p>
+
+        <div style="display:flex; gap:8px; width:100%;">
+          <button type="button" class="btn-primary" style="flex:1;" onclick="submitSbheRound()">✅ ${p1Label} Cevabını Gönder</button>
+          <button type="button" class="btn-secondary" onclick="resetGameState('sbhe'); renderSbheGame();">🔄</button>
+        </div>
+      `;
+    }
+
+    function pickSbheOption(catKey, value) {
+      state.sbhe.picks[catKey] = value;
+      renderSbheGame();
+    }
+
+    function submitSbheRound() {
+      const s = state.sbhe;
+      const currentRound = SBHE_ROUNDS[s.roundIndex % SBHE_ROUNDS.length];
+      const p1Label = state.profile.name || "Sen";
+      const p2Label = state.currentPartner?.name || "Rakip";
+
+      const checks = [
+        s.picks.city === currentRound.city,
+        s.picks.plant === currentRound.plant,
+        s.picks.animal === currentRound.animal,
+        s.picks.object === currentRound.object
+      ];
+      const correctCount = checks.filter(Boolean).length;
+      const gained = correctCount * 10;
+      const oppCorrect = Math.min(4, Math.max(1, correctCount + (Math.random() < 0.5 ? -1 : 1)));
+      s.score += gained;
+      recordGameScore("sbhe", Math.max(5, gained), `"${currentRound.letter}" harfi: ${p1Label} ${correctCount}/4 • ${p2Label} ${oppCorrect}/4`);
+
+      s.roundIndex += 1;
+      const nextRound = SBHE_ROUNDS[s.roundIndex % SBHE_ROUNDS.length];
+      s.picks = { city: "", plant: "", animal: "", object: "" };
+      s.feedback = `"${currentRound.letter}" harfinde ${p1Label}: ${correctCount}/4 (+${gained}p), ${p2Label}: ${oppCorrect}/4 • Yeni harf: "${nextRound.letter}"`;
+      showToast(`"${currentRound.letter}" harfi: ${correctCount}/4 doğru (+${gained}p)`);
+      renderSbheGame();
+    }
+
+    // --- KARŞILIKLI PENALTI (BİRİ ATAR, DİĞERİ TUTAR) ---
+    function renderPenaltyGame() {
+      const p = state.penalty;
+      const arena = document.getElementById("game-arena");
+      const zones = [
+        "Sol Üst", "Orta Üst", "Sağ Üst",
+        "Sol Alt", "Orta Alt", "Sağ Alt"
+      ];
+
+      const p1Label = p.passAndPlay ? "Oyuncu 1" : (state.profile.name || "Sen");
+      const p2Label = p.passAndPlay ? "Oyuncu 2" : (state.currentPartner?.name || "Rakip");
+
+      const currentRoleText = p.passAndPlay
+        ? (p.role === "shooter"
+            ? `⚽ Sıra ${p1Label}'de: Şut köşesi seç!`
+            : `🧤 Sıra ${p2Label}'de: Kaleci atlayış köşesi seç!`)
+        : (p.role === "shooter"
+            ? "⚽ Senin Atış Sıran: Şut köşesi seç ve çek!"
+            : "🧤 Senin Kaleci Sıran: Rakibin şutunu tutmak için köşe seç!");
+
+      arena.innerHTML = `
+        <div style="width:100%; display:flex; justify-content:space-between; align-items:center; font-size:12px; font-weight:700;">
+          <span>⚽ ${p1Label}: ${p.myGoals} (${p.myShots}/${p.maxShotsPerSide})</span>
+          <button type="button" class="g-chip ${p.passAndPlay ? "active" : ""}" onclick="togglePassAndPlayMode('penalty')">
+            ${p.passAndPlay ? "👥 2 Kişilik Mod" : "🤖 Rakip / Karşılıklı"}
+          </button>
+          <span>🧤 ${p2Label}: ${p.oppGoals} (${p.oppShots}/${p.maxShotsPerSide})</span>
+        </div>
+
+        <div class="penalty-pitch">
+          <div style="font-size:11px; font-weight:700; opacity:0.95;">${currentRoleText}</div>
+          <div class="penalty-goal-box">
+            ${zones.map((label, idx) => `
+              <button
+                type="button"
+                class="penalty-zone ${p.selectedZone === idx ? "active-zone" : ""}"
+                onclick="pickPenaltyZone(${idx})"
+                ${p.busy || p.finished ? "disabled" : ""}
+              >${label}</button>
+            `).join("")}
+            <div class="penalty-keeper" id="pen-keeper">🧤</div>
+          </div>
+
+          <div class="penalty-ball-row">
+            <span class="penalty-ball" id="pen-ball">⚽</span>
+            <button
+              type="button"
+              class="btn-primary"
+              style="width:auto; padding:10px 18px; font-size:13.5px;"
+              onclick="shootPenalty()"
+              ${p.busy || p.finished || p.selectedZone === null ? "disabled" : ""}
+            >
+              ${p.finished ? "Düello Bitti" : (p.role === "shooter" ? "Şut Çek" : "Kaleye Atla")}
+            </button>
+          </div>
+        </div>
+
+        <p id="pen-status-msg" style="font-size:12.5px; font-weight:700; color:var(--text-dark);">${p.lastMsg}</p>
+
+        <div style="display:flex; gap:8px; width:100%;">
+          <button class="btn-secondary" style="flex:1;" onclick="resetGameState('penalty'); renderPenaltyGame();">🔄 Yeni Düello</button>
+          <button class="btn-primary" style="flex:1;" onclick="openGameInChat()">💬 Sohbete Geç</button>
+        </div>
+      `;
+    }
+
+    function pickPenaltyZone(idx) {
+      if (state.penalty.busy || state.penalty.finished) return;
+      state.penalty.selectedZone = idx;
+      renderPenaltyGame();
+    }
+
+    function shootPenalty() {
+      const p = state.penalty;
+      if (p.busy || p.finished || p.selectedZone === null) return;
+      p.busy = true;
+
+      const zoneNames = ["Sol Üst", "Orta Üst", "Sağ Üst", "Sol Alt", "Orta Alt", "Sağ Alt"];
+      const chosen = p.selectedZone;
+      const keeperChoice = Math.floor(Math.random() * 6);
+      const keeperLeft = ["62%", "50%", "38%", "62%", "50%", "38%"][keeperChoice] || "50%";
+      const keeperEl = document.getElementById("pen-keeper");
+      if (keeperEl) {
+        keeperEl.style.left = keeperLeft;
+        keeperEl.style.transform = "translateX(-50%) rotate(" + ((keeperChoice % 3 - 1) * 18) + "deg)";
+      }
+
+      const p1Label = p.passAndPlay ? "Oyuncu 1" : (state.profile.name || "Sen");
+      const p2Label = p.passAndPlay ? "Oyuncu 2" : (state.currentPartner?.name || "Rakip");
+
+      if (p.role === "shooter") {
+        p.myShots += 1;
+        const isGoal = chosen !== keeperChoice;
+        if (isGoal) {
+          p.myGoals += 1;
+          p.lastMsg = `⚽ GOL! ${p1Label} (${zoneNames[chosen]}) topu ağlara gönderdi!`;
+        } else {
+          p.lastMsg = `🧤 KURTARIŞ! Kaleci ${zoneNames[keeperChoice]} köşesinde uzandı!`;
+        }
+      } else {
+        p.oppShots += 1;
+        const oppShotZone = Math.floor(Math.random() * 6);
+        const saved = chosen === oppShotZone;
+        if (saved) {
+          p.lastMsg = `🧤 HARİKA KURTARIŞ! ${zoneNames[chosen]} köşesinde ${p2Label}'in şutunu çıkardın!`;
+        } else {
+          p.oppGoals += 1;
+          p.lastMsg = `🥅 Rakip gol attı (${zoneNames[oppShotZone]}). Şimdi tekrar senin şut sıran!`;
+        }
+      }
+
+      renderPenaltyGame();
+
+      setTimeout(() => {
+        const totalShotsDone = p.myShots + p.oppShots;
+        if (p.myShots >= p.maxShotsPerSide && p.oppShots >= p.maxShotsPerSide) {
+          p.finished = true;
+          p.busy = false;
+          const summary = p.myGoals > p.oppGoals
+            ? `🏆 ${p1Label} Kazandı (${p.myGoals}-${p.oppGoals})`
+            : p.myGoals === p.oppGoals
+              ? `🤝 Berabere (${p.myGoals}-${p.oppGoals})`
+              : `👏 ${p2Label} Kazandı (${p.myGoals}-${p.oppGoals})`;
+          recordGameScore("penalty", Math.max(15, p.myGoals * 20), summary);
+          p.lastMsg = `${summary} • Penaltı serisi tamamlandı!`;
+          showToast(summary);
+          renderPenaltyGame();
+          return;
+        }
+
+        p.role = totalShotsDone % 2 === 0 ? "shooter" : "keeper";
+        p.activePlayer = p.role === "shooter" ? 0 : 1;
+        p.selectedZone = null;
+        p.busy = false;
+        renderPenaltyGame();
+      }, 750);
+    }
+
+    function renderBattleshipGame() {
+      const b = state.battleship;
+      const arena = document.getElementById("game-arena");
+      const targetBoardIdx = b.passAndPlay ? (1 - b.activePlayer) : 1;
+      const targetBoard = b.boards[targetBoardIdx];
+      const p1Label = b.passAndPlay ? "Oyuncu 1" : (state.profile.name || "Sen");
+      const p2Label = b.passAndPlay ? "Oyuncu 2" : (state.currentPartner?.name || "Rakip");
+      const activeName = getActiveActorLabel(b.passAndPlay, b.activePlayer);
+
+      arena.innerHTML = `
+        <div style="width:100%; display:flex; justify-content:space-between; align-items:center; font-size:12px; font-weight:700;">
+          <span>🚢 ${p1Label}: ${b.hits[0]}/3</span>
+          <button type="button" class="g-chip ${b.passAndPlay ? "active" : ""}" onclick="togglePassAndPlayMode('battleship')">
+            ${b.passAndPlay ? "👥 2 Kişilik" : "🤖 Rakip"}
+          </button>
+          <span>💥 ${p2Label}: ${b.hits[1]}/3</span>
+        </div>
+
+        <div style="font-size:12px; font-weight:800; color:var(--primary);">
+          Sıra: ${activeName} • Hedef Deniz (12 Kare)
+        </div>
+
+        <div class="ship-grid">
+          ${targetBoard.map((cell, idx) => {
+            let icon = "🌊";
+            let cls = "";
+            if (cell.fired) {
+              if (cell.hasShip) {
+                icon = "💥";
+                cls = "hit";
+              } else {
+                icon = "💦";
+                cls = "miss";
+              }
+            }
+            return `
+              <button
+                type="button"
+                class="ship-cell ${cls}"
+                onclick="fireBattleshipCell(${idx})"
+                ${b.over || cell.fired ? "disabled" : ""}
+              >${icon}</button>
+            `;
+          }).join("")}
+        </div>
+
+        <p style="font-size:12.5px; font-weight:700; color:var(--text-dark);">${b.statusMsg}</p>
+
+        <div style="display:flex; gap:8px; width:100%;">
+          <button class="btn-secondary" style="flex:1;" onclick="resetGameState('battleship'); renderBattleshipGame();">🔄 Yeni Deniz</button>
+          <button class="btn-primary" style="flex:1;" onclick="openGameInChat()">💬 Sohbete Geç</button>
+        </div>
+      `;
+    }
+
+    function fireBattleshipCell(idx) {
+      const b = state.battleship;
+      if (b.over) return;
+      const defenderIdx = b.passAndPlay ? (1 - b.activePlayer) : 1;
+      const cell = b.boards[defenderIdx][idx];
+      if (!cell || cell.fired) return;
+
+      cell.fired = true;
+      b.shots[b.activePlayer] += 1;
+      const attackerName = getActiveActorLabel(b.passAndPlay, b.activePlayer);
+
+      if (cell.hasShip) {
+        b.hits[b.activePlayer] += 1;
+        b.statusMsg = `💥 İSABET! ${attackerName} ${idx + 1}. karedeki gemiyi vurdu!`;
+      } else {
+        b.statusMsg = `💦 ISKA! ${attackerName} ${idx + 1}. karede boşa atış yaptı.`;
+      }
+
+      if (b.hits[b.activePlayer] >= 3) {
+        b.over = true;
+        const pts = Math.max(25, 80 - b.shots[b.activePlayer] * 4);
+        b.statusMsg = `🏆 ${attackerName} tüm gemileri batırdı!`;
+        recordGameScore("battleship", pts, `${attackerName} (${b.shots[b.activePlayer]} atış)`);
+        showToast(b.statusMsg);
+        renderBattleshipGame();
+        return;
+      }
+
+      if (b.passAndPlay) {
+        b.activePlayer = 1 - b.activePlayer;
+      } else {
+        const oppCandidates = b.boards[0]
+          .map((c, i) => (!c.fired ? i : null))
+          .filter((v) => v !== null);
+        if (oppCandidates.length) {
+          const pick = oppCandidates[Math.floor(Math.random() * oppCandidates.length)];
+          const myCell = b.boards[0][pick];
+          myCell.fired = true;
+          b.shots[1] += 1;
+          if (myCell.hasShip) {
+            b.hits[1] += 1;
+            b.statusMsg += ` • Rakip senin ${pick + 1}. karedeki gemine vurdu!`;
+            if (b.hits[1] >= 3) {
+              b.over = true;
+              b.statusMsg = `💥 Rakip tüm gemilerini vurdu!`;
+              recordGameScore("battleship", 15, "Rakip kazandı");
+            }
+          }
+        }
+      }
+
+      renderBattleshipGame();
+    }
+
+    // --- TEK OYUNDA ÜLKE & ŞEHİR NÜFUSU DÜELLOSU ---
+    function switchPopDuelCategory(cat) {
+      const d = state.popDuel;
+      d.category = cat === "city" ? "city" : "country";
+      const dataset = d.category === "country" ? COUNTRY_POP_DATA : CITY_POP_DATA;
+      d.pair = pickDistinctPair(dataset, d.pair);
+      d.revealed = false;
+      d.feedback = d.category === "country"
+        ? "Ülke Nüfusu: Nüfusu daha yüksek olan ülkeyi seç!"
+        : "Şehir Nüfusu: Nüfusu daha yüksek olan şehri seç!";
+      renderCombinedPopulationDuelGame();
+    }
+
+    function renderCombinedPopulationDuelGame() {
+      const d = state.popDuel;
+      const isCountry = d.category === "country";
+      const arena = document.getElementById("game-arena");
+      const p1Label = d.passAndPlay ? "Oyuncu 1" : (state.profile.name || "Sen");
+      const p2Label = d.passAndPlay ? "Oyuncu 2" : (state.currentPartner?.name || "Rakip");
+      const activeName = getActiveActorLabel(d.passAndPlay, d.activePlayer);
+
+      const [leftItem, rightItem] = d.pair;
+      if (!leftItem || !rightItem) return;
+
+      const leftVisual = isCountry ? leftItem.flag : leftItem.icon;
+      const rightVisual = isCountry ? rightItem.flag : rightItem.icon;
+
+      arena.innerHTML = `
+        <div style="width:100%; display:flex; justify-content:space-between; align-items:center; font-size:12px; font-weight:700;">
+          <span>${p1Label}: ${d.scores[0]}</span>
+          <div style="display:flex; gap:4px;">
+            <button type="button" class="g-chip ${isCountry ? "active" : ""}" onclick="switchPopDuelCategory('country')">🌍 Ülke</button>
+            <button type="button" class="g-chip ${!isCountry ? "active" : ""}" onclick="switchPopDuelCategory('city')">🏙️ Şehir</button>
+            <button type="button" class="g-chip ${d.passAndPlay ? "active" : ""}" onclick="togglePassAndPlayMode('pop_duel')">
+              ${d.passAndPlay ? "👥 2K" : "🤖 Rakip"}
+            </button>
+          </div>
+          <span>${p2Label}: ${d.scores[1]}</span>
+        </div>
+
+        <div style="font-size:12px; font-weight:800; color:var(--primary);">
+          Tur ${Math.min(d.round + 1, d.maxRounds)} / ${d.maxRounds} • Sıra: ${activeName}
+        </div>
+
+        <div class="duel-pick-grid">
+          <button
+            type="button"
+            class="duel-pick-card"
+            onclick="chooseCombinedPopulationItem(0)"
+            ${d.revealed || d.finished ? "disabled" : ""}
+          >
+            <span style="font-size:28px;">${leftVisual}</span>
+            <span class="duel-pick-title">${leftItem.name}</span>
+            <span class="duel-pick-sub">${leftItem.region}</span>
+            ${d.revealed ? `<span class="duel-pop-badge">${formatPopulation(leftItem.pop)}</span>` : `<span class="duel-pop-badge">Nüfusu Seç</span>`}
+          </button>
+
+          <button
+            type="button"
+            class="duel-pick-card"
+            onclick="chooseCombinedPopulationItem(1)"
+            ${d.revealed || d.finished ? "disabled" : ""}
+          >
+            <span style="font-size:28px;">${rightVisual}</span>
+            <span class="duel-pick-title">${rightItem.name}</span>
+            <span class="duel-pick-sub">${rightItem.region}</span>
+            ${d.revealed ? `<span class="duel-pop-badge">${formatPopulation(rightItem.pop)}</span>` : `<span class="duel-pop-badge">Nüfusu Seç</span>`}
+          </button>
+        </div>
+
+        <p style="font-size:12.5px; font-weight:700; color:var(--text-dark);">${d.feedback}</p>
+
+        <div style="display:flex; gap:8px; width:100%;">
+          <button class="btn-secondary" style="flex:1;" onclick="resetGameState('pop_duel'); renderCombinedPopulationDuelGame();">🔄 Yeni Düello</button>
+          <button class="btn-primary" style="flex:1;" onclick="openGameInChat()">💬 Sohbete Geç</button>
+        </div>
+      `;
+    }
+
+    function chooseCombinedPopulationItem(pickedIdx) {
+      const d = state.popDuel;
+      const isCountry = d.category === "country";
+      const dataset = isCountry ? COUNTRY_POP_DATA : CITY_POP_DATA;
+      if (d.revealed || d.finished) return;
+
+      const [a, b] = d.pair;
+      const pickedItem = pickedIdx === 0 ? a : b;
+      const otherItem = pickedIdx === 0 ? b : a;
+      const isHigher = pickedItem.pop >= otherItem.pop;
+
+      const p1Label = d.passAndPlay ? "Oyuncu 1" : (state.profile.name || "Sen");
+      const p2Label = d.passAndPlay ? "Oyuncu 2" : (state.currentPartner?.name || "Rakip");
+      const currentActor = getActiveActorLabel(d.passAndPlay, d.activePlayer);
+
+      if (isHigher) {
+        d.scores[d.activePlayer] += 20;
+      }
+
+      if (!d.passAndPlay) {
+        const oppCorrect = Math.random() < 0.6;
+        if (oppCorrect) d.scores[1] += 20;
+        d.feedback = isHigher
+          ? `✅ ${currentActor} doğru bildi! ${pickedItem.name} (${formatPopulation(pickedItem.pop)}) > ${otherItem.name} (${formatPopulation(otherItem.pop)})${oppCorrect ? ` • ${p2Label} de bildi!` : ""}`
+          : `❌ ${pickedItem.name} (${formatPopulation(pickedItem.pop)}), ${otherItem.name} (${formatPopulation(otherItem.pop)}) nüfusundan az.${oppCorrect ? ` • ${p2Label} bildi!` : ""}`;
+      } else {
+        d.feedback = isHigher
+          ? `✅ ${currentActor} +20 puan! ${pickedItem.name}: ${formatPopulation(pickedItem.pop)} vs ${otherItem.name}: ${formatPopulation(otherItem.pop)}`
+          : `❌ ${currentActor} puan alamadı. ${pickedItem.name}: ${formatPopulation(pickedItem.pop)} vs ${otherItem.name}: ${formatPopulation(otherItem.pop)}`;
+      }
+
+      d.revealed = true;
+      d.round += 1;
+      renderCombinedPopulationDuelGame();
+
+      setTimeout(() => {
+        if (d.round >= d.maxRounds) {
+          d.finished = true;
+          const myPts = d.scores[0];
+          const oppPts = d.scores[1];
+          const summary = myPts > oppPts
+            ? `🏆 ${p1Label} Kazandı (${myPts}-${oppPts})`
+            : myPts === oppPts
+              ? `🤝 Berabere (${myPts}-${oppPts})`
+              : `👏 ${p2Label} Kazandı (${myPts}-${oppPts})`;
+          recordGameScore("pop_duel", Math.max(15, myPts), summary);
+          d.feedback = `${summary} • Ülke & Şehir düellosu bitti!`;
+          showToast(summary);
+          renderCombinedPopulationDuelGame();
+        } else {
+          if (d.passAndPlay) {
+            d.activePlayer = 1 - d.activePlayer;
+          }
+          d.category = d.round % 2 === 1 ? "city" : "country";
+          const nextDataset = d.category === "country" ? COUNTRY_POP_DATA : CITY_POP_DATA;
+          d.pair = pickDistinctPair(nextDataset, d.pair);
+          d.revealed = false;
+          renderCombinedPopulationDuelGame();
+        }
+      }, 1150);
+    }
+
+    // --- BAYRAK DÜELLOSU ---
+    function buildFlagRound(previousCountry = "") {
+      const pool = FLAG_DUEL_DATA.filter((item) => item.country !== previousCountry);
+      const source = pool.length ? pool : FLAG_DUEL_DATA;
+      const target = source[Math.floor(Math.random() * source.length)];
+      const distractors = FLAG_DUEL_DATA
+        .filter((item) => item.country !== target.country)
+        .sort(() => Math.random() - 0.5)
+        .slice(0, 3)
+        .map((item) => item.country);
+      const options = [target.country, ...distractors].sort(() => Math.random() - 0.5);
+      return { target, options };
+    }
+
+    function renderFlagDuelGame() {
+      const f = state.flagDuel;
+      const arena = document.getElementById("game-arena");
+      if (!f.target) return;
+      const p1Label = f.passAndPlay ? "Oyuncu 1" : (state.profile.name || "Sen");
+      const p2Label = f.passAndPlay ? "Oyuncu 2" : (state.currentPartner?.name || "Rakip");
+      const activeName = getActiveActorLabel(f.passAndPlay, f.activePlayer);
+
+      arena.innerHTML = `
+        <div style="width:100%; display:flex; justify-content:space-between; align-items:center; font-size:12px; font-weight:700;">
+          <span>${p1Label}: ${f.scores[0]}</span>
+          <button type="button" class="g-chip ${f.passAndPlay ? "active" : ""}" onclick="togglePassAndPlayMode('flag_duel')">
+            ${f.passAndPlay ? "👥 2 Kişilik" : "🤖 Rakip"}
+          </button>
+          <span>${p2Label}: ${f.scores[1]}</span>
+        </div>
+
+        <div style="font-size:12px; font-weight:800; color:var(--primary);">
+          Tur ${Math.min(f.round + 1, f.maxRounds)} / ${f.maxRounds} • Sıra: ${activeName}
+        </div>
+
+        <div style="background:var(--bg-main); border:1.5px solid var(--border-soft); border-radius:16px; padding:12px 18px; width:100%;">
+          <div style="font-size:44px; line-height:1.1;">${f.target.flag}</div>
+          <div style="font-size:11.5px; color:var(--text-muted); margin-top:4px;">İpucu: ${f.target.hint}</div>
+        </div>
+
+        <div class="draw-guess-grid">
+          ${f.options.map((opt) => `
+            <button
+              type="button"
+              class="draw-guess-btn"
+              onclick="chooseFlagOption('${opt}')"
+              ${f.revealed || f.finished ? "disabled" : ""}
+            >${opt}</button>
+          `).join("")}
+        </div>
+
+        <p style="font-size:12.5px; font-weight:700; color:var(--text-dark);">${f.feedback}</p>
+
+        <div style="display:flex; gap:8px; width:100%;">
+          <button class="btn-secondary" style="flex:1;" onclick="resetGameState('flag_duel'); renderFlagDuelGame();">🔄 Yeni Düello</button>
+          <button class="btn-primary" style="flex:1;" onclick="openGameInChat()">💬 Sohbete Geç</button>
+        </div>
+      `;
+    }
+
+    function chooseFlagOption(chosenCountry) {
+      const f = state.flagDuel;
+      if (f.revealed || f.finished || !f.target) return;
+
+      const p1Label = f.passAndPlay ? "Oyuncu 1" : (state.profile.name || "Sen");
+      const p2Label = f.passAndPlay ? "Oyuncu 2" : (state.currentPartner?.name || "Rakip");
+      const currentActor = getActiveActorLabel(f.passAndPlay, f.activePlayer);
+      const isCorrect = chosenCountry === f.target.country;
+
+      if (isCorrect) {
+        f.scores[f.activePlayer] += 20;
+      }
+
+      if (!f.passAndPlay) {
+        const oppCorrect = Math.random() < 0.55;
+        if (oppCorrect) f.scores[1] += 20;
+        f.feedback = isCorrect
+          ? `✅ ${currentActor} bildi! Bu bayrak ${f.target.country}'ne ait.${oppCorrect ? ` • ${p2Label} de bildi!` : ""}`
+          : `❌ Yanlış! Bu bayrak ${f.target.country}'ne ait.${oppCorrect ? ` • ${p2Label} bildi!` : ""}`;
+      } else {
+        f.feedback = isCorrect
+          ? `✅ ${currentActor} +20 puan! Doğru: ${f.target.country}`
+          : `❌ ${currentActor} bilemedi. Doğru ülke: ${f.target.country}`;
+      }
+
+      f.revealed = true;
+      f.round += 1;
+      renderFlagDuelGame();
+
+      setTimeout(() => {
+        if (f.round >= f.maxRounds) {
+          f.finished = true;
+          const myPts = f.scores[0];
+          const oppPts = f.scores[1];
+          const summary = myPts > oppPts
+            ? `🏆 ${p1Label} Kazandı (${myPts}-${oppPts})`
+            : myPts === oppPts
+              ? `🤝 Berabere (${myPts}-${oppPts})`
+              : `👏 ${p2Label} Kazandı (${myPts}-${oppPts})`;
+          recordGameScore("flag_duel", Math.max(15, myPts), summary);
+          f.feedback = `${summary} • Bayrak düellosu bitti!`;
+          showToast(summary);
+          renderFlagDuelGame();
+        } else {
+          if (f.passAndPlay) {
+            f.activePlayer = 1 - f.activePlayer;
+          }
+          const nextPack = buildFlagRound(f.target.country);
+          f.target = nextPack.target;
+          f.options = nextPack.options;
+          f.revealed = false;
+          renderFlagDuelGame();
+        }
+      }, 1050);
+    }
+
+    // --- SAYI TAHMİNİ (1-100) ---
+    function renderNumberGuessGame() {
+      const n = state.numberGuess;
+      const arena = document.getElementById("game-arena");
+
+      arena.innerHTML = `
+        <div style="width:100%; display:flex; justify-content:space-between; font-size:12.5px; font-weight:700;">
+          <span>🔢 Aralık: ${n.min} - ${n.max}</span>
+          <span>Hak: ${n.attempts} / ${n.maxAttempts}</span>
+        </div>
+
+        <form class="wordle-input-row" onsubmit="submitNumberGuess(event)">
+          <input
+            type="number"
+            id="number-guess-input"
+            class="wordle-input"
+            min="1"
+            max="100"
+            placeholder="1-100"
+            ${n.over ? "disabled" : ""}
+            required
+          />
+          <button type="submit" class="send-btn" ${n.over ? "disabled" : ""}>Tahmin</button>
+        </form>
+
+        <p style="font-size:12.5px; font-weight:700; color:var(--text-dark);">${n.feedback}</p>
+
+        <div style="display:flex; gap:8px; width:100%;">
+          <button class="btn-secondary" style="flex:1;" onclick="resetGameState('number_guess'); renderNumberGuessGame();">🔄 Yeni Sayı</button>
+          <button class="btn-primary" style="flex:1;" onclick="openGameInChat()">💬 Sohbete Geç</button>
+        </div>
+      `;
+    }
+
+    function submitNumberGuess(e) {
+      e.preventDefault();
+      const n = state.numberGuess;
+      if (n.over) return;
+      const input = document.getElementById("number-guess-input");
+      const val = Number(input.value);
+      if (!Number.isFinite(val) || val < 1 || val > 100) {
+        showToast("1 ile 100 arasında bir sayı gir.");
+        return;
+      }
+
+      n.attempts += 1;
+      if (val === n.secret) {
+        n.won = true;
+        n.over = true;
+        const pts = Math.max(20, 75 - (n.attempts - 1) * 8);
+        n.feedback = `🎉 Bildin! Gizli sayı ${n.secret} idi (${n.attempts}. deneme).`;
+        recordGameScore("number_guess", pts, `${n.attempts} denemede ${n.secret} bulundu`);
+        showToast(`Sayıyı bildin! +${pts} puan`);
+      } else if (n.attempts >= n.maxAttempts) {
+        n.over = true;
+        n.feedback = `💥 Hakların bitti! Gizli sayı ${n.secret} idi.`;
+        recordGameScore("number_guess", 10, `Gizli sayı: ${n.secret}`);
+        showToast(`Gizli sayı: ${n.secret}`);
+      } else if (val < n.secret) {
+        n.min = Math.max(n.min, val + 1);
+        n.feedback = `⬆️ Daha BÜYÜK bir sayı dene (${n.min} - ${n.max})`;
+      } else {
+        n.max = Math.min(n.max, val - 1);
+        n.feedback = `⬇️ Daha KÜÇÜK bir sayı dene (${n.min} - ${n.max})`;
+      }
+
+      renderNumberGuessGame();
+    }
+
+    // --- REFLEKS TESTİ ---
+    function renderReflexGame() {
+      const r = state.reflex;
+      const arena = document.getElementById("game-arena");
+
+      let padClass = "";
+      let mainText = "Başlamak İçin Dokun";
+      let subText = "Yeşil ekran yandığı an en hızlı şekilde tıkla!";
+
+      if (r.phase === "waiting") {
+        padClass = "wait-state";
+        mainText = "🛑 BEKLE...";
+        subText = "Kırmızı ekranda bekle, YEŞİL olunca bas!";
+      } else if (r.phase === "go") {
+        padClass = "go-state";
+        mainText = "🟢 ŞİMDİ BAS!";
+        subText = "Hızlı ol!";
+      } else if (r.phase === "done") {
+        mainText = r.lastMs ? `⚡ ${r.lastMs} ms` : "⚠️ Erken Bastın!";
+        subText = "Tekrar denemek için bu alana dokun.";
+      }
+
+      arena.innerHTML = `
+        <div style="width:100%; display:flex; justify-content:space-between; font-size:12.5px; font-weight:700;">
+          <span>🏆 En İyi: ${r.bestMs ? r.bestMs + " ms" : "-"}</span>
+          <span>Deneme: ${r.round}</span>
+        </div>
+
+        <button type="button" class="reflex-pad ${padClass}" onclick="handleReflexTap()">
+          <strong style="font-size:20px;">${mainText}</strong>
+          <span style="font-size:12.5px; opacity:0.88;">${subText}</span>
+        </button>
+
+        <div style="display:flex; gap:8px; width:100%;">
+          <button class="btn-secondary" style="flex:1;" onclick="resetGameState('reflex'); renderReflexGame();">🔄 Sıfırla</button>
+          <button class="btn-primary" style="flex:1;" onclick="openGameInChat()">💬 Sohbete Geç</button>
+        </div>
+      `;
+    }
+
+    function handleReflexTap() {
+      const r = state.reflex;
+      if (r.phase === "idle" || r.phase === "done") {
+        r.phase = "waiting";
+        renderReflexGame();
+        const delay = 1100 + Math.random() * 2000;
+        r.timer = setTimeout(() => {
+          r.phase = "go";
+          r.startTime = performance.now();
+          renderReflexGame();
+        }, delay);
+      } else if (r.phase === "waiting") {
+        clearTimeout(r.timer);
+        r.phase = "done";
+        r.lastMs = null;
+        r.round += 1;
+        renderReflexGame();
+        showToast("Erken bastın! Yeşil ışığı bekle.");
+      } else if (r.phase === "go") {
+        const ms = Math.max(1, Math.round(performance.now() - r.startTime));
+        r.phase = "done";
+        r.lastMs = ms;
+        r.round += 1;
+        if (!r.bestMs || ms < r.bestMs) r.bestMs = ms;
+        const pts = ms < 240 ? 45 : ms < 340 ? 30 : 15;
+        recordGameScore("reflex", pts, `${ms} ms refleks`);
+        renderReflexGame();
+        showToast(`Refleks: ${ms} ms (+${pts} puan)`);
+      }
+    }
+
+    // --- HAFIZA KARTLARI ---
+    function renderMemoryGame() {
+      const m = state.memory;
+      const arena = document.getElementById("game-arena");
+      const pairsCount = m.matched.length / 2;
+
+      arena.innerHTML = `
+        <div style="width:100%; display:flex; justify-content:space-between; font-size:12.5px; font-weight:700;">
+          <span>🃏 Eşleşen: ${pairsCount} / 6</span>
+          <span>Hamle: ${m.moves}</span>
+        </div>
+
+        <div class="memory-grid">
+          ${m.cards.map((card, idx) => {
+            const isOpen = m.flipped.includes(idx) || m.matched.includes(idx);
+            const isMatched = m.matched.includes(idx);
+            return `
+              <button
+                type="button"
+                class="memory-card ${isOpen ? "flipped" : ""} ${isMatched ? "matched" : ""}"
+                onclick="flipMemoryCard(${idx})"
+                ${m.locked || isMatched ? "disabled" : ""}
+              >
+                ${isOpen ? card.emoji : "❔"}
+              </button>
+            `;
+          }).join("")}
+        </div>
+
+        <p style="font-size:12.5px; font-weight:700; color:var(--text-dark);">
+          ${m.completed ? `🎉 Tüm çiftler ${m.moves} hamlede bulundu!` : "İki aynı emoji kartını eşleştir!"}
+        </p>
+
+        <div style="display:flex; gap:8px; width:100%;">
+          <button class="btn-secondary" style="flex:1;" onclick="resetGameState('memory'); renderMemoryGame();">🔄 Karıştır</button>
+          <button class="btn-primary" style="flex:1;" onclick="openGameInChat()">💬 Sohbete Geç</button>
+        </div>
+      `;
+    }
+
+    function flipMemoryCard(idx) {
+      const m = state.memory;
+      if (m.locked || m.completed || m.flipped.includes(idx) || m.matched.includes(idx)) return;
+
+      m.flipped.push(idx);
+      renderMemoryGame();
+
+      if (m.flipped.length === 2) {
+        m.moves += 1;
+        m.locked = true;
+        const [firstIdx, secondIdx] = m.flipped;
+        const firstCard = m.cards[firstIdx];
+        const secondCard = m.cards[secondIdx];
+
+        if (firstCard.emoji === secondCard.emoji) {
+          m.matched.push(firstIdx, secondIdx);
+          m.flipped = [];
+          m.locked = false;
+
+          if (m.matched.length === m.cards.length) {
+            m.completed = true;
+            const pts = Math.max(25, 80 - Math.max(0, m.moves - 6) * 5);
+            recordGameScore("memory", pts, `${m.moves} hamlede tamamlandı`);
+            showToast(`Hafıza Kartları tamamlandı! +${pts} puan`);
+          }
+          renderMemoryGame();
+        } else {
+          setTimeout(() => {
+            m.flipped = [];
+            m.locked = false;
+            renderMemoryGame();
+          }, 550);
+        }
+      }
+    }
+
+    // --- ÇİZ & TAHMİN ---
+    function renderDrawGame() {
+      const d = state.draw;
+      const arena = document.getElementById("game-arena");
+
+      arena.innerHTML = `
+        <div style="width:100%; display:flex; justify-content:space-between; font-size:12.5px; font-weight:700;">
+          <span>🎨 Tur: ${Math.min(d.round + 1, d.maxRounds)} / ${d.maxRounds}</span>
+          <span>Puan: ${d.score}</span>
+        </div>
+
+        <div class="draw-box">
+          <div style="width:100%; display:flex; justify-content:space-between; align-items:center;">
+            <span style="font-size:13px; font-weight:800; color:var(--primary);">Çizilecek Kelime: ${d.finished ? "Bitti" : d.targetWord}</span>
+            <button type="button" class="g-chip" onclick="clearQuickDrawCanvas()">Temizle</button>
+          </div>
+          <canvas id="quick-draw-canvas" width="290" height="132"></canvas>
+        </div>
+
+        <div class="draw-guess-grid">
+          ${d.options.map((opt) => `
+            <button
+              type="button"
+              class="draw-guess-btn"
+              onclick="submitDrawGuess('${opt}')"
+              ${d.finished ? "disabled" : ""}
+            >${opt}</button>
+          `).join("")}
+        </div>
+
+        <p style="font-size:12px; font-weight:700; color:var(--text-dark);">${d.feedback}</p>
+
+        <div style="display:flex; gap:8px; width:100%;">
+          <button class="btn-secondary" style="flex:1;" onclick="resetGameState('draw'); renderDrawGame();">🔄 Yeni Tur</button>
+          <button class="btn-primary" style="flex:1;" onclick="openGameInChat()">💬 Sohbete Geç</button>
+        </div>
+      `;
+
+      bindQuickDrawCanvas();
+    }
+
+    function bindQuickDrawCanvas() {
+      const canvas = document.getElementById("quick-draw-canvas");
+      if (!canvas) return;
+      const ctx = canvas.getContext("2d");
+      ctx.lineWidth = 3.5;
+      ctx.lineCap = "round";
+      ctx.lineJoin = "round";
+      ctx.strokeStyle = "#1E2420";
+
+      const getPos = (evt) => {
+        const rect = canvas.getBoundingClientRect();
+        const clientX = evt.touches ? evt.touches[0].clientX : evt.clientX;
+        const clientY = evt.touches ? evt.touches[0].clientY : evt.clientY;
+        const scaleX = canvas.width / rect.width;
+        const scaleY = canvas.height / rect.height;
+        return {
+          x: (clientX - rect.left) * scaleX,
+          y: (clientY - rect.top) * scaleY
+        };
+      };
+
+      const startDraw = (evt) => {
+        if (state.draw.finished) return;
+        evt.preventDefault();
+        state.draw.drawing = true;
+        state.draw.hasDrawn = true;
+        const pos = getPos(evt);
+        ctx.beginPath();
+        ctx.moveTo(pos.x, pos.y);
+      };
+
+      const moveDraw = (evt) => {
+        if (!state.draw.drawing || state.draw.finished) return;
+        evt.preventDefault();
+        const pos = getPos(evt);
+        ctx.lineTo(pos.x, pos.y);
+        ctx.stroke();
+      };
+
+      const endDraw = () => {
+        state.draw.drawing = false;
+      };
+
+      canvas.addEventListener("mousedown", startDraw);
+      canvas.addEventListener("mousemove", moveDraw);
+      window.addEventListener("mouseup", endDraw);
+      canvas.addEventListener("touchstart", startDraw, { passive: false });
+      canvas.addEventListener("touchmove", moveDraw, { passive: false });
+      canvas.addEventListener("touchend", endDraw);
+    }
+
+    function clearQuickDrawCanvas() {
+      const canvas = document.getElementById("quick-draw-canvas");
+      if (!canvas) return;
+      const ctx = canvas.getContext("2d");
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      state.draw.hasDrawn = false;
+    }
+
+    function submitDrawGuess(guessWord) {
+      const d = state.draw;
+      if (d.finished) return;
+
+      const isCorrect = guessWord === d.targetWord;
+      const bonus = d.hasDrawn ? 25 : 15;
+      if (isCorrect) {
+        d.score += bonus;
+        d.feedback = `✅ Doğru tahmin! "${d.targetWord}" (+${bonus} puan)`;
+      } else {
+        d.feedback = `❌ Doğru kelime "${d.targetWord}" idi.`;
+      }
+
+      d.round += 1;
+      if (d.round >= d.maxRounds) {
+        d.finished = true;
+        recordGameScore("draw", Math.max(10, d.score), `${d.score} puan (${d.maxRounds} tur)`);
+        showToast(`Çiz & Tahmin bitti! Toplam ${d.score} puan`);
+        renderDrawGame();
+      } else {
+        const nextPrompt = DRAW_PROMPTS[d.round];
+        d.targetWord = nextPrompt.word;
+        d.options = [...nextPrompt.options];
+        d.hasDrawn = false;
+        renderDrawGame();
+      }
+    }
+
+    // --- TAŞ-KAĞIT-MAKAS ---
+    function renderRpsGame() {
+      const arena = document.getElementById("game-arena");
+      arena.innerHTML = `
+        <div>
+          <h3 style="font-size:17px;">Taş - Kağıt - Makas</h3>
+          <p id="rps-result-text" style="font-size:13px; color:var(--text-muted); margin-top:4px;">Seçimini yap ve puan kazan!</p>
+        </div>
+        <div class="rps-choices">
+          <button class="rps-btn" onclick="playRps('rock')">✊<span>Taş</span></button>
+          <button class="rps-btn" onclick="playRps('paper')">✋<span>Kağıt</span></button>
+          <button class="rps-btn" onclick="playRps('scissors')">✌️<span>Makas</span></button>
+        </div>
+        <button class="btn-secondary" style="width:100%;" onclick="openGameInChat()">💬 Sohbete Geç</button>
+      `;
+    }
+
+    function playRps(choice) {
+      const opts = ["rock", "paper", "scissors"];
+      const labels = { rock: "Taş", paper: "Kağıt", scissors: "Makas" };
+      const bot = opts[Math.floor(Math.random() * opts.length)];
+      const elRes = document.getElementById("rps-result-text");
+
+      if (choice === bot) {
+        if (elRes) elRes.textContent = `Berabere! İkiniz de ${labels[choice]} seçtiniz.`;
+        recordGameScore("rps", 10, `Berabere (${labels[choice]})`);
+      } else if (
+        (choice === "rock" && bot === "scissors") ||
+        (choice === "paper" && bot === "rock") ||
+        (choice === "scissors" && bot === "paper")
+      ) {
+        if (elRes) elRes.textContent = `Kazandın! ${labels[choice]} > ${labels[bot]} (+25 puan)`;
+        recordGameScore("rps", 25, `Galibiyet (${labels[choice]})`);
+      } else {
+        if (elRes) elRes.textContent = `Rakip kazandı (${labels[bot]} > ${labels[choice]}).`;
+        recordGameScore("rps", 5, "Deneme turu");
+      }
+    }
+
+    // --- WORDLE ---
+    function renderWordleGame() {
+      const w = state.wordle;
+      const arena = document.getElementById("game-arena");
+      let rowsHtml = "";
+      for (let r = 0; r < 5; r++) {
+        const guess = w.guesses[r] || "";
+        let cellsHtml = "";
+        for (let c = 0; c < 5; c++) {
+          const ch = guess[c] || "";
+          let cls = "";
+          if (ch) {
+            if (w.target[c] === ch) cls = "correct";
+            else if (w.target.includes(ch)) cls = "present";
+            else cls = "absent";
+          }
+          cellsHtml += `<div class="wordle-cell ${cls}">${ch}</div>`;
+        }
+        rowsHtml += `<div class="wordle-row">${cellsHtml}</div>`;
+      }
+
+      arena.innerHTML = `
+        <div style="font-size:13px; font-weight:700;">5 Harfli Kelimeyi Bul (${w.guesses.length}/5)</div>
+        <div class="wordle-grid">${rowsHtml}</div>
+        <form class="wordle-input-row" onsubmit="submitWordleGuess(event)">
+          <input type="text" id="wordle-input" class="wordle-input" maxlength="5" placeholder="KALEM" ${w.over ? "disabled" : ""} required />
+          <button type="submit" class="send-btn" ${w.over ? "disabled" : ""}>Tahmin</button>
+        </form>
+        <div style="display:flex; gap:8px; width:100%; margin-top:8px;">
+          <button class="btn-secondary" style="flex:1;" onclick="resetGameState('wordle'); renderWordleGame();">🔄 Yeni Kelime</button>
+          <button class="btn-primary" style="flex:1;" onclick="openGameInChat()">💬 Sohbete Geç</button>
+        </div>
+      `;
+    }
+
+    function submitWordleGuess(e) {
+      e.preventDefault();
+      const w = state.wordle;
+      if (w.over) return;
+      const inp = document.getElementById("wordle-input");
+      const guess = inp.value.trim().toUpperCase();
+      if (guess.length !== 5) {
+        showToast("5 harfli kelime gir.");
+        return;
+      }
+      w.guesses.push(guess);
+      if (guess === w.target) {
+        w.won = true;
+        w.over = true;
+        recordGameScore("wordle", 60, `Kelime bulundu: ${w.target}`);
+        showToast(`Tebrikler! ${w.target} kelimesini buldun!`);
+      } else if (w.guesses.length >= 5) {
+        w.over = true;
+        recordGameScore("wordle", 15, `Hedef: ${w.target}`);
+        showToast(`Kelime: ${w.target}`);
+      }
+      renderWordleGame();
+    }
+
+    // --- XOX ---
+    function renderXoxGame() {
+      const x = state.xox;
+      const arena = document.getElementById("game-arena");
+      arena.innerHTML = `
+        <div style="font-size:14px; font-weight:700;">XOX (Sen: X)</div>
+        <div class="xox-board">
+          ${x.board.map((val, idx) => `
+            <button type="button" class="xox-cell ${val === "X" ? "x-mark" : val === "O" ? "o-mark" : ""}" onclick="playXox(${idx})">${val || ""}</button>
+          `).join("")}
+        </div>
+        <div style="display:flex; gap:8px; width:100%;">
+          <button class="btn-secondary" style="flex:1;" onclick="resetGameState('xox'); renderXoxGame();">🔄 Temizle</button>
+          <button class="btn-primary" style="flex:1;" onclick="openGameInChat()">💬 Sohbete Geç</button>
+        </div>
+      `;
+    }
+
+    function checkXoxWinner(b) {
+      const lines = [
+        [0,1,2],[3,4,5],[6,7,8],
+        [0,3,6],[1,4,7],[2,5,8],
+        [0,4,8],[2,4,6]
+      ];
+      for (const [a,b1,c] of lines) {
+        if (b[a] && b[a] === b[b1] && b[a] === b[c]) return b[a];
+      }
+      return b.every(Boolean) ? "DRAW" : null;
+    }
+
+    function playXox(idx) {
+      const x = state.xox;
+      if (x.over || x.board[idx]) return;
+      x.board[idx] = "X";
+      let res = checkXoxWinner(x.board);
+      if (!res) {
+        const empty = x.board.map((v, i) => v ? null : i).filter((v) => v !== null);
+        if (empty.length) {
+          const pick = empty[Math.floor(Math.random() * empty.length)];
+          x.board[pick] = "O";
+          res = checkXoxWinner(x.board);
+        }
+      }
+      if (res) {
+        x.over = true;
+        if (res === "X") {
+          recordGameScore("xox", 35, "XOX Galibiyeti");
+          showToast("XOX'u kazandın! +35 puan");
+        } else if (res === "DRAW") {
+          recordGameScore("xox", 15, "XOX Berabere");
+          showToast("Berabere! +15 puan");
+        } else {
+          showToast("Rakip O kazandı.");
+        }
+      }
+      renderXoxGame();
+    }
+
+    // --- HIZLI BİLGİ & FUTBOL BİLMECE ---
+    const TRIVIA_BANK = [
+      { q: "Türkiye'nin başkenti neresidir?", opts: ["İstanbul", "Ankara", "İzmir"], ans: 1 },
+      { q: "Güneş sistemindeki en büyük gezegen hangisidir?", opts: ["Mars", "Venüs", "Jüpiter"], ans: 2 }
+    ];
+    const FOOTBALL_BANK = [
+      { q: "Penaltı noktası ile kale çizgisi arası kaç yardadır?", opts: ["12 yarda", "18 yarda", "6 yarda"], ans: 0 },
+      { q: "Bir futbol maçında normal süre kaç dakikadır?", opts: ["80 dakika", "90 dakika", "100 dakika"], ans: 1 }
+    ];
+
+    function renderTriviaGame() {
+      const t = state.trivia;
+      const arena = document.getElementById("game-arena");
+      if (t.finished || t.index >= TRIVIA_BANK.length) {
+        arena.innerHTML = `
+          <div style="font-size:16px; font-weight:800;">Tamamlandı! Skor: ${t.score}</div>
+          <button class="btn-primary" onclick="resetGameState('trivia'); renderTriviaGame();">🔄 Tekrar Oyna</button>
+          <button class="btn-secondary" onclick="openGameInChat()">💬 Sohbete Geç</button>
+        `;
+        return;
+      }
+      const item = TRIVIA_BANK[t.index];
+      arena.innerHTML = `
+        <div style="font-size:14.5px; font-weight:700;">${item.q}</div>
+        <div class="trivia-options">
+          ${item.opts.map((o, i) => `<button class="trivia-btn" onclick="answerTrivia(${i})">${o}</button>`).join("")}
+        </div>
+      `;
+    }
+
+    function answerTrivia(i) {
+      const t = state.trivia;
+      const item = TRIVIA_BANK[t.index];
+      if (i === item.ans) t.score += 25;
+      t.index += 1;
+      if (t.index >= TRIVIA_BANK.length) {
+        t.finished = true;
+        recordGameScore("trivia", t.score, "Hızlı Bilgi Turu");
+      }
+      renderTriviaGame();
+    }
+
+    function renderFootballGame() {
+      const f = state.football;
+      const arena = document.getElementById("game-arena");
+      if (f.finished || f.index >= FOOTBALL_BANK.length) {
+        arena.innerHTML = `
+          <div style="font-size:16px; font-weight:800;">Futbol Bilmece Bitti! Skor: ${f.score}</div>
+          <button class="btn-primary" onclick="resetGameState('football'); renderFootballGame();">🔄 Tekrar Oyna</button>
+          <button class="btn-secondary" onclick="openGameInChat()">💬 Sohbete Geç</button>
+        `;
+        return;
+      }
+      const item = FOOTBALL_BANK[f.index];
+      arena.innerHTML = `
+        <div style="font-size:14.5px; font-weight:700;">${item.q}</div>
+        <div class="trivia-options">
+          ${item.opts.map((o, i) => `<button class="trivia-btn" onclick="answerFootball(${i})">${o}</button>`).join("")}
+        </div>
+      `;
+    }
+
+    function answerFootball(i) {
+      const f = state.football;
+      const item = FOOTBALL_BANK[f.index];
+      if (!item) return;
+      if (i === item.ans) f.score += 25;
+      f.index += 1;
+      if (f.index >= FOOTBALL_BANK.length) {
+        f.finished = true;
+        recordGameScore("football", f.score, "Futbol Bilmece Turu");
+      }
+      renderFootballGame();
+    }
+
+    function renderTavlaGame() {
+      const arena = document.getElementById("game-arena");
+      const d1 = 1 + Math.floor(Math.random() * 6);
+      const d2 = 1 + Math.floor(Math.random() * 6);
+      const total = d1 + d2;
+      recordGameScore("tavla", total * 2, `Zar: ${d1} + ${d2} = ${total}`);
+      arena.innerHTML = `
+        <div style="font-size:15px; font-weight:800;">Tavla Zar Düellosu</div>
+        <div class="dice-pair">
+          <div class="dice-box">${d1}</div>
+          <div class="dice-box">${d2}</div>
+        </div>
+        <p style="font-size:13px; font-weight:700;">Toplam: ${total} (+${total * 2} puan)</p>
+        <div style="display:flex; gap:8px; width:100%;">
+          <button class="btn-secondary" style="flex:1;" onclick="renderTavlaGame()">🎲 Tekrar At</button>
+          <button class="btn-primary" style="flex:1;" onclick="openGameInChat()">💬 Sohbete Geç</button>
+        </div>
+      `;
+    }
+
+    // --- YAKLAŞIK ---
+    const APPROX_QUESTIONS = [
+      { q: "Dünya'nın Ay'a ortalama uzaklığı kaç bin km'dir?", answer: 384, unit: "bin km", opts: [150, 384, 920] },
+      { q: "İnsan vücudunda yaklaşık kaç kemik bulunur?", answer: 206, unit: "kemik", opts: [148, 206, 312] }
+    ];
+
+    function renderApproxGame() {
+      const a = state.approx;
+      const arena = document.getElementById("game-arena");
+      if (a.finished || a.index >= APPROX_QUESTIONS.length) {
+        arena.innerHTML = `
+          <div style="font-size:16px; font-weight:800;">Yaklaşık Bitti! Skor: ${a.score}</div>
+          <button class="btn-primary" onclick="resetGameState('approx'); renderApproxGame();">🔄 Tekrar Oyna</button>
+          <button class="btn-secondary" onclick="openGameInChat()">💬 Sohbete Geç</button>
+        `;
+        return;
+      }
+      const item = APPROX_QUESTIONS[a.index];
+      arena.innerHTML = `
+        <div style="width:100%; display:flex; justify-content:space-between; font-size:12px; font-weight:700;">
+          <span>🎯 Soru ${a.index + 1}/${APPROX_QUESTIONS.length}</span>
+          <span>Skor: ${a.score}</span>
+        </div>
+        <div style="font-size:14.5px; font-weight:700;">${item.q}</div>
+        <div class="trivia-options">
+          ${item.opts.map((val) => `
+            <button class="trivia-btn" onclick="answerApprox(${val})">${val.toLocaleString("tr-TR")} ${item.unit}</button>
+          `).join("")}
+        </div>
+        <p style="font-size:12px; font-weight:700; color:var(--text-muted);">${a.feedback}</p>
+      `;
+    }
+
+    function answerApprox(val) {
+      const a = state.approx;
+      const item = APPROX_QUESTIONS[a.index];
+      if (!item) return;
+      const isExact = val === item.answer;
+      const gained = isExact ? 30 : 10;
+      a.score += gained;
+      a.feedback = isExact
+        ? `🎯 Tam isabet! Doğru değer ${item.answer} ${item.unit} (+${gained}p)`
+        : `📏 Gerçek değer ${item.answer} ${item.unit} idi (+${gained}p)`;
+      a.index += 1;
+      if (a.index >= APPROX_QUESTIONS.length) {
+        a.finished = true;
+        recordGameScore("approx", a.score, `Yaklaşık skoru: ${a.score}p`);
+      }
+      renderApproxGame();
+    }
+
+    // --- SİNEMOJİK ---
+    const SINEMOJIK_BANK = [
+      { emojis: "🚢🧊❄️💔", opts: ["Titanik", "Matrix", "Gladyatör"], ans: 0 },
+      { emojis: "🦁👑🌅🐾", opts: ["Aslan Kral", "Inception", "Yüzüklerin Efendisi"], ans: 0 }
+    ];
+
+    function renderSinemojikGame() {
+      const s = state.sinemojik;
+      const arena = document.getElementById("game-arena");
+      if (s.finished || s.index >= SINEMOJIK_BANK.length) {
+        arena.innerHTML = `
+          <div style="font-size:16px; font-weight:800;">Sinemojik Bitti! Skor: ${s.score}</div>
+          <button class="btn-primary" onclick="resetGameState('sinemojik'); renderSinemojikGame();">🔄 Tekrar Oyna</button>
+          <button class="btn-secondary" onclick="openGameInChat()">💬 Sohbete Geç</button>
+        `;
+        return;
+      }
+      const item = SINEMOJIK_BANK[s.index];
+      arena.innerHTML = `
+        <div style="width:100%; display:flex; justify-content:space-between; font-size:12px; font-weight:700;">
+          <span>🎬 Film ${s.index + 1}/${SINEMOJIK_BANK.length}</span>
+          <span>Skor: ${s.score}</span>
+        </div>
+        <div style="font-size:32px; letter-spacing:4px; background:var(--bg-main); padding:10px 14px; border-radius:14px;">${item.emojis}</div>
+        <div class="trivia-options">
+          ${item.opts.map((o, idx) => `<button class="trivia-btn" onclick="answerSinemojik(${idx})">${o}</button>`).join("")}
+        </div>
+        <p style="font-size:12px; font-weight:700; color:var(--text-muted);">${s.feedback}</p>
+      `;
+    }
+
+    function answerSinemojik(idx) {
+      const s = state.sinemojik;
+      const item = SINEMOJIK_BANK[s.index];
+      if (!item) return;
+      if (idx === item.ans) {
+        s.score += 25;
+        s.feedback = `🎬 Bildin! Doğru film: ${item.opts[item.ans]} (+25p)`;
+      } else {
+        s.feedback = `🍿 Doğru film: ${item.opts[item.ans]}`;
+      }
+      s.index += 1;
+      if (s.index >= SINEMOJIK_BANK.length) {
+        s.finished = true;
+        recordGameScore("sinemojik", Math.max(10, s.score), `Sinemojik: ${s.score}p`);
+      }
+      renderSinemojikGame();
+    }
+
+    // --- SORDUK ---
+    const SORDUK_BANK = [
+      { q: "100 kişiye sorduk: 'Uyumadan önce son baktığınız şey nedir?'", opts: ["Telefon", "Kitap", "Tavan"], ans: 0 },
+      { q: "100 kişiye sorduk: 'Hafta sonu kahvaltısının vazgeçilmezi?'", opts: ["Çay & Simit", "Krep", "Granola"], ans: 0 }
+    ];
+
+    function renderSordukGame() {
+      const q = state.sorduk;
+      const arena = document.getElementById("game-arena");
+      if (q.finished || q.index >= SORDUK_BANK.length) {
+        arena.innerHTML = `
+          <div style="font-size:16px; font-weight:800;">Sorduk Bitti! Skor: ${q.score}</div>
+          <button class="btn-primary" onclick="resetGameState('sorduk'); renderSordukGame();">🔄 Tekrar Oyna</button>
+          <button class="btn-secondary" onclick="openGameInChat()">💬 Sohbete Geç</button>
+        `;
+        return;
+      }
+      const item = SORDUK_BANK[q.index];
+      arena.innerHTML = `
+        <div style="width:100%; display:flex; justify-content:space-between; font-size:12px; font-weight:700;">
+          <span>🗣️ Anket ${q.index + 1}/${SORDUK_BANK.length}</span>
+          <span>Skor: ${q.score}</span>
+        </div>
+        <div style="font-size:14px; font-weight:700;">${item.q}</div>
+        <div class="trivia-options">
+          ${item.opts.map((o, idx) => `<button class="trivia-btn" onclick="answerSorduk(${idx})">${o}</button>`).join("")}
+        </div>
+        <p style="font-size:12px; font-weight:700; color:var(--text-muted);">${q.feedback}</p>
+      `;
+    }
+
+    function answerSorduk(idx) {
+      const q = state.sorduk;
+      const item = SORDUK_BANK[q.index];
+      if (!item) return;
+      if (idx === item.ans) {
+        q.score += 25;
+        q.feedback = `🗣️ En popüler yanıtı buldun! (${item.opts[item.ans]}) (+25p)`;
+      } else {
+        q.feedback = `📊 En çok seçilen yanıt: ${item.opts[item.ans]}`;
+      }
+      q.index += 1;
+      if (q.index >= SORDUK_BANK.length) {
+        q.finished = true;
+        recordGameScore("sorduk", Math.max(10, q.score), `Sorduk: ${q.score}p`);
+      }
+      renderSordukGame();
+    }
+
+    // --- MANCINIK ---
+    function renderCatapultGame() {
+      const c = state.catapult;
+      const arena = document.getElementById("game-arena");
+      arena.innerHTML = `
+        <div style="width:100%; display:flex; justify-content:space-between; font-size:12px; font-weight:700;">
+          <span>🏹 Hedef: ${c.targetDist}m</span>
+          <span>Atış: ${c.shots} • Skor: ${c.score}</span>
+        </div>
+
+        <div style="width:100%; background:var(--bg-main); border:1.5px solid var(--border-soft); border-radius:14px; padding:12px; text-align:left;">
+          <label style="display:block; font-size:12px; font-weight:700; margin-bottom:4px;">
+            Açı: <strong id="cat-angle-val">${c.angle}°</strong>
+            <input type="range" min="20" max="75" value="${c.angle}" style="width:100%;" oninput="updateCatapultParams('angle', this.value)" />
+          </label>
+          <label style="display:block; font-size:12px; font-weight:700; margin-top:8px;">
+            Güç: <strong id="cat-power-val">${c.power}%</strong>
+            <input type="range" min="20" max="100" value="${c.power}" style="width:100%;" oninput="updateCatapultParams('power', this.value)" />
+          </label>
+        </div>
+
+        <p style="font-size:12.5px; font-weight:700; color:var(--text-dark);">${c.feedback}</p>
+
+        <div style="display:flex; gap:8px; width:100%;">
+          <button type="button" class="btn-primary" style="flex:1;" onclick="fireCatapult()">🔥 Fırlat</button>
+          <button type="button" class="btn-secondary" onclick="resetGameState('catapult'); renderCatapultGame();">🔄 Yeni Hedef</button>
+        </div>
+      `;
+    }
+
+    function updateCatapultParams(key, val) {
+      const num = Number(val);
+      if (key === "angle") {
+        state.catapult.angle = num;
+        const el = document.getElementById("cat-angle-val");
+        if (el) el.textContent = `${num}°`;
+      } else if (key === "power") {
+        state.catapult.power = num;
+        const el = document.getElementById("cat-power-val");
+        if (el) el.textContent = `${num}%`;
+      }
+    }
+
+    function fireCatapult() {
+      const c = state.catapult;
+      c.shots += 1;
+      const rad = (c.angle * Math.PI) / 180;
+      const range = Math.round(c.power * Math.sin(2 * rad) * 1.05);
+      const diff = range - c.targetDist;
+
+      if (Math.abs(diff) <= 5) {
+        const gained = Math.max(20, 50 - (c.shots - 1) * 5);
+        c.score += gained;
+        c.won = true;
+        c.feedback = `🎯 İSABET! Taş ${range}m'ye düştü (Hedef ${c.targetDist}m) (+${gained}p)`;
+        recordGameScore("catapult", gained, `${c.shots}. atışta isabet (${range}m)`);
+        showToast(`Hedef vuruldu! +${gained} puan`);
+      } else if (diff < 0) {
+        c.feedback = `📉 Kısa düştü (${range}m). Gücü veya açıyı artır!`;
+      } else {
+        c.feedback = `📈 Uzun düştü (${range}m). Gücü azalt!`;
+      }
+      renderCatapultGame();
+    }
+
+    const MOCK_PARTNERS = [
+      { name: "Kızıl Tilki", avatar: "🦊", tag: "#1904", city: "İstanbul" },
+      { name: "Bilge Panda", avatar: "🐼", tag: "#3318", city: "Ankara" },
+      { name: "Çevik Penguen", avatar: "🐧", tag: "#7720", city: "İzmir" },
+      { name: "Neşeli Koala", avatar: "🐨", tag: "#5509", city: "Bursa" }
+    ];
+
+    function startMatchmaking(mode = "game") {
+      state.matchType = mode === "direct" ? "direct" : "game";
+      const labelEl = document.getElementById("matching-mode-label");
+      const statusEl = document.getElementById("matching-status-text");
+      const subEl = document.getElementById("matching-sub-text");
+      const gameMeta = GAME_META[state.selectedGame] || GAME_META.penalty;
+
+      if (labelEl) {
+        labelEl.textContent = state.matchType === "direct" ? "Direkt Sohbet Eşleşmesi" : "Oyunlu Eşleşme";
+      }
+      if (statusEl) {
+        statusEl.textContent = state.matchPref === "nearby" && state.location
+          ? "Yakınındaki uygun kişi aranıyor..."
+          : "Uygun kişi aranıyor...";
+      }
+      if (subEl) {
+        subEl.textContent = state.matchType === "direct"
+          ? "Eşleşir eşleşmez doğrudan sohbet odasına geçeceksin."
+          : `Seçili oyun: ${gameMeta.icon} ${gameMeta.name}`;
+      }
+
+      if (state.matchTimer) clearTimeout(state.matchTimer);
+      switchView("view-matching");
+
+      state.matchTimer = setTimeout(() => {
+        const partner = MOCK_PARTNERS[Math.floor(Math.random() * MOCK_PARTNERS.length)];
+        setupPartnerChat(partner, state.matchType === "direct" ? "Direkt Eşleşme" : `${gameMeta.name} Odası`);
+        if (state.matchType === "game") {
+          resetGameState(state.selectedGame);
+          renderActiveGame();
+          switchView("view-game");
+        } else {
+          switchView("view-chat");
+        }
+      }, 900);
+    }
+
+    function cancelMatchmaking() {
+      if (state.matchTimer) {
+        clearTimeout(state.matchTimer);
+        state.matchTimer = null;
+      }
+      switchView("view-lobby");
+      showToast("Eşleşme iptal edildi.");
+    }
+
+    function setMatchPreferenceUI(pref) {
+      state.matchPref = pref;
+      const globalBtn = document.getElementById("pref-global");
+      const nearbyBtn = document.getElementById("pref-nearby");
+      const badge = document.getElementById("location-status-badge");
+      if (globalBtn) globalBtn.classList.toggle("active", pref === "global");
+      if (nearbyBtn) nearbyBtn.classList.toggle("active", pref === "nearby");
+      if (badge) badge.classList.toggle("show", pref === "nearby" && Boolean(state.location));
+    }
+
+    function selectGlobalMatch() {
+      setMatchPreferenceUI("global");
+      showToast("Herkesle eşleşme modu seçildi.");
+    }
+
+    function requestNearbyLocation() {
+      if (!navigator.geolocation) {
+        setMatchPreferenceUI("global");
+        showToast("Tarayıcı konum desteği sunmuyor.");
+        return;
+      }
+      navigator.geolocation.getCurrentPosition(
+        (pos) => {
+          state.location = {
+            lat: pos.coords.latitude,
+            lon: pos.coords.longitude
+          };
+          const coordsEl = document.getElementById("coords-short");
+          if (coordsEl) {
+            coordsEl.textContent = `(${pos.coords.latitude.toFixed(2)}, ${pos.coords.longitude.toFixed(2)})`;
+          }
+          setMatchPreferenceUI("nearby");
+          showToast("Yakınımdaki eşleşme modu açıldı.");
+        },
+        () => {
+          setMatchPreferenceUI("global");
+          showToast("Konum izni verilmedi, Herkesle Eşleş seçildi.");
+        }
+      );
+    }
+
+    function copyMyId() {
+      const idText = state.profile.tag;
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(idText).catch(() => {});
+      }
+      showToast(`ID kopyalandı: ${idText}`);
+    }
+
+    function openNicknameModal() {
+      const modal = document.getElementById("nickname-modal");
+      const input = document.getElementById("custom-nickname-input");
+      const grid = document.getElementById("emoji-picker-grid");
+      state.tempSelectedEmoji = state.profile.avatar;
+      if (input) input.value = state.profile.name;
+      if (grid) {
+        grid.innerHTML = AVATARS.map((emo) => `
+          <button
+            type="button"
+            class="emoji-opt ${emo === state.tempSelectedEmoji ? "selected" : ""}"
+            onclick="pickProfileEmoji('${emo}')"
+          >${emo}</button>
+        `).join("");
+      }
+      if (modal) modal.classList.add("open");
+    }
+
+    function pickProfileEmoji(emo) {
+      state.tempSelectedEmoji = emo;
+      document.querySelectorAll("#emoji-picker-grid .emoji-opt").forEach((btn) => {
+        btn.classList.toggle("selected", btn.textContent === emo);
+      });
+    }
+
+    function closeNicknameModal() {
+      const modal = document.getElementById("nickname-modal");
+      if (modal) modal.classList.remove("open");
+    }
+
+    function saveCustomNickname() {
+      const input = document.getElementById("custom-nickname-input");
+      const cleaned = (input ? input.value : "").trim();
+      if (!cleaned) {
+        showToast("Lütfen geçerli bir kullanıcı adı gir.");
+        return;
+      }
+      state.profile.name = cleaned;
+      state.profile.avatar = state.tempSelectedEmoji || state.profile.avatar;
+      updateProfileUI();
+      closeNicknameModal();
+      showToast("Profil güncellendi.");
+    }
+
+    function setupPartnerChat(partner, roomLabel = "Sohbet Odası") {
+      state.currentPartner = partner;
+      const roomLabelEl = document.getElementById("chat-room-label");
+      const avEl = document.getElementById("chat-partner-avatar");
+      const nameEl = document.getElementById("chat-partner-name");
+      const idEl = document.getElementById("chat-partner-id");
+      const statusEl = document.getElementById("chat-partner-status");
+      const msgsEl = document.getElementById("chat-messages");
+
+      if (roomLabelEl) roomLabelEl.textContent = roomLabel;
+      if (avEl) avEl.textContent = partner.avatar;
+      if (nameEl) nameEl.textContent = partner.name;
+      if (idEl) idEl.textContent = partner.tag;
+      if (statusEl) {
+        statusEl.textContent = partner.city
+          ? `● Çevrimiçi • ${partner.city}`
+          : "● Çevrimiçi";
+      }
+
+      const favBtn = document.getElementById("fav-btn");
+      if (favBtn) {
+        const isFav = state.favorites.includes(partner.tag);
+        favBtn.classList.toggle("fav-active", isFav);
+        favBtn.textContent = isFav ? "★ Favori" : "☆ Favori";
+      }
+
+      const friendBtn = document.getElementById("add-friend-btn");
+      if (friendBtn) {
+        const isFriend = state.friends.some((f) => f.tag === partner.tag);
+        friendBtn.classList.toggle("friend-added", isFriend);
+        friendBtn.textContent = isFriend ? "✓ Arkadaş" : "+ Arkadaş";
+      }
+
+      if (msgsEl) {
+        const gameName = GAME_META[state.selectedGame]?.name || "Penaltı";
+        msgsEl.innerHTML = `<div class="msg-system">${partner.avatar} ${partner.name} ile eşleştin (${gameName}). Mesaja sağa kaydırarak veya tıklayarak alıntıla!</div>`;
+      }
+      clearReplyTarget();
+    }
+    function setReplyTarget(senderName, text) {
+      state.replyingTo = { senderName, text };
+      const bar = document.getElementById("reply-composer-bar");
+      const senderEl = document.getElementById("reply-target-sender");
+      const textEl = document.getElementById("reply-target-text");
+      if (senderEl) senderEl.textContent = `↩ ${senderName} mesajına yanıt veriliyor`;
+      if (textEl) textEl.textContent = text;
+      if (bar) bar.classList.add("active");
+      const input = document.getElementById("chat-input");
+      if (input) input.focus();
+    }
+
+    function clearReplyTarget() {
+      state.replyingTo = null;
+      const bar = document.getElementById("reply-composer-bar");
+      if (bar) bar.classList.remove("active");
+    }
+
+    function appendChatMessage(text, sender = "me", quote = null) {
+      const msgsEl = document.getElementById("chat-messages");
+      if (!msgsEl) return;
+      const senderLabel = sender === "me"
+        ? (state.profile.name || "Sen")
+        : (state.currentPartner?.name || "Rakip");
+
+      const bubble = document.createElement("div");
+      bubble.className = `msg-bubble ${sender === "me" ? "msg-me" : "msg-other"}`;
+
+      if (quote && quote.text) {
+        const qBox = document.createElement("div");
+        qBox.className = "msg-quote-preview";
+        qBox.innerHTML = `<strong>${quote.senderName}:</strong> ${quote.text}`;
+        bubble.appendChild(qBox);
+      }
+
+      const bodyText = document.createElement("span");
+      bodyText.textContent = text;
+      bubble.appendChild(bodyText);
+
+      // WhatsApp benzeri sağa kaydırarak veya çift/tek tıklayarak alıntılama
+      let startX = 0;
+      let deltaX = 0;
+
+      bubble.addEventListener("touchstart", (e) => {
+        if (!e.touches || !e.touches.length) return;
+        startX = e.touches[0].clientX;
+        deltaX = 0;
+      }, { passive: true });
+
+      bubble.addEventListener("touchmove", (e) => {
+        if (!e.touches || !e.touches.length) return;
+        const diff = e.touches[0].clientX - startX;
+        if (diff > 0) {
+          deltaX = Math.min(diff, 64);
+          bubble.style.transform = `translateX(${deltaX * 0.45}px)`;
+        }
+      }, { passive: true });
+
+      bubble.addEventListener("touchend", () => {
+        bubble.style.transform = "";
+        if (deltaX >= 28) {
+          setReplyTarget(senderLabel, text);
+        }
+        deltaX = 0;
+      });
+
+      bubble.addEventListener("dblclick", () => {
+        setReplyTarget(senderLabel, text);
+      });
+
+      msgsEl.appendChild(bubble);
+      msgsEl.scrollTop = msgsEl.scrollHeight;
+    }
+
+    function handleSendMessage(e) {
+      e.preventDefault();
+      const input = document.getElementById("chat-input");
+      const text = (input ? input.value : "").trim();
+      if (!text) return;
+      const activeQuote = state.replyingTo ? { ...state.replyingTo } : null;
+      appendChatMessage(text, "me", activeQuote);
+      clearReplyTarget();
+      if (input) input.value = "";
+
+      setTimeout(() => {
+        const replies = [
+          "Harika fikir! Bir el daha atalım mı?",
+          "Kesinlikle katılıyorum 😄",
+          "Hangi oyunu seçersek ben varım!"
+        ];
+        const replyText = replies[Math.floor(Math.random() * replies.length)];
+        appendChatMessage(replyText, "other", { senderName: state.profile.name || "Sen", text });
+      }, 650);
+    }
+
+    function sendIcebreaker(text) {
+      const activeQuote = state.replyingTo ? { ...state.replyingTo } : null;
+      appendChatMessage(text, "me", activeQuote);
+      clearReplyTarget();
+      setTimeout(() => {
+        appendChatMessage("Selam! Ben de tam şimdi oyun modundaydım, süper oldu!", "other", {
+          senderName: state.profile.name || "Sen",
+          text
+        });
+      }, 550);
+    }
+
+    function toggleFavoritePartner() {
+      if (!state.currentPartner) return;
+      const tag = state.currentPartner.tag;
+      const idx = state.favorites.indexOf(tag);
+      if (idx >= 0) {
+        state.favorites.splice(idx, 1);
+        showToast("Favorilerden çıkarıldı.");
+      } else {
+        state.favorites.push(tag);
+        showToast("Favorilere eklendi.");
+      }
+      setupPartnerChat(state.currentPartner, document.getElementById("chat-room-label")?.textContent || "Sohbet Odası");
+    }
+
+    function addCurrentPartnerAsFriend() {
+      if (!state.currentPartner) return;
+      const exists = state.friends.some((f) => f.tag === state.currentPartner.tag);
+      if (!exists) {
+        state.friends.push({ ...state.currentPartner });
+        updateFriendsBadge();
+        renderFriendsList();
+        showToast(`${state.currentPartner.name} arkadaşlara eklendi.`);
+      }
+      setupPartnerChat(state.currentPartner, document.getElementById("chat-room-label")?.textContent || "Sohbet Odası");
     }
 
     function renderFriendsList() {
       const container = document.getElementById("friends-list-container");
-      container.innerHTML = "";
-
-      if (friendsList.length === 0) {
+      if (!container) return;
+      if (!state.friends.length) {
         container.innerHTML = `
           <div class="empty-state-box">
-            <span style="font-size: 32px;">👥</span>
-            <div style="font-weight: 700; color: var(--text-dark);">Henüz ekli arkadaşın yok</div>
-            <p style="font-size: 13px; max-width: 260px;">
-              Sohbet ettiğin kişileri <strong>➕ Ekle</strong> butonuyla veya yukarıdaki kutuya kullanıcı adı / #ID yazarak listene ekleyebilirsin.
-            </p>
+            <span style="font-size:28px;">👥</span>
+            <strong>Henüz arkadaş listen boş</strong>
+            <span style="font-size:12.5px;">ID girerek ekleyebilir veya sohbetten arkadaş ekleyebilirsin.</span>
           </div>
         `;
         return;
       }
 
-      const sorted = [...friendsList].sort((a, b) => (b.isFavorite ? 1 : 0) - (a.isFavorite ? 1 : 0));
-
-      sorted.forEach(friend => {
-        const card = document.createElement("div");
-        card.className = "user-card";
-        card.innerHTML = `
+      container.innerHTML = state.friends.map((fr, idx) => `
+        <div class="user-card">
           <div class="user-meta">
-            <span style="font-size: 24px;">${friend.emoji}</span>
+            <span style="font-size:24px;">${fr.avatar}</span>
             <div>
-              <div style="font-size: 14px; font-weight: 700;">
-                ${friend.name} ${friend.isFavorite ? '⭐' : ''}
-              </div>
-              <div style="font-size: 11.5px; color: var(--text-muted);">
-                ${friend.isFavorite ? 'Favori Kullanıcı' : 'Kayıtlı Arkadaş'}
-              </div>
+              <strong style="font-size:13.5px;">${fr.name}</strong>
+              <div style="font-size:11px; color:var(--primary); font-weight:700;">${fr.tag}</div>
             </div>
           </div>
-          <div style="display:flex; gap:6px;">
-            <button class="icon-action-btn ${friend.isFavorite ? 'fav-active' : ''}" onclick="toggleFriendFav(${friend.id})" title="Favori">⭐</button>
-            <button class="icon-action-btn" onclick="removeFriend(${friend.id})" title="Sil" style="color: #DC2626;">✕</button>
-          </div>
-        `;
-        container.appendChild(card);
-      });
+          <button type="button" class="send-btn" style="padding:8px 12px; font-size:12px;" onclick="chatWithFriend(${idx})">Sohbet</button>
+        </div>
+      `).join("");
     }
 
-    function toggleFriendFav(id) {
-      const f = friendsList.find(item => item.id === id);
-      if (f) {
-        f.isFavorite = !f.isFavorite;
-        saveFriends();
-        renderFriendsList();
-      }
-    }
+    function handleAddFriendById(e) {
+      e.preventDefault();
+      const input = document.getElementById("friend-id-input");
+      let raw = (input ? input.value : "").trim();
+      if (!raw) return;
+      if (!raw.startsWith("#")) raw = `#${raw}`;
 
-    function removeFriend(id) {
-      friendsList = friendsList.filter(item => item.id !== id);
-      saveFriends();
-      renderFriendsList();
-      showToast("Kullanıcı listeden çıkarıldı.");
-    }
-
-    function manualAddFriend() {
-      const input = document.getElementById("new-friend-input");
-      const name = input.value.trim();
-      if (!name) return;
-      const randomAni = animals[Math.floor(Math.random() * animals.length)];
-      friendsList.unshift({
-        id: Date.now(),
-        name: name,
-        emoji: randomAni.emoji,
-        isFavorite: false
-      });
-      input.value = "";
-      saveFriends();
-      renderFriendsList();
-      showToast(`${name} arkadaş listene eklendi.`);
-    }
-
-    // Oda Kur / Gir
-    function generateNewRoomCode() {
-      const code = "HK-" + Math.floor(1000 + Math.random() * 9000);
-      document.getElementById("generated-room-code").textContent = code;
-      showToast("Yeni oda kodu oluşturuldu.");
-    }
-
-    function copyRoomCode() {
-      const code = document.getElementById("generated-room-code").textContent;
-      navigator.clipboard?.writeText(code);
-      showToast(`Oda kodu kopyalandı: ${code}`);
-    }
-
-    function joinExistingRoom() {
-      const code = document.getElementById("join-room-input").value.trim().toUpperCase();
-      if (!code) {
-        showToast("Lütfen geçerli bir oda kodu girin!");
+      if (state.friends.some((f) => f.tag === raw)) {
+        showToast("Bu kullanıcı zaten arkadaş listende.");
         return;
       }
-      showToast(`${code} odasına bağlanılıyor...`);
+
+      const newFriend = {
+        name: `Oyuncu ${raw}`,
+        avatar: AVATARS[Math.floor(Math.random() * AVATARS.length)],
+        tag: raw,
+        city: "Çevrimiçi"
+      };
+      state.friends.push(newFriend);
+      if (input) input.value = "";
+      updateFriendsBadge();
+      renderFriendsList();
+      showToast(`${raw} arkadaşlara eklendi.`);
     }
 
-    document.getElementById("faq-toggle").addEventListener("click", () => {
-      document.getElementById("faq-box").classList.toggle("open");
-    });
+    function chatWithFriend(idx) {
+      const fr = state.friends[idx];
+      if (!fr) return;
+      setupPartnerChat(fr, `Özel Sohbet • ${fr.tag}`);
+      switchView("view-chat");
+    }
 
-    // Başlangıç
-    renderUserProfile();
-    setOnlineCount(1);
+    function generateNewRoomCode() {
+      const code = `ODA-${Math.floor(1000 + Math.random() * 9000)}`;
+      const el = document.getElementById("created-room-code");
+      if (el) el.textContent = code;
+      showToast(`Yeni oda kodu: ${code}`);
+    }
+
+    function enterCreatedRoom() {
+      const code = document.getElementById("created-room-code")?.textContent || "ODA-7492";
+      setupPartnerChat({
+        name: "Oda Misafiri",
+        avatar: "🎲",
+        tag: code,
+        city: "Özel Oda"
+      }, code);
+      switchView("view-chat");
+      showToast(`${code} odasına girildi.`);
+    }
+
+    function handleJoinRoom(e) {
+      e.preventDefault();
+      const inp = document.getElementById("join-room-input");
+      const code = (inp ? inp.value : "").trim().toUpperCase();
+      if (!code) return;
+      setupPartnerChat({
+        name: "Oda Arkadaşı",
+        avatar: "🎮",
+        tag: code,
+        city: "Özel Oda"
+      }, code);
+      if (inp) inp.value = "";
+      switchView("view-chat");
+      showToast(`${code} odasına katıldın.`);
+    }
+
+    function toggleFaq() {
+      const box = document.getElementById("faq-box");
+      if (box) box.classList.toggle("open");
+    }
+
+    document.getElementById("reroll-btn").addEventListener("click", rerollIdentity);
+    updateProfileUI();
     updateFriendsBadge();
+    renderFriendsList();
     renderScoreboard();
   </script>
-<style>
-  #hk-vibe-box {
-    max-width: 520px;
-    margin: 24px auto;
-    padding: 20px;
-    border-radius: 16px;
-    background: #1c1e22;
-    border: 1px solid #343840;
-    color: #e6e8ec;
-    font-family: system-ui, -apple-system, sans-serif;
-  }
-  #hk-vibe-box .hk-top {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: 10px;
-    margin-bottom: 14px;
-  }
-  #hk-vibe-box .hk-title {
-    font-size: 16px;
-    font-weight: 700;
-    margin: 0;
-  }
-  #hk-vibe-box select,
-  #hk-vibe-box button {
-    background: #2b2f36;
-    color: #f3f4f6;
-    border: 1px solid #454a54;
-    border-radius: 10px;
-    padding: 8px 12px;
-    font-size: 14px;
-    cursor: pointer;
-  }
-  #hk-vibe-box button:hover {
-    background: #383d46;
-  }
-  #hk-vibe-box .hk-card {
-    background: #24282e;
-    border: 1px solid #32363e;
-    border-radius: 12px;
-    padding: 14px;
-    line-height: 1.5;
-  }
-  #hk-vibe-box .hk-badge {
-    display: inline-block;
-    font-size: 12px;
-    background: #333842;
-    color: #d1d5db;
-    padding: 3px 8px;
-    border-radius: 999px;
-    margin-bottom: 8px;
-  }
-  #hk-vibe-box .hk-song {
-    font-size: 17px;
-    font-weight: 700;
-    margin: 4px 0 8px;
-    color: #ffffff;
-  }
-  #hk-vibe-box .hk-line {
-    font-size: 14px;
-    color: #c7ccd4;
-    margin: 0;
-  }
-  #hk-vibe-box .hk-actions {
-    display: flex;
-    gap: 8px;
-    margin-top: 12px;
-  }
 </body>
 </html>
-
