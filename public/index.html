@@ -1,1 +1,2357 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>hadikonus — Oyna, tanış, sohbet et.</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  
+  <style>
+    :root {
+      --bg-main: #F6F5F0;
+      --bg-card: #FFFFFF;
+      --primary: #2D4A36;
+      --primary-hover: #223829;
+      --primary-light: #E8F0EA;
+      --text-dark: #1E2420;
+      --text-muted: #68706A;
+      --border-soft: #E5E3DC;
+      --accent-green: #22C55E;
+      --accent-amber: #F59E0B;
+      --shadow-sm: 0 2px 8px rgba(30, 36, 32, 0.04);
+      --shadow-md: 0 8px 24px rgba(45, 74, 54, 0.12);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+      font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+      background-color: var(--bg-main);
+      color: var(--text-dark);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .app-container {
+      width: 100%;
+      max-width: 480px;
+      min-height: 100vh;
+      padding: 16px 18px 24px;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      overflow-x: hidden;
+    }
+
+    /* Üst Bar */
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 12px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      text-decoration: none;
+      color: var(--text-dark);
+      cursor: pointer;
+    }
+
+    .brand-icon {
+      width: 34px;
+      height: 34px;
+      background: var(--primary);
+      color: #fff;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .brand-name {
+      font-size: 20px;
+      font-weight: 800;
+      letter-spacing: -0.5px;
+    }
+
+    .header-right {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .trophy-btn {
+      background: var(--bg-card);
+      border: 1px solid var(--border-soft);
+      padding: 7px 11px;
+      border-radius: 999px;
+      font-family: inherit;
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--text-dark);
+      cursor: pointer;
+      box-shadow: var(--shadow-sm);
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      transition: all 0.15s ease;
+    }
+
+    .trophy-btn:hover { background: #FEF3C7; border-color: #F59E0B; }
+
+    .status-pill {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      background: var(--bg-card);
+      border: 1px solid var(--border-soft);
+      padding: 7px 11px;
+      border-radius: 999px;
+      font-size: 11.5px;
+      font-weight: 600;
+      color: var(--text-muted);
+      box-shadow: var(--shadow-sm);
+    }
+
+    .status-dot {
+      width: 8px;
+      height: 8px;
+      background-color: var(--accent-green);
+      border-radius: 50%;
+      box-shadow: 0 0 0 3px rgba(34, 197, 94, 0.2);
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0% { box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.4); }
+      70% { box-shadow: 0 0 0 6px rgba(34, 197, 94, 0); }
+      100% { box-shadow: 0 0 0 0 rgba(34, 197, 94, 0); }
+    }
+
+    /* YUKARIDAN AÇILAN KÜÇÜK SEKME (SLIDE-DOWN DRAWER / TAB) */
+    .top-drawer {
+      background: var(--bg-card);
+      border: 1.5px solid var(--border-soft);
+      border-radius: 18px;
+      padding: 14px;
+      margin-bottom: 14px;
+      box-shadow: 0 10px 25px rgba(30, 36, 32, 0.08);
+      display: none;
+      animation: slideDown 0.22s ease;
+    }
+
+    .top-drawer.open { display: block; }
+
+    @keyframes slideDown {
+      from { opacity: 0; transform: translateY(-10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .drawer-top-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 10px;
+    }
+
+    .drawer-title {
+      font-size: 13.5px;
+      font-weight: 800;
+      color: var(--text-dark);
+    }
+
+    .game-filter-chips {
+      display: flex;
+      gap: 6px;
+      overflow-x: auto;
+      padding-bottom: 8px;
+      scrollbar-width: none;
+      margin-bottom: 8px;
+    }
+    .game-filter-chips::-webkit-scrollbar { display: none; }
+
+    .g-chip {
+      flex: 0 0 auto;
+      background: var(--bg-main);
+      border: 1px solid var(--border-soft);
+      padding: 5px 10px;
+      border-radius: 999px;
+      font-family: inherit;
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--text-muted);
+      cursor: pointer;
+    }
+
+    .g-chip.active {
+      background: var(--primary);
+      color: #fff;
+      border-color: var(--primary);
+    }
+
+    .scoreboard-list {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      max-height: 165px;
+      overflow-y: auto;
+    }
+
+    .score-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: var(--bg-main);
+      padding: 8px 12px;
+      border-radius: 11px;
+      font-size: 12.5px;
+    }
+
+    /* Görünüm Yönetimi */
+    .view {
+      display: none;
+      flex-direction: column;
+      flex: 1;
+      animation: fadeIn 0.2s ease;
+    }
+
+    .view.active { display: flex; }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(5px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ANA SAYFA (LOBİ) */
+    .lobby-main {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      flex: 1;
+      justify-content: center;
+    }
+
+    /* Kullanıcı Adı + ID + Düzenleme Kutusu */
+    .profile-pill-wrapper {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+      margin-bottom: 14px;
+    }
+
+    .nickname-box {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--bg-card);
+      border: 1px solid var(--border-soft);
+      padding: 7px 12px 7px 14px;
+      border-radius: 999px;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .avatar-emoji { font-size: 20px; }
+    .nickname-text { font-size: 14.5px; font-weight: 700; color: var(--text-dark); }
+    .user-tag-id {
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--primary);
+      background: var(--primary-light);
+      padding: 2px 7px;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+
+    .pill-icon-btn {
+      background: var(--bg-main);
+      border: none;
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      color: var(--text-muted);
+      font-size: 13px;
+      transition: all 0.2s ease;
+    }
+
+    .pill-icon-btn:hover { background: #EAE8DF; color: var(--text-dark); }
+    .reroll-btn:hover { transform: rotate(90deg); }
+
+    h1 {
+      font-size: 34px;
+      line-height: 1.12;
+      font-weight: 800;
+      letter-spacing: -1.2px;
+      color: var(--text-dark);
+      margin-bottom: 8px;
+    }
+
+    .subtitle {
+      font-size: 13.5px;
+      line-height: 1.45;
+      color: var(--text-muted);
+      max-width: 340px;
+      margin-bottom: 14px;
+    }
+
+    /* Eşleşme Seçici: Sadece Herkesle Eşleş & Yakınımda (Konum İzni İster) */
+    .match-pref-bar {
+      display: flex;
+      gap: 6px;
+      background: #ECE9E0;
+      padding: 4px;
+      border-radius: 14px;
+      margin-bottom: 14px;
+      width: 100%;
+    }
+
+    .pref-chip {
+      flex: 1;
+      border: none;
+      background: transparent;
+      padding: 9px 10px;
+      border-radius: 10px;
+      font-family: inherit;
+      font-size: 12.5px;
+      font-weight: 700;
+      color: var(--text-muted);
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+
+    .pref-chip.active {
+      background: var(--bg-card);
+      color: var(--text-dark);
+      box-shadow: var(--shadow-sm);
+    }
+
+    .location-badge-info {
+      font-size: 11.5px;
+      color: var(--primary);
+      background: var(--primary-light);
+      padding: 5px 11px;
+      border-radius: 999px;
+      font-weight: 600;
+      margin-bottom: 12px;
+      display: none;
+    }
+    .location-badge-info.show { display: inline-flex; align-items: center; gap: 5px; }
+
+    .actions {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      gap: 9px;
+      margin-bottom: 20px;
+    }
+
+    .btn-primary {
+      width: 100%;
+      background: var(--primary);
+      color: #FFFFFF;
+      border: none;
+      padding: 15px 22px;
+      border-radius: 16px;
+      font-family: inherit;
+      font-size: 15.5px;
+      font-weight: 700;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      box-shadow: var(--shadow-md);
+      transition: all 0.2s ease;
+    }
+
+    .btn-primary:hover { background: var(--primary-hover); transform: translateY(-2px); }
+
+    .btn-direct-chat {
+      width: 100%;
+      background: var(--bg-card);
+      color: var(--primary);
+      border: 1.5px solid var(--primary);
+      padding: 13px 20px;
+      border-radius: 16px;
+      font-family: inherit;
+      font-size: 14px;
+      font-weight: 700;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      box-shadow: var(--shadow-sm);
+      transition: all 0.15s ease;
+    }
+
+    .btn-direct-chat:hover { background: var(--primary-light); transform: translateY(-1px); }
+
+    .secondary-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+
+    .btn-secondary {
+      background: var(--bg-card);
+      color: var(--text-dark);
+      border: 1px solid var(--border-soft);
+      padding: 13px 12px;
+      border-radius: 16px;
+      font-family: inherit;
+      font-size: 13.5px;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      box-shadow: var(--shadow-sm);
+      transition: all 0.15s ease;
+    }
+
+    .btn-secondary:hover { background: #FCFBF9; border-color: #CFCBC0; transform: translateY(-1px); }
+
+    .badge-count {
+      background: var(--primary);
+      color: #fff;
+      font-size: 11px;
+      font-weight: 700;
+      padding: 2px 7px;
+      border-radius: 999px;
+      display: none;
+    }
+
+    /* YAVAŞÇA YANDAN SÜZÜLEN MİNİ OYUNLAR (MARQUEE CAROUSEL) */
+    .games-section {
+      width: 100%;
+      margin-bottom: 16px;
+      overflow: hidden;
+    }
+
+    .section-divider {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 10px;
+    }
+    .section-divider::before, .section-divider::after {
+      content: ""; flex: 1; height: 1px; background: var(--border-soft);
+    }
+    .section-divider span {
+      font-size: 10.5px; font-weight: 700; letter-spacing: 1px; color: var(--text-muted); text-transform: uppercase;
+    }
+
+    .marquee-wrapper {
+      width: 100%;
+      overflow: hidden;
+      position: relative;
+      mask-image: linear-gradient(to right, transparent, black 6%, black 94%, transparent);
+      -webkit-mask-image: linear-gradient(to right, transparent, black 6%, black 94%, transparent);
+      padding: 4px 0;
+    }
+
+    .marquee-track {
+      display: flex;
+      gap: 10px;
+      width: max-content;
+      animation: smoothScroll 34s linear infinite;
+    }
+
+    .marquee-wrapper:hover .marquee-track,
+    .marquee-wrapper:active .marquee-track {
+      animation-play-state: paused;
+    }
+
+    @keyframes smoothScroll {
+      0% { transform: translateX(0); }
+      100% { transform: translateX(-50%); }
+    }
+
+    .game-card {
+      flex: 0 0 auto;
+      background: var(--bg-card);
+      border: 1.5px solid var(--border-soft);
+      border-radius: 16px;
+      padding: 9px 14px 9px 10px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      box-shadow: var(--shadow-sm);
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+
+    .game-card.playable { border-color: var(--primary); }
+    .game-card.selected-game { background: var(--primary-light); border-color: var(--primary); }
+    .game-card.coming-soon { opacity: 0.72; }
+
+    .game-icon {
+      width: 34px; height: 34px; border-radius: 10px;
+      display: flex; align-items: center; justify-content: center; font-size: 17px;
+    }
+    .icon-rps { background: #FEF3C7; }
+    .icon-wordle { background: #DCFCE7; }
+    .icon-xox { background: #E0F2FE; }
+    .icon-trivia { background: #FFEDD5; }
+    .icon-dice { background: #EDE9FE; }
+    .icon-ship { background: #F3E8FF; }
+    .icon-tavla { background: #FEF08A; }
+    .icon-football { background: #D1FAE5; }
+    .icon-memory { background: #FCE7F3; }
+    .icon-draw { background: #CCFBF1; }
+
+    .game-info { display: flex; flex-direction: column; align-items: flex-start; }
+    .game-title { font-size: 13px; font-weight: 700; color: var(--text-dark); }
+    .game-tag { font-size: 10px; font-weight: 700; color: var(--text-muted); }
+    .game-card.playable .game-tag { color: var(--primary); }
+
+    /* Footer */
+    footer { width: 100%; display: flex; flex-direction: column; gap: 12px; margin-top: auto; }
+    .faq-box { background: #EFECE4; border-radius: 16px; overflow: hidden; }
+    .faq-header {
+      width: 100%; background: none; border: none; padding: 12px 16px;
+      display: flex; align-items: center; justify-content: space-between;
+      font-family: inherit; font-size: 12.5px; font-weight: 600; color: var(--text-dark); cursor: pointer;
+    }
+    .faq-content {
+      max-height: 0; overflow: hidden; transition: max-height 0.25s ease;
+      padding: 0 16px; font-size: 12px; line-height: 1.5; color: var(--text-muted); text-align: left;
+    }
+    .faq-box.open .faq-content { max-height: 160px; padding-bottom: 14px; }
+    .legal-links {
+      display: flex; justify-content: center; gap: 8px; font-size: 11.5px; color: var(--text-muted);
+    }
+    .legal-links a { color: var(--text-muted); text-decoration: none; }
+
+    /* MODAL */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(30, 36, 32, 0.45);
+      backdrop-filter: blur(3px);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 18px;
+      z-index: 1000;
+    }
+
+    .modal-overlay.open { display: flex; }
+
+    .modal-card {
+      background: var(--bg-card);
+      width: 100%;
+      max-width: 400px;
+      border-radius: 22px;
+      padding: 22px;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.18);
+      animation: fadeIn 0.2s ease;
+    }
+
+    .emoji-picker-grid {
+      display: grid;
+      grid-template-columns: repeat(6, 1fr);
+      gap: 8px;
+      margin: 12px 0 16px;
+    }
+
+    .emoji-opt {
+      background: var(--bg-main);
+      border: 1.5px solid var(--border-soft);
+      border-radius: 12px;
+      padding: 8px;
+      font-size: 20px;
+      cursor: pointer;
+      text-align: center;
+    }
+
+    .emoji-opt.selected {
+      background: var(--primary-light);
+      border-color: var(--primary);
+    }
+
+    /* ALT EKRAN ORTAK ÜST BAR */
+    .subview-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 14px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid var(--border-soft);
+    }
+
+    .back-btn {
+      background: var(--bg-card);
+      border: 1px solid var(--border-soft);
+      padding: 8px 12px;
+      border-radius: 12px;
+      font-family: inherit;
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--text-dark);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .subview-title { font-size: 15px; font-weight: 800; }
+
+    /* EŞLEŞME EKRANI */
+    .matching-box {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      gap: 16px;
+      padding: 20px;
+    }
+
+    .radar-circle {
+      width: 92px;
+      height: 92px;
+      border-radius: 50%;
+      background: var(--primary-light);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 36px;
+      animation: radarPulse 1.5s infinite;
+    }
+
+    @keyframes radarPulse {
+      0% { box-shadow: 0 0 0 0 rgba(45, 74, 54, 0.35); }
+      100% { box-shadow: 0 0 0 28px rgba(45, 74, 54, 0); }
+    }
+
+    /* OYUN EKRANI */
+    .match-banner {
+      background: var(--bg-card);
+      border: 1px solid var(--border-soft);
+      border-radius: 16px;
+      padding: 11px 16px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 12px;
+    }
+
+    .player-chip { display: flex; align-items: center; gap: 8px; font-size: 13px; font-weight: 700; }
+    .vs-badge { background: var(--bg-main); padding: 4px 8px; border-radius: 8px; font-size: 11px; font-weight: 800; color: var(--text-muted); }
+
+    .game-arena {
+      background: var(--bg-card);
+      border: 1px solid var(--border-soft);
+      border-radius: 20px;
+      padding: 18px;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: space-between;
+      text-align: center;
+    }
+
+    .rps-choices {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+      width: 100%;
+      margin-top: 14px;
+    }
+
+    .rps-btn {
+      background: var(--bg-main);
+      border: 2px solid var(--border-soft);
+      border-radius: 16px;
+      padding: 15px 8px;
+      font-family: inherit;
+      font-size: 28px;
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.15s ease;
+    }
+
+    .rps-btn span { font-size: 12px; font-weight: 700; color: var(--text-dark); }
+    .rps-btn:hover { border-color: var(--primary); background: var(--primary-light); transform: translateY(-2px); }
+
+    /* WORDLE */
+    .wordle-grid {
+      display: grid;
+      grid-template-rows: repeat(5, 1fr);
+      gap: 6px;
+      margin: 10px 0;
+    }
+    .wordle-row { display: grid; grid-template-columns: repeat(5, 1fr); gap: 6px; }
+    .wordle-cell {
+      width: 42px; height: 42px;
+      border: 2px solid var(--border-soft);
+      border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 18px; font-weight: 800; text-transform: uppercase;
+      background: #fff;
+    }
+    .wordle-cell.correct { background: #22C55E; color: #fff; border-color: #22C55E; }
+    .wordle-cell.present { background: #F59E0B; color: #fff; border-color: #F59E0B; }
+    .wordle-cell.absent { background: #9CA3AF; color: #fff; border-color: #9CA3AF; }
+
+    .wordle-input-row { display: flex; gap: 8px; width: 100%; margin-top: 8px; }
+    .wordle-input {
+      flex: 1; padding: 11px 14px; border-radius: 12px; border: 1.5px solid var(--border-soft);
+      font-family: inherit; font-size: 15px; font-weight: 700; text-transform: uppercase; letter-spacing: 2px;
+    }
+
+    /* XOX */
+    .xox-board {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+      margin: 14px 0;
+    }
+    .xox-cell {
+      width: 72px; height: 72px;
+      background: var(--bg-main);
+      border: 2px solid var(--border-soft);
+      border-radius: 14px;
+      font-size: 30px;
+      font-weight: 800;
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer;
+    }
+    .xox-cell.x-mark { color: var(--primary); }
+    .xox-cell.o-mark { color: #D97706; }
+
+    /* HIZLI BİLGİ & FUTBOL BİLMECE */
+    .trivia-options {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      width: 100%;
+      margin-top: 10px;
+    }
+    .trivia-btn {
+      background: var(--bg-main);
+      border: 1.5px solid var(--border-soft);
+      padding: 11px 14px;
+      border-radius: 12px;
+      font-family: inherit;
+      font-size: 13px;
+      font-weight: 700;
+      cursor: pointer;
+      text-align: left;
+    }
+    .trivia-btn:hover { border-color: var(--primary); background: var(--primary-light); }
+
+    /* AMİRAL BATTI */
+    .ship-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 8px;
+      margin: 12px 0;
+    }
+    .ship-cell {
+      width: 56px; height: 56px;
+      background: #E0F2FE;
+      border: 2px solid #BAE6FD;
+      border-radius: 12px;
+      font-size: 20px;
+      font-weight: 800;
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer;
+    }
+    .ship-cell.hit { background: #FEE2E2; border-color: #EF4444; }
+    .ship-cell.miss { background: #F3F4F6; border-color: #D1D5DB; }
+
+    /* TAVLA DÜELLOSU */
+    .dice-pair {
+      display: flex;
+      gap: 14px;
+      margin: 14px 0;
+    }
+    .dice-box {
+      width: 68px; height: 68px;
+      background: var(--bg-main);
+      border: 2px solid var(--primary);
+      border-radius: 16px;
+      font-size: 34px;
+      display: flex; align-items: center; justify-content: center;
+      font-weight: 800;
+    }
+
+    /* SORU KARTI SEÇİMİ */
+    .question-cards-list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      width: 100%;
+      margin: 14px 0;
+    }
+
+    .q-card-item {
+      background: var(--bg-main);
+      border: 1.5px solid var(--border-soft);
+      border-radius: 14px;
+      padding: 14px;
+      text-align: left;
+      font-size: 13.5px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+
+    .q-card-item.selected {
+      background: var(--primary-light);
+      border-color: var(--primary);
+      color: var(--primary);
+    }
+
+    /* SOHBET EKRANI */
+    .chat-header-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-soft);
+      border-radius: 16px;
+      padding: 12px 14px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 12px;
+    }
+
+    .chat-user-info { display: flex; align-items: center; gap: 10px; }
+    .chat-actions { display: flex; gap: 6px; }
+
+    .icon-action-btn {
+      background: var(--bg-main);
+      border: 1px solid var(--border-soft);
+      padding: 7px 10px;
+      border-radius: 10px;
+      font-size: 12px;
+      font-weight: 700;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      transition: all 0.15s ease;
+    }
+
+    .icon-action-btn.fav-active { background: #FEF3C7; border-color: #F59E0B; color: #B45309; }
+    .icon-action-btn.friend-added { background: var(--primary-light); border-color: var(--primary); color: var(--primary); }
+
+    .icebreaker-bar {
+      display: flex;
+      gap: 6px;
+      overflow-x: auto;
+      padding-bottom: 8px;
+      scrollbar-width: none;
+    }
+    .icebreaker-bar::-webkit-scrollbar { display: none; }
+    .icebreaker-chip {
+      flex: 0 0 auto;
+      background: #EFECE4;
+      border: none;
+      padding: 6px 11px;
+      border-radius: 999px;
+      font-family: inherit;
+      font-size: 11.5px;
+      font-weight: 600;
+      color: var(--text-dark);
+      cursor: pointer;
+    }
+    .icebreaker-chip:hover { background: var(--primary-light); color: var(--primary); }
+
+    .chat-messages {
+      flex: 1;
+      background: var(--bg-card);
+      border: 1px solid var(--border-soft);
+      border-radius: 18px;
+      padding: 14px;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      max-height: 340px;
+      min-height: 260px;
+      margin-bottom: 10px;
+    }
+
+    .msg-system {
+      background: #EFECE4;
+      color: var(--text-muted);
+      font-size: 12px;
+      padding: 8px 12px;
+      border-radius: 10px;
+      text-align: center;
+      font-weight: 600;
+    }
+
+    .msg-bubble {
+      max-width: 80%;
+      padding: 10px 14px;
+      border-radius: 16px;
+      font-size: 13.5px;
+      line-height: 1.45;
+    }
+
+    .msg-me {
+      align-self: flex-end;
+      background: var(--primary);
+      color: #fff;
+      border-bottom-right-radius: 4px;
+    }
+
+    .msg-other {
+      align-self: flex-start;
+      background: var(--bg-main);
+      color: var(--text-dark);
+      border: 1px solid var(--border-soft);
+      border-bottom-left-radius: 4px;
+    }
+
+    .chat-input-box { display: flex; gap: 8px; }
+
+    .chat-input {
+      flex: 1;
+      background: var(--bg-card);
+      border: 1px solid var(--border-soft);
+      border-radius: 14px;
+      padding: 12px 14px;
+      font-family: inherit;
+      font-size: 14px;
+      outline: none;
+    }
+
+    .chat-input:focus { border-color: var(--primary); }
+
+    .send-btn {
+      background: var(--primary);
+      color: #fff;
+      border: none;
+      border-radius: 14px;
+      padding: 0 18px;
+      font-family: inherit;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    /* ARKADAŞLARIM */
+    .add-friend-bar { display: flex; gap: 8px; margin-bottom: 16px; }
+    .user-list { display: flex; flex-direction: column; gap: 10px; }
+
+    .empty-state-box {
+      background: var(--bg-card);
+      border: 1px dashed var(--border-soft);
+      border-radius: 18px;
+      padding: 36px 20px;
+      text-align: center;
+      color: var(--text-muted);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .user-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-soft);
+      border-radius: 16px;
+      padding: 12px 14px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .user-meta { display: flex; align-items: center; gap: 10px; }
+
+    /* ODA KUR / GİR */
+    .room-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-soft);
+      border-radius: 18px;
+      padding: 18px;
+      margin-bottom: 14px;
+      text-align: center;
+    }
+
+    .room-code-display {
+      background: var(--bg-main);
+      border: 1.5px dashed var(--primary);
+      padding: 14px;
+      border-radius: 12px;
+      font-size: 22px;
+      font-weight: 800;
+      letter-spacing: 3px;
+      color: var(--primary);
+      margin: 12px 0;
+    }
+
+    /* TOAST */
+    .toast {
+      position: fixed;
+      bottom: 24px;
+      left: 50%;
+      transform: translateX(-50%) translateY(80px);
+      background: var(--text-dark);
+      color: #fff;
+      padding: 11px 18px;
+      border-radius: 12px;
+      font-size: 13px;
+      font-weight: 600;
+      opacity: 0;
+      transition: all 0.25s ease;
+      z-index: 1200;
+      pointer-events: none;
+    }
+
+    .toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
+  </style>
+</head>
+<body>
+
+  <div class="app-container">
+    <!-- Üst Marka + Skor Sekmesi Butonu + Çevrimiçi Durum -->
+    <header>
+      <div class="brand" onclick="switchView('view-lobby')">
+        <div class="brand-icon">💬</div>
+        <span class="brand-name">hadikonus</span>
+      </div>
+
+      <div class="header-right">
+        <button class="trophy-btn" onclick="toggleScoreDrawer()" title="Oyunlara göre skor tablosu">
+          🏆 Skorlar
+        </button>
+        <div class="status-pill">
+          <span class="status-dot" id="status-dot"></span>
+          <span id="online-status">1 çevrimiçi</span>
+        </div>
+      </div>
+    </header>
+
+    <!-- YUKARIDAN AÇILAN KÜÇÜK SEKME: OYUNLARA GÖRE SKOR TABLOSU -->
+    <div class="top-drawer" id="score-drawer">
+      <div class="drawer-top-row">
+        <span class="drawer-title">🏆 Oyun Skor Tablosu (Sohbetsiz Oyun Modu)</span>
+        <button class="pill-icon-btn" onclick="toggleScoreDrawer()" title="Kapat">✕</button>
+      </div>
+      <div class="game-filter-chips" id="score-game-chips">
+        <button class="g-chip active" data-sgame="all" onclick="filterScores('all')">Tümü</button>
+        <button class="g-chip" data-sgame="rps" onclick="filterScores('rps')">Taş-Kağıt-Makas</button>
+        <button class="g-chip" data-sgame="wordle" onclick="filterScores('wordle')">Wordle</button>
+        <button class="g-chip" data-sgame="xox" onclick="filterScores('xox')">XOX</button>
+        <button class="g-chip" data-sgame="trivia" onclick="filterScores('trivia')">Hızlı Bilgi</button>
+        <button class="g-chip" data-sgame="tavla" onclick="filterScores('tavla')">Tavla Zar</button>
+        <button class="g-chip" data-sgame="battleship" onclick="filterScores('battleship')">Amiral Battı</button>
+        <button class="g-chip" data-sgame="football" onclick="filterScores('football')">Futbol Bilmece</button>
+      </div>
+      <div class="scoreboard-list" id="scoreboard-list"></div>
+    </div>
+
+    <!-- 1. ANA LOBİ EKRANI -->
+    <div id="view-lobby" class="view active">
+      <div class="lobby-main">
+        <!-- Kullanıcı Adı + ID + Düzenleme + Zar -->
+        <div class="profile-pill-wrapper">
+          <div class="nickname-box">
+            <span class="avatar-emoji" id="avatar-emoji">🦉</span>
+            <span class="nickname-text" id="nickname-text">Hızlı Baykuş</span>
+            <span class="user-tag-id" id="user-tag-id" onclick="copyMyId()" title="ID'ni kopyala">#4821</span>
+            <button class="pill-icon-btn" onclick="openNicknameModal()" title="Özel kullanıcı adı oluştur">✏️</button>
+            <button class="pill-icon-btn reroll-btn" id="reroll-btn" title="Rastgele isim üret">🎲</button>
+          </div>
+        </div>
+
+        <h1>Oyna, tanış,<br>sohbet et.</h1>
+        <p class="subtitle">
+          İster kısa bir oyunla buzları erit, ister doğrudan eşleşip sohbete başla.
+        </p>
+
+        <!-- Sadece Herkesle Eşleş & Yakınımda (Gerçek Konum İzni İster) -->
+        <div class="match-pref-bar">
+          <button class="pref-chip active" id="pref-global" onclick="selectGlobalMatch()">🌍 Herkesle Eşleş</button>
+          <button class="pref-chip" id="pref-nearby" onclick="requestNearbyLocation()">📍 Yakınımda</button>
+        </div>
+
+        <div class="location-badge-info" id="location-status-badge">
+          📍 Konum aktif <span id="coords-short" style="opacity:0.8;"></span>
+        </div>
+
+        <div class="actions">
+          <!-- Oyunlu Rastgele Eşleş -->
+          <button class="btn-primary" onclick="startMatchmaking('game')">
+            <span>🎮 Oyunlu Rastgele Eşleş</span>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="5" y1="12" x2="19" y2="12"></line>
+              <polyline points="12 5 19 12 12 19"></polyline>
+            </svg>
+          </button>
+
+          <!-- Oyunsuz Direkt Eşleş -->
+          <button class="btn-direct-chat" onclick="startMatchmaking('direct')">
+            <span>💬 Oyunsuz Direkt Eşleş</span>
+          </button>
+
+          <div class="secondary-grid">
+            <button class="btn-secondary" onclick="switchView('view-friends')">
+              <span>👥 Arkadaşlarım</span>
+              <span class="badge-count" id="friends-count-badge">0</span>
+            </button>
+
+            <button class="btn-secondary" onclick="switchView('view-room')">
+              <span>🚪 Oda Kur / Gir</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Yavaşça Yandan Süzülen Mini Oyunlar Şeridi -->
+        <div class="games-section">
+          <div class="section-divider">
+            <span>Mini Oyunlar (Seç & Oyna)</span>
+          </div>
+
+          <div class="marquee-wrapper">
+            <div class="marquee-track" id="marquee-track">
+              <!-- Set 1 -->
+              <div class="game-card playable selected-game" data-game="rps" onclick="selectGame('rps')">
+                <div class="game-icon icon-rps">✊</div>
+                <div class="game-info">
+                  <span class="game-title">Taş-Kağıt-Makas</span>
+                  <span class="game-tag">Oynanabilir</span>
+                </div>
+              </div>
+
+              <div class="game-card playable" data-game="wordle" onclick="selectGame('wordle')">
+                <div class="game-icon icon-wordle">🟩</div>
+                <div class="game-info">
+                  <span class="game-title">Wordle (5 Harf)</span>
+                  <span class="game-tag">Oynanabilir</span>
+                </div>
+              </div>
+
+              <div class="game-card playable" data-game="xox" onclick="selectGame('xox')">
+                <div class="game-icon icon-xox">❌</div>
+                <div class="game-info">
+                  <span class="game-title">XOX</span>
+                  <span class="game-tag">Oynanabilir</span>
+                </div>
+              </div>
+
+              <div class="game-card playable" data-game="trivia" onclick="selectGame('trivia')">
+                <div class="game-icon icon-trivia">⚡</div>
+                <div class="game-info">
+                  <span class="game-title">Hızlı Bilgi</span>
+                  <span class="game-tag">Oynanabilir</span>
+                </div>
+              </div>
+
+              <div class="game-card playable" data-game="tavla" onclick="selectGame('tavla')">
+                <div class="game-icon icon-tavla">🎲</div>
+                <div class="game-info">
+                  <span class="game-title">Tavla Zar</span>
+                  <span class="game-tag">Yeni · Oynanabilir</span>
+                </div>
+              </div>
+
+              <div class="game-card playable" data-game="battleship" onclick="selectGame('battleship')">
+                <div class="game-icon icon-ship">🚢</div>
+                <div class="game-info">
+                  <span class="game-title">Amiral Battı</span>
+                  <span class="game-tag">Yeni · Oynanabilir</span>
+                </div>
+              </div>
+
+              <div class="game-card playable" data-game="football" onclick="selectGame('football')">
+                <div class="game-icon icon-football">⚽</div>
+                <div class="game-info">
+                  <span class="game-title">Futbolcu & Takım</span>
+                  <span class="game-tag">Yeni · Oynanabilir</span>
+                </div>
+              </div>
+
+              <!-- Set 2 (Kesintisiz Kayma İçin Kopya) -->
+              <div class="game-card playable selected-game" data-game="rps" onclick="selectGame('rps')">
+                <div class="game-icon icon-rps">✊</div>
+                <div class="game-info">
+                  <span class="game-title">Taş-Kağıt-Makas</span>
+                  <span class="game-tag">Oynanabilir</span>
+                </div>
+              </div>
+
+              <div class="game-card playable" data-game="wordle" onclick="selectGame('wordle')">
+                <div class="game-icon icon-wordle">🟩</div>
+                <div class="game-info">
+                  <span class="game-title">Wordle (5 Harf)</span>
+                  <span class="game-tag">Oynanabilir</span>
+                </div>
+              </div>
+
+              <div class="game-card playable" data-game="xox" onclick="selectGame('xox')">
+                <div class="game-icon icon-xox">❌</div>
+                <div class="game-info">
+                  <span class="game-title">XOX</span>
+                  <span class="game-tag">Oynanabilir</span>
+                </div>
+              </div>
+
+              <div class="game-card playable" data-game="trivia" onclick="selectGame('trivia')">
+                <div class="game-icon icon-trivia">⚡</div>
+                <div class="game-info">
+                  <span class="game-title">Hızlı Bilgi</span>
+                  <span class="game-tag">Oynanabilir</span>
+                </div>
+              </div>
+
+              <div class="game-card playable" data-game="tavla" onclick="selectGame('tavla')">
+                <div class="game-icon icon-tavla">🎲</div>
+                <div class="game-info">
+                  <span class="game-title">Tavla Zar</span>
+                  <span class="game-tag">Yeni · Oynanabilir</span>
+                </div>
+              </div>
+
+              <div class="game-card playable" data-game="battleship" onclick="selectGame('battleship')">
+                <div class="game-icon icon-ship">🚢</div>
+                <div class="game-info">
+                  <span class="game-title">Amiral Battı</span>
+                  <span class="game-tag">Yeni · Oynanabilir</span>
+                </div>
+              </div>
+
+              <div class="game-card playable" data-game="football" onclick="selectGame('football')">
+                <div class="game-icon icon-football">⚽</div>
+                <div class="game-info">
+                  <span class="game-title">Futbolcu & Takım</span>
+                  <span class="game-tag">Yeni · Oynanabilir</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <footer>
+        <div class="faq-box" id="faq-box">
+          <button class="faq-header" id="faq-toggle">
+            <span>❔ Merak Ettikleriniz · Nasıl çalışır?</span>
+            <span>▼</span>
+          </button>
+          <div class="faq-content">
+            <strong>Yakınımda Özelliği:</strong> Tarayıcı konum izni verirsen enlem/boylam koordinatlarınla yakınındaki kullanıcılarla eşleşir.<br>
+            <strong>Konuşmak İstemeyenler İçin:</strong> Oyun ekranında veya yukarıdaki 🏆 Skorlar sekmesinde skor kasabilir, sohbete geçmeden devam edebilirsin.
+          </div>
+        </div>
+
+        <div class="legal-links">
+          <span>18+</span><span>·</span>
+          <a href="#" onclick="showToast('Kullanım Koşulları')">Kullanım Koşulları</a><span>·</span>
+          <a href="#" onclick="showToast('Gizlilik: Konum ve mesajlar saklanmaz.')">Gizlilik</a>
+        </div>
+      </footer>
+    </div>
+
+    <!-- KULLANICI ADI OLUŞTURMA MODALI -->
+    <div class="modal-overlay" id="nickname-modal">
+      <div class="modal-card">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:14px;">
+          <h3 style="font-size:17px; font-weight:800;">Kullanıcı Adı Oluştur</h3>
+          <button class="pill-icon-btn" onclick="closeNicknameModal()">✕</button>
+        </div>
+
+        <label style="font-size:12px; font-weight:700; color:var(--text-muted);">Avatar Seç</label>
+        <div class="emoji-picker-grid" id="emoji-picker-grid"></div>
+
+        <label style="font-size:12px; font-weight:700; color:var(--text-muted);">Kullanıcı Adın</label>
+        <div style="display:flex; gap:8px; margin: 6px 0 16px;">
+          <input type="text" id="custom-username-input" class="chat-input" maxlength="20" placeholder="Örn: Gece Yolcusu" />
+          <button class="btn-secondary" onclick="fillRandomInModal()" title="Rastgele Öner">🎲</button>
+        </div>
+
+        <button class="btn-primary" onclick="saveCustomUsername()">Kaydet ve Kullan</button>
+      </div>
+    </div>
+
+    <!-- 2. EŞLEŞME ARANIYOR EKRANI -->
+    <div id="view-matching" class="view">
+      <div class="subview-header">
+        <button class="back-btn" onclick="cancelMatchmaking()">← İptal Et</button>
+        <span class="subview-title" id="matching-header-title">Eşleşme Aranıyor</span>
+        <div style="width: 60px;"></div>
+      </div>
+      <div class="matching-box">
+        <div class="radar-circle">🔍</div>
+        <div>
+          <h2 style="font-size: 21px; margin-bottom: 8px;" id="matching-status-title">Rakip bekleniyor...</h2>
+          <p style="font-size: 13.5px; color: var(--text-muted); max-width: 310px;" id="matching-status-desc">
+            Şu an sunucuda 1 çevrimiçi kullanıcı (sen) görünüyorsun. Başka biri bağlandığında otomatik eşleşeceksin.
+          </p>
+        </div>
+
+        <div style="margin-top: 18px; padding-top: 16px; border-top: 1px dashed var(--border-soft); width: 100%; max-width: 320px;">
+          <p style="font-size: 11.5px; color: var(--text-muted); margin-bottom: 8px;">
+            Sohbet etmeden tek başına oyun oynamak veya ekranı test etmek istersen:
+          </p>
+          <button class="btn-secondary" style="width: 100%; font-size: 13px;" onclick="previewScreenWithoutOpponent()">
+            🎮 Sohbetsiz Oyun / Önizleme Aç
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 3. OYUN EKRANI (7 OYNANABİLİR OYUN + SOHBETSİZ SKOR MODU) -->
+    <div id="view-game" class="view">
+      <div class="subview-header">
+        <button class="back-btn" onclick="switchView('view-lobby')">← Çık</button>
+        <span class="subview-title" id="active-game-header">Taş-Kağıt-Makas</span>
+        <button class="back-btn" onclick="openQuestionCards()" style="background: var(--primary-light); color: var(--primary); border-color: var(--primary);">Sohbete Geç →</button>
+      </div>
+
+      <div class="match-banner">
+        <div class="player-chip">
+          <span id="my-game-avatar">🦉</span>
+          <span id="my-game-name">Hızlı Baykuş</span>
+        </div>
+        <span class="vs-badge">SKOR: <span id="current-game-pts">0</span></span>
+        <div class="player-chip">
+          <span id="opp-game-avatar">👤</span>
+          <span id="opp-game-name">Rakip</span>
+        </div>
+      </div>
+
+      <!-- 1. Taş-Kağıt-Makas -->
+      <div id="arena-rps" class="game-arena">
+        <div>
+          <h3 style="font-size: 18px; margin-bottom: 6px;">Hamleni Seç!</h3>
+          <p style="font-size: 13px; color: var(--text-muted);" id="rps-status-text">Kazanınca skorun artar; istersen sohbete geçebilirsin.</p>
+        </div>
+        <div id="rps-result-display" style="font-size: 42px; margin: 14px 0; font-weight: 800;">🤜 🤛</div>
+        <div class="rps-choices">
+          <button class="rps-btn" onclick="playRPS('tas')">✊<span>Taş</span></button>
+          <button class="rps-btn" onclick="playRPS('kagit')">✋<span>Kağıt</span></button>
+          <button class="rps-btn" onclick="playRPS('makas')">✌️<span>Makas</span></button>
+        </div>
+      </div>
+
+      <!-- 2. Wordle -->
+      <div id="arena-wordle" class="game-arena" style="display: none;">
+        <div>
+          <h3 style="font-size: 17px; margin-bottom: 4px;">5 Harfli Kelimeyi Bul</h3>
+          <p style="font-size: 12px; color: var(--text-muted);">Yeşil: Doğru yer · Sarı: Yanlış yer</p>
+        </div>
+        <div class="wordle-grid" id="wordle-grid"></div>
+        <div class="wordle-input-row">
+          <input type="text" id="wordle-input" class="wordle-input" maxlength="5" placeholder="KELİME..." onkeypress="if(event.key==='Enter') submitWordleGuess()" />
+          <button class="send-btn" onclick="submitWordleGuess()">Dene</button>
+        </div>
+      </div>
+
+      <!-- 3. XOX -->
+      <div id="arena-xox" class="game-arena" style="display: none;">
+        <div>
+          <h3 style="font-size: 17px; margin-bottom: 4px;">XOX — Üçlüyü Tamamla</h3>
+          <p style="font-size: 12.5px; color: var(--text-muted);" id="xox-status">Sen (X) başlıyorsun!</p>
+        </div>
+        <div class="xox-board" id="xox-board"></div>
+        <button class="btn-secondary" onclick="initXOX()" style="font-size:12.5px;">Tahtayı Sıfırla</button>
+      </div>
+
+      <!-- 4. Hızlı Bilgi -->
+      <div id="arena-trivia" class="game-arena" style="display: none;">
+        <div>
+          <span style="font-size:11px; font-weight:700; color:var(--primary); background:var(--primary-light); padding:4px 10px; border-radius:999px;">GENEL KÜLTÜR</span>
+          <h3 style="font-size: 16.5px; margin-top: 10px;" id="trivia-question">Soru yükleniyor...</h3>
+        </div>
+        <div class="trivia-options" id="trivia-options"></div>
+        <p style="font-size: 12px; color: var(--text-muted);" id="trivia-feedback">Doğru cevabı seç!</p>
+      </div>
+
+      <!-- 5. Tavla Zar Atma -->
+      <div id="arena-tavla" class="game-arena" style="display: none;">
+        <div>
+          <h3 style="font-size: 17px; margin-bottom: 4px;">Tavla Zar Düellosu</h3>
+          <p style="font-size: 12.5px; color: var(--text-muted);" id="tavla-status">İki zarı at, toplamı yüksek olan skoru alır!</p>
+        </div>
+        <div class="dice-pair">
+          <div class="dice-box" id="dice-1">🎲</div>
+          <div class="dice-box" id="dice-2">🎲</div>
+        </div>
+        <button class="btn-primary" onclick="rollTavlaDice()" style="max-width:240px;">🎲 Zarları At</button>
+      </div>
+
+      <!-- 6. Amiral Battı -->
+      <div id="arena-battleship" class="game-arena" style="display: none;">
+        <div>
+          <h3 style="font-size: 17px; margin-bottom: 4px;">Amiral Battı (4x4 Radar)</h3>
+          <p style="font-size: 12.5px; color: var(--text-muted);" id="ship-status">3 gizli gemiyi bulmak için karelere tıkla!</p>
+        </div>
+        <div class="ship-grid" id="ship-grid"></div>
+        <button class="btn-secondary" onclick="initBattleship()" style="font-size:12.5px;">Yeni Radar</button>
+      </div>
+
+      <!-- 7. Futbolcu & Takım Bilmece -->
+      <div id="arena-football" class="game-arena" style="display: none;">
+        <div>
+          <span style="font-size:11px; font-weight:700; color:#15803D; background:#DCFCE7; padding:4px 10px; border-radius:999px;">⚽ FUTBOLCU & TAKIM BİLMECE</span>
+          <h3 style="font-size: 16.5px; margin-top: 10px;" id="football-question">Bilmece yükleniyor...</h3>
+        </div>
+        <div class="trivia-options" id="football-options"></div>
+        <p style="font-size: 12px; color: var(--text-muted);" id="football-feedback">İpucundan futbolcuyu veya takımı bil!</p>
+      </div>
+    </div>
+
+    <!-- 4. SORU KARTI SEÇİM EKRANI -->
+    <div id="view-cards" class="view">
+      <div class="subview-header">
+        <button class="back-btn" onclick="switchView('view-lobby')">← Lobi</button>
+        <span class="subview-title">2 Soru Kartı Seç</span>
+        <div style="width: 50px;"></div>
+      </div>
+      <p style="font-size: 13.5px; color: var(--text-muted); margin-bottom: 8px;">
+        Sohbeti başlatmak için sorulacak <strong>2 soru kartı</strong> seç:
+      </p>
+      <div class="question-cards-list" id="question-cards-list"></div>
+      <button class="btn-primary" id="btn-confirm-cards" onclick="enterChatRoom(true)" disabled style="opacity: 0.5;">
+        Seçilen Sorularla Sohbete Gir (0/2)
+      </button>
+    </div>
+
+    <!-- 5. CANLI SOHBET EKRANI -->
+    <div id="view-chat" class="view">
+      <div class="subview-header">
+        <button class="back-btn" onclick="switchView('view-lobby')">← Lobi</button>
+        <span class="subview-title" id="chat-mode-badge">Sohbet Odası</span>
+        <button class="back-btn" onclick="switchView('view-lobby')" style="color: #DC2626;">Ayrıl</button>
+      </div>
+
+      <div class="chat-header-card">
+        <div class="chat-user-info">
+          <span style="font-size: 24px;" id="chat-opp-avatar">👤</span>
+          <div>
+            <div style="font-size: 14.5px; font-weight: 800;" id="chat-opp-name">Bağlı Kullanıcı</div>
+            <div style="font-size: 11.5px; color: var(--accent-green); font-weight: 600;">● Odaya bağlı</div>
+          </div>
+        </div>
+
+        <div class="chat-actions">
+          <button class="icon-action-btn" id="btn-fav-user" onclick="toggleFavoriteCurrent()">⭐ Favori</button>
+          <button class="icon-action-btn" id="btn-add-friend-chat" onclick="addCurrentToFriends()">➕ Ekle</button>
+        </div>
+      </div>
+
+      <div class="chat-messages" id="chat-messages"></div>
+
+      <div class="icebreaker-bar">
+        <button class="icebreaker-chip" onclick="useIcebreaker('Selam! Nasılsın? 👋')">👋 Selam! Nasılsın?</button>
+        <button class="icebreaker-chip" onclick="useIcebreaker('Bir el daha oyun atalım mı? 🎮')">🎮 Bir el daha?</button>
+        <button class="icebreaker-chip" onclick="useIcebreaker('Hangi şehirden katılıyorsun? 🌍')">🌍 Hangi şehir?</button>
+        <button class="icebreaker-chip" onclick="useIcebreaker('En sevdiğin dizi veya film hangisi? 🎬')">🎬 Favori dizi/film?</button>
+      </div>
+
+      <div class="chat-input-box">
+        <input type="text" id="chat-input" class="chat-input" placeholder="Mesajını yaz..." onkeypress="if(event.key==='Enter') sendChatMessage()" />
+        <button class="send-btn" onclick="sendChatMessage()">Gönder</button>
+      </div>
+    </div>
+
+    <!-- 6. ARKADAŞLARIM EKRANI -->
+    <div id="view-friends" class="view">
+      <div class="subview-header">
+        <button class="back-btn" onclick="switchView('view-lobby')">← Geri</button>
+        <span class="subview-title">Arkadaşlarım & Favoriler</span>
+        <div style="width: 50px;"></div>
+      </div>
+
+      <div class="add-friend-bar">
+        <input type="text" id="new-friend-input" class="chat-input" placeholder="Kullanıcı adı veya #ID girerek ekle..." onkeypress="if(event.key==='Enter') manualAddFriend()" />
+        <button class="send-btn" onclick="manualAddFriend()">Ekle</button>
+      </div>
+
+      <div class="user-list" id="friends-list-container"></div>
+    </div>
+
+    <!-- 7. ODA KUR / GİR EKRANI -->
+    <div id="view-room" class="view">
+      <div class="subview-header">
+        <button class="back-btn" onclick="switchView('view-lobby')">← Geri</button>
+        <span class="subview-title">Özel Oda Kur / Gir</span>
+        <div style="width: 50px;"></div>
+      </div>
+
+      <div class="room-card">
+        <h3 style="font-size: 16px; margin-bottom: 6px;">Yeni Oda Oluştur</h3>
+        <p style="font-size: 13px; color: var(--text-muted);">Arkadaşına bu kodu gönder, odaya katıldığında oyun başlasın.</p>
+        <div class="room-code-display" id="generated-room-code">HK-4829</div>
+        <div style="display: flex; gap: 8px;">
+          <button class="btn-secondary" style="flex: 1;" onclick="generateNewRoomCode()">🔄 Yeni Kod</button>
+          <button class="btn-primary" style="flex: 1; padding: 12px;" onclick="copyRoomCode()">📋 Kodu Kopyala</button>
+        </div>
+      </div>
+
+      <div class="room-card">
+        <h3 style="font-size: 16px; margin-bottom: 6px;">Odaya Katıl</h3>
+        <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 12px;">Arkadaşının paylaştığı oda kodunu gir:</p>
+        <div class="chat-input-box">
+          <input type="text" id="join-room-input" class="chat-input" placeholder="Örn: HK-4829" style="text-transform: uppercase;" />
+          <button class="send-btn" onclick="joinExistingRoom()">Katıl</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Bildirim -->
+  <div class="toast" id="toast">Bildirim</div>
+
+  <script>
+    // DURUM YÖNETİMİ
+    let onlineCount = 1;
+    let userTagId = localStorage.getItem("hadikonus_userid") || ("#" + Math.floor(1000 + Math.random() * 9000));
+    localStorage.setItem("hadikonus_userid", userTagId);
+
+    let savedProfile = JSON.parse(localStorage.getItem("hadikonus_profile") || "null");
+    let currentUser = savedProfile || { name: "Hızlı Baykuş", emoji: "🦉" };
+    let tempSelectedEmoji = currentUser.emoji;
+
+    let currentOpponent = null;
+    let matchMode = "game";
+    let matchPref = "global"; // 'global' veya 'nearby'
+    let userCoords = null;
+    let selectedGame = "rps";
+    let selectedQuestionCards = [];
+    let friendsList = JSON.parse(localStorage.getItem("hadikonus_friends") || "[]");
+
+    // Oyunlara Göre Skorlar (LocalStorage)
+    const defaultScores = {
+      rps: 0,
+      wordle: 0,
+      xox: 0,
+      trivia: 0,
+      tavla: 0,
+      battleship: 0,
+      football: 0
+    };
+    let gameScores = JSON.parse(localStorage.getItem("hadikonus_scores") || "null") || { ...defaultScores };
+    let activeScoreFilter = "all";
+
+    const gameLabels = {
+      rps: "✊ Taş-Kağıt-Makas",
+      wordle: "🟩 Wordle",
+      xox: "❌ XOX",
+      trivia: "⚡ Hızlı Bilgi",
+      tavla: "🎲 Tavla Zar",
+      battleship: "🚢 Amiral Battı",
+      football: "⚽ Futbolcu & Takım"
+    };
+
+    function addScore(gameKey, pts) {
+      gameScores[gameKey] = (gameScores[gameKey] || 0) + pts;
+      localStorage.setItem("hadikonus_scores", JSON.stringify(gameScores));
+      updateCurrentGameScoreBanner();
+      renderScoreboard();
+    }
+
+    function updateCurrentGameScoreBanner() {
+      const el = document.getElementById("current-game-pts");
+      if (el) el.textContent = gameScores[selectedGame] || 0;
+    }
+
+    function toggleScoreDrawer() {
+      const drawer = document.getElementById("score-drawer");
+      drawer.classList.toggle("open");
+      if (drawer.classList.contains("open")) renderScoreboard();
+    }
+
+    function filterScores(filterKey) {
+      activeScoreFilter = filterKey;
+      document.querySelectorAll(".g-chip").forEach(c => c.classList.toggle("active", c.dataset.sgame === filterKey));
+      renderScoreboard();
+    }
+
+    function renderScoreboard() {
+      const listEl = document.getElementById("scoreboard-list");
+      listEl.innerHTML = "";
+      const keys = activeScoreFilter === "all" ? Object.keys(gameLabels) : [activeScoreFilter];
+      keys.forEach(k => {
+        const row = document.createElement("div");
+        row.className = "score-row";
+        row.innerHTML = `
+          <span style="font-weight:700;">${gameLabels[k]}</span>
+          <span style="font-weight:800; color:var(--primary);">${gameScores[k] || 0} Puan</span>
+        `;
+        listEl.appendChild(row);
+      });
+    }
+
+    // GERÇEK KONUM İZNİ İSTEME (Geolocation API)
+    function selectGlobalMatch() {
+      matchPref = "global";
+      document.getElementById("pref-global").classList.add("active");
+      document.getElementById("pref-nearby").classList.remove("active");
+      document.getElementById("location-status-badge").classList.remove("show");
+      showToast("🌍 Herkesle genel eşleşme seçildi.");
+    }
+
+    function requestNearbyLocation() {
+      if (!navigator.geolocation) {
+        showToast("Tarayıcınız konum özelliğini desteklemiyor.");
+        return;
+      }
+      showToast("📍 Konum izni isteniyor...");
+      navigator.geolocation.getCurrentPosition(
+        (pos) => {
+          userCoords = {
+            lat: pos.coords.latitude,
+            lon: pos.coords.longitude
+          };
+          matchPref = "nearby";
+          document.getElementById("pref-nearby").classList.add("active");
+          document.getElementById("pref-global").classList.remove("active");
+          const badge = document.getElementById("location-status-badge");
+          badge.classList.add("show");
+          document.getElementById("coords-short").textContent = `(${userCoords.lat.toFixed(2)}, ${userCoords.lon.toFixed(2)})`;
+          showToast("📍 Konum izni verildi! Yakınımdakiler modu aktif.");
+        },
+        (err) => {
+          matchPref = "global";
+          document.getElementById("pref-global").classList.add("active");
+          document.getElementById("pref-nearby").classList.remove("active");
+          document.getElementById("location-status-badge").classList.remove("show");
+          if (err.code === 1) {
+            showToast("Konum izni reddedildi. Herkesle eşleşme modunda kalındı.");
+          } else {
+            showToast("Konum alınamadı, tekrar deneyin.");
+          }
+        },
+        { enableHighAccuracy: false, timeout: 8000 }
+      );
+    }
+
+    // VERİLER
+    const allQuestions = [
+      "Hayatında en çok gurur duyduğun an hangisi?",
+      "Şu an dünyanın herhangi bir yerinde olabilsen nereyi seçerdin?",
+      "Sence bir insanda ilk dikkat çeken özellik nedir?",
+      "Gece yarısı canın en çok ne çeker?",
+      "Son zamanlarda izlediğin en iyi dizi veya film hangisi?"
+    ];
+
+    const wordleWords = ["KAHVE", "DENİZ", "KİTAP", "MÜZİK", "GÜNEŞ", "BULUT", "ÇİÇEK"];
+    let targetWord = "KAHVE";
+    let wordleGuesses = [];
+
+    const triviaPool = [
+      { q: "Güneş sistemindeki en büyük gezegen hangisidir?", opts: ["Satürn", "Jüpiter", "Mars"], ans: 1 },
+      { q: "Türkiye'nin en yüksek dağı hangisidir?", opts: ["Erciyes", "Uludağ", "Ağrı Dağı"], ans: 2 },
+      { q: "Satrançta en fazla hareket kabiliyetine sahip taş hangisidir?", opts: ["Vezir", "Kale", "At"], ans: 0 },
+      { q: "Bir yılda kaç hafta vardır?", opts: ["48", "52", "54"], ans: 1 }
+    ];
+
+    const footballPool = [
+      { q: "7 Ballon d'Or/Altın Top kazanan ve 2022 Dünya Kupası'nı kaldıran efsane kimdir?", opts: ["Cristiano Ronaldo", "Lionel Messi", "Luka Modrić"], ans: 1 },
+      { q: "Şampiyonlar Ligi tarihinde en çok şampiyonluk yaşayan kulüp hangisidir?", opts: ["Real Madrid", "AC Milan", "Bayern Münih"], ans: 0 },
+      { q: "'Çubuklu' formasıyla bilinen ve Kadıköy'de oynayan kulüp hangisidir?", opts: ["Beşiktaş", "Galatasaray", "Fenerbahçe"], ans: 2 },
+      { q: "2002 Dünya Kupası'nda Türkiye'ye 3.'lüğü getiren altın golü atan futbolcu kimdir?", opts: ["İlhan Mansız", "Hakan Şükür", "Hasan Şaş"], ans: 0 }
+    ];
+
+    const adjectives = ["Hızlı", "Uykulu", "Kurnaz", "Neşeli", "Gizemli", "Cesur", "Sakin", "Dombili", "Gezgin", "Meraklı"];
+    const animals = [
+      { name: "Baykuş", emoji: "🦉" }, { name: "Su Samuru", emoji: "🦦" },
+      { name: "Tilki", emoji: "🦊" }, { name: "Panda", emoji: "🐼" },
+      { name: "Kedi", emoji: "🐱" }, { name: "Penguen", emoji: "🐧" },
+      { name: "Koala", emoji: "🐨" }, { name: "Kirpi", emoji: "🦔" },
+      { name: "Kurt", emoji: "🐺" }, { name: "Aslan", emoji: "🦁" },
+      { name: "Yunus", emoji: "🐬" }, { name: "Ejderha", emoji: "🐉" }
+    ];
+
+    // Profil UI
+    function renderUserProfile() {
+      document.getElementById("nickname-text").textContent = currentUser.name;
+      document.getElementById("avatar-emoji").textContent = currentUser.emoji;
+      document.getElementById("user-tag-id").textContent = userTagId;
+      localStorage.setItem("hadikonus_profile", JSON.stringify(currentUser));
+    }
+
+    function copyMyId() {
+      const fullTag = `${currentUser.name} ${userTagId}`;
+      navigator.clipboard?.writeText(fullTag);
+      showToast(`Kimliğin kopyalandı: ${fullTag}`);
+    }
+
+    function openNicknameModal() {
+      tempSelectedEmoji = currentUser.emoji;
+      document.getElementById("custom-username-input").value = currentUser.name;
+      const grid = document.getElementById("emoji-picker-grid");
+      grid.innerHTML = "";
+      animals.forEach(a => {
+        const btn = document.createElement("div");
+        btn.className = `emoji-opt ${a.emoji === tempSelectedEmoji ? 'selected' : ''}`;
+        btn.textContent = a.emoji;
+        btn.onclick = () => {
+          tempSelectedEmoji = a.emoji;
+          document.querySelectorAll('.emoji-opt').forEach(el => el.classList.remove('selected'));
+          btn.classList.add('selected');
+        };
+        grid.appendChild(btn);
+      });
+      document.getElementById("nickname-modal").classList.add("open");
+    }
+
+    function closeNicknameModal() {
+      document.getElementById("nickname-modal").classList.remove("open");
+    }
+
+    function fillRandomInModal() {
+      const adj = adjectives[Math.floor(Math.random() * adjectives.length)];
+      const ani = animals[Math.floor(Math.random() * animals.length)];
+      document.getElementById("custom-username-input").value = `${adj} ${ani.name}`;
+      tempSelectedEmoji = ani.emoji;
+      document.querySelectorAll('.emoji-opt').forEach(el => {
+        el.classList.toggle('selected', el.textContent === tempSelectedEmoji);
+      });
+    }
+
+    function saveCustomUsername() {
+      const val = document.getElementById("custom-username-input").value.trim();
+      if (!val) {
+        showToast("Lütfen bir kullanıcı adı yazın!");
+        return;
+      }
+      currentUser = { name: val, emoji: tempSelectedEmoji };
+      renderUserProfile();
+      closeNicknameModal();
+      showToast(`Kullanıcı adın "${val}" olarak güncellendi!`);
+    }
+
+    document.getElementById("reroll-btn").addEventListener("click", () => {
+      const adj = adjectives[Math.floor(Math.random() * adjectives.length)];
+      const ani = animals[Math.floor(Math.random() * animals.length)];
+      currentUser = { name: `${adj} ${ani.name}`, emoji: ani.emoji };
+      renderUserProfile();
+    });
+
+    function setOnlineCount(count) {
+      onlineCount = count;
+      document.getElementById("online-status").textContent = `${onlineCount} çevrimiçi`;
+    }
+
+    function switchView(viewId) {
+      document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+      document.getElementById(viewId).classList.add('active');
+      if (viewId === 'view-friends') renderFriendsList();
+    }
+
+    function showToast(msg) {
+      const t = document.getElementById('toast');
+      t.textContent = msg;
+      t.classList.add('show');
+      setTimeout(() => t.classList.remove('show'), 2600);
+    }
+
+    function selectGame(gameKey) {
+      selectedGame = gameKey;
+      document.querySelectorAll('.game-card.playable').forEach(c => {
+        c.classList.toggle('selected-game', c.dataset.game === gameKey);
+      });
+      updateCurrentGameScoreBanner();
+      showToast(`Seçili oyun: ${gameLabels[gameKey] || gameKey}`);
+    }
+
+    function startMatchmaking(mode) {
+      matchMode = mode;
+      const titleEl = document.getElementById("matching-header-title");
+      const statusTitle = document.getElementById("matching-status-title");
+      const statusDesc = document.getElementById("matching-status-desc");
+
+      const locTag = matchPref === "nearby" ? " · 📍 Yakınımda" : "";
+      if (mode === "direct") {
+        titleEl.textContent = `Direkt Eşleşme${locTag}`;
+      } else {
+        titleEl.textContent = `${gameLabels[selectedGame] || "Oyun"}${locTag}`;
+      }
+
+      if (onlineCount <= 1) {
+        statusTitle.textContent = "Rakip bekleniyor...";
+        statusDesc.textContent = `Şu an sunucuda ${onlineCount} çevrimiçi kullanıcı (sen) görünüyorsun${locTag}. Başka biri bağlandığında otomatik eşleşeceksin.`;
+      } else {
+        statusTitle.textContent = "Uygun kullanıcı aranıyor...";
+        statusDesc.textContent = `Şu an ${onlineCount} kişi çevrimiçi${locTag}. Eşleşme sağlanıyor...`;
+      }
+
+      switchView('view-matching');
+    }
+
+    function cancelMatchmaking() {
+      switchView('view-lobby');
+    }
+
+    function previewScreenWithoutOpponent() {
+      currentOpponent = {
+        name: "Skor Modu",
+        emoji: "🏆",
+        isFavorite: false,
+        isFriend: false
+      };
+
+      if (matchMode === 'direct') {
+        selectedQuestionCards = [];
+        enterChatRoom(false);
+      } else {
+        setupGameArena();
+        switchView('view-game');
+      }
+    }
+
+    // 7 OYUN ALANI KURULUMU
+    function setupGameArena() {
+      document.getElementById("my-game-avatar").textContent = currentUser.emoji;
+      document.getElementById("my-game-name").textContent = currentUser.name;
+      document.getElementById("opp-game-avatar").textContent = currentOpponent ? currentOpponent.emoji : "🏆";
+      document.getElementById("opp-game-name").textContent = currentOpponent ? currentOpponent.name : "Skor Modu";
+      updateCurrentGameScoreBanner();
+
+      const arenas = ["arena-rps", "arena-wordle", "arena-xox", "arena-trivia", "arena-tavla", "arena-battleship", "arena-football"];
+      arenas.forEach(id => document.getElementById(id).style.display = "none");
+
+      document.getElementById("active-game-header").textContent = gameLabels[selectedGame] || "Oyun";
+
+      if (selectedGame === 'wordle') {
+        document.getElementById("arena-wordle").style.display = "flex";
+        initWordle();
+      } else if (selectedGame === 'xox') {
+        document.getElementById("arena-xox").style.display = "flex";
+        initXOX();
+      } else if (selectedGame === 'trivia') {
+        document.getElementById("arena-trivia").style.display = "flex";
+        initTrivia();
+      } else if (selectedGame === 'tavla') {
+        document.getElementById("arena-tavla").style.display = "flex";
+      } else if (selectedGame === 'battleship') {
+        document.getElementById("arena-battleship").style.display = "flex";
+        initBattleship();
+      } else if (selectedGame === 'football') {
+        document.getElementById("arena-football").style.display = "flex";
+        initFootball();
+      } else {
+        document.getElementById("arena-rps").style.display = "flex";
+        document.getElementById("rps-result-display").textContent = "🤜 🤛";
+        document.getElementById("rps-status-text").textContent = "Kazanınca +10 skor kazanırsın; istersen sağ üstten sohbete geçebilirsin.";
+      }
+    }
+
+    // 1. Taş-Kağıt-Makas
+    function playRPS(userChoice) {
+      const choices = ['tas', 'kagit', 'makas'];
+      const icons = { tas: '✊', kagit: '✋', makas: '✌️' };
+      const oppChoice = choices[Math.floor(Math.random() * choices.length)];
+      document.getElementById("rps-result-display").textContent = `${icons[userChoice]}  vs  ${icons[oppChoice]}`;
+
+      if (userChoice === oppChoice) {
+        document.getElementById("rps-status-text").textContent = "Berabere! Tekrar hamle seç.";
+        return;
+      }
+
+      const userWins = (userChoice === 'tas' && oppChoice === 'makas') ||
+                       (userChoice === 'kagit' && oppChoice === 'tas') ||
+                       (userChoice === 'makas' && oppChoice === 'kagit');
+
+      if (userWins) {
+        addScore("rps", 10);
+        document.getElementById("rps-status-text").textContent = "🎉 Kazandın! +10 Skor eklendi. İstersen sohbete geçebilir veya oynamaya devam edebilirsin.";
+      } else {
+        document.getElementById("rps-status-text").textContent = "Bu eli kaybettin! Tekrar deneyebilirsin.";
+      }
+    }
+
+    // 2. Wordle
+    function initWordle() {
+      targetWord = wordleWords[Math.floor(Math.random() * wordleWords.length)];
+      wordleGuesses = [];
+      const grid = document.getElementById("wordle-grid");
+      grid.innerHTML = "";
+      for (let r = 0; r < 5; r++) {
+        const row = document.createElement("div");
+        row.className = "wordle-row";
+        for (let c = 0; c < 5; c++) {
+          const cell = document.createElement("div");
+          cell.className = "wordle-cell";
+          cell.id = `w-cell-${r}-${c}`;
+          row.appendChild(cell);
+        }
+        grid.appendChild(row);
+      }
+      document.getElementById("wordle-input").value = "";
+    }
+
+    function submitWordleGuess() {
+      const inputEl = document.getElementById("wordle-input");
+      const guess = inputEl.value.trim().toLocaleUpperCase('tr-TR');
+      if (guess.length !== 5) {
+        showToast("Lütfen 5 harfli bir kelime girin!");
+        return;
+      }
+      const rowIdx = wordleGuesses.length;
+      if (rowIdx >= 5) return;
+
+      wordleGuesses.push(guess);
+      for (let i = 0; i < 5; i++) {
+        const cell = document.getElementById(`w-cell-${rowIdx}-${i}`);
+        cell.textContent = guess[i];
+        if (guess[i] === targetWord[i]) cell.classList.add("correct");
+        else if (targetWord.includes(guess[i])) cell.classList.add("present");
+        else cell.classList.add("absent");
+      }
+      inputEl.value = "";
+
+      if (guess === targetWord) {
+        addScore("wordle", 25);
+        showToast("🎉 Doğru kelime! +25 Skor eklendi.");
+      } else if (wordleGuesses.length === 5) {
+        showToast(`Kelime: ${targetWord} idi!`);
+      }
+    }
+
+    // 3. XOX
+    let xoxCells = Array(9).fill("");
+    function initXOX() {
+      xoxCells = Array(9).fill("");
+      document.getElementById("xox-status").textContent = "Sen (X) başlıyorsun!";
+      const board = document.getElementById("xox-board");
+      board.innerHTML = "";
+      for (let i = 0; i < 9; i++) {
+        const cell = document.createElement("div");
+        cell.className = "xox-cell";
+        cell.onclick = () => makeXOXMove(i);
+        board.appendChild(cell);
+      }
+    }
+
+    function makeXOXMove(idx) {
+      if (xoxCells[idx] !== "") return;
+      xoxCells[idx] = "X";
+      renderXOX();
+      if (checkXOXWin("X")) {
+        addScore("xox", 15);
+        document.getElementById("xox-status").textContent = "🎉 Kazandın! +15 Skor eklendi.";
+        return;
+      }
+      const empty = xoxCells.map((v, i) => v === "" ? i : null).filter(v => v !== null);
+      if (empty.length === 0) {
+        document.getElementById("xox-status").textContent = "Berabere! Tahtayı sıfırla.";
+        return;
+      }
+      const oppMove = empty[Math.floor(Math.random() * empty.length)];
+      xoxCells[oppMove] = "O";
+      renderXOX();
+      if (checkXOXWin("O")) {
+        document.getElementById("xox-status").textContent = "Rakip kazandı! Tekrar deneyebilirsin.";
+      }
+    }
+
+    function renderXOX() {
+      const cells = document.getElementById("xox-board").children;
+      xoxCells.forEach((val, i) => {
+        cells[i].textContent = val;
+        cells[i].className = `xox-cell ${val === 'X' ? 'x-mark' : (val === 'O' ? 'o-mark' : '')}`;
+      });
+    }
+
+    function checkXOXWin(p) {
+      const wins = [[0,1,2],[3,4,5],[6,7,8],[0,3,6],[1,4,7],[2,5,8],[0,4,8],[2,4,6]];
+      return wins.some(line => line.every(idx => xoxCells[idx] === p));
+    }
+
+    // 4. Hızlı Bilgi
+    let currentTrivia = null;
+    function initTrivia() {
+      currentTrivia = triviaPool[Math.floor(Math.random() * triviaPool.length)];
+      document.getElementById("trivia-question").textContent = currentTrivia.q;
+      document.getElementById("trivia-feedback").textContent = "Doğru cevabı seç!";
+      const box = document.getElementById("trivia-options");
+      box.innerHTML = "";
+      currentTrivia.opts.forEach((opt, i) => {
+        const btn = document.createElement("button");
+        btn.className = "trivia-btn";
+        btn.textContent = opt;
+        btn.onclick = () => {
+          if (i === currentTrivia.ans) {
+            addScore("trivia", 15);
+            btn.style.background = "#DCFCE7";
+            btn.style.borderColor = "#22C55E";
+            document.getElementById("trivia-feedback").textContent = "🎉 Doğru! +15 Skor eklendi.";
+          } else {
+            btn.style.background = "#FEE2E2";
+            btn.style.borderColor = "#EF4444";
+            document.getElementById("trivia-feedback").textContent = "Yanlış cevap, tekrar dene!";
+          }
+        };
+        box.appendChild(btn);
+      });
+    }
+
+    // 5. Tavla Zar Atma
+    const diceFaces = ["⚀", "⚁", "⚂", "⚃", "⚄", "⚅"];
+    function rollTavlaDice() {
+      const d1 = Math.floor(Math.random() * 6) + 1;
+      const d2 = Math.floor(Math.random() * 6) + 1;
+      const oppSum = Math.floor(Math.random() * 10) + 2;
+      const mySum = d1 + d2;
+
+      document.getElementById("dice-1").textContent = diceFaces[d1 - 1];
+      document.getElementById("dice-2").textContent = diceFaces[d2 - 1];
+
+      if (mySum >= oppSum) {
+        addScore("tavla", mySum);
+        document.getElementById("tavla-status").textContent = `🎉 Zarın: ${mySum} (Rakip: ${oppSum}) → +${mySum} Skor!`;
+      } else {
+        document.getElementById("tavla-status").textContent = `Zarın: ${mySum} (Rakip: ${oppSum}) → Bu el rakipte.`;
+      }
+    }
+
+    // 6. Amiral Battı
+    let shipPositions = [];
+    let foundShips = 0;
+    function initBattleship() {
+      foundShips = 0;
+      shipPositions = [];
+      while (shipPositions.length < 3) {
+        const r = Math.floor(Math.random() * 16);
+        if (!shipPositions.includes(r)) shipPositions.push(r);
+      }
+      document.getElementById("ship-status").textContent = "3 gizli gemiyi vur (0/3)";
+      const grid = document.getElementById("ship-grid");
+      grid.innerHTML = "";
+      for (let i = 0; i < 16; i++) {
+        const cell = document.createElement("div");
+        cell.className = "ship-cell";
+        cell.textContent = "🌊";
+        cell.onclick = () => {
+          if (cell.classList.contains("hit") || cell.classList.contains("miss")) return;
+          if (shipPositions.includes(i)) {
+            cell.classList.add("hit");
+            cell.textContent = "💥";
+            foundShips++;
+            addScore("battleship", 15);
+            document.getElementById("ship-status").textContent = `Gemi vuruldu! (${foundShips}/3)`;
+            if (foundShips === 3) {
+              showToast("🚢 Tüm gemiler batırıldı! Bonus +15 Skor.");
+              addScore("battleship", 15);
+            }
+          } else {
+            cell.classList.add("miss");
+            cell.textContent = "💨";
+          }
+        };
+        grid.appendChild(cell);
+      }
+    }
+
+    // 7. Futbolcu & Takım Bilmece
+    let currentFootball = null;
+    function initFootball() {
+      currentFootball = footballPool[Math.floor(Math.random() * footballPool.length)];
+      document.getElementById("football-question").textContent = currentFootball.q;
+      document.getElementById("football-feedback").textContent = "Doğru futbolcu veya takımı seç!";
+      const box = document.getElementById("football-options");
+      box.innerHTML = "";
+      currentFootball.opts.forEach((opt, i) => {
+        const btn = document.createElement("button");
+        btn.className = "trivia-btn";
+        btn.textContent = opt;
+        btn.onclick = () => {
+          if (i === currentFootball.ans) {
+            addScore("football", 20);
+            btn.style.background = "#DCFCE7";
+            btn.style.borderColor = "#22C55E";
+            document.getElementById("football-feedback").textContent = "⚽ Gol! +20 Skor eklendi.";
+          } else {
+            btn.style.background = "#FEE2E2";
+            btn.style.borderColor = "#EF4444";
+            document.getElementById("football-feedback").textContent = "Direkten döndü, tekrar dene!";
+          }
+        };
+        box.appendChild(btn);
+      });
+    }
+
+    // Soru Kartları & Sohbet
+    function openQuestionCards() {
+      selectedQuestionCards = [];
+      const container = document.getElementById("question-cards-list");
+      container.innerHTML = "";
+      allQuestions.forEach((q) => {
+        const div = document.createElement("div");
+        div.className = "q-card-item";
+        div.textContent = q;
+        div.onclick = () => toggleQuestionCard(div, q);
+        container.appendChild(div);
+      });
+      updateCardConfirmBtn();
+      switchView('view-cards');
+    }
+
+    function toggleQuestionCard(el, questionText) {
+      if (selectedQuestionCards.includes(questionText)) {
+        selectedQuestionCards = selectedQuestionCards.filter(item => item !== questionText);
+        el.classList.remove("selected");
+      } else {
+        if (selectedQuestionCards.length >= 2) {
+          showToast("En fazla 2 soru kartı seçebilirsin!");
+          return;
+        }
+        selectedQuestionCards.push(questionText);
+        el.classList.add("selected");
+      }
+      updateCardConfirmBtn();
+    }
+
+    function updateCardConfirmBtn() {
+      const btn = document.getElementById("btn-confirm-cards");
+      btn.textContent = `Seçilen Sorularla Sohbete Gir (${selectedQuestionCards.length}/2)`;
+      btn.disabled = selectedQuestionCards.length === 0;
+      btn.style.opacity = selectedQuestionCards.length === 0 ? "0.5" : "1";
+    }
+
+    function enterChatRoom(withCards) {
+      const opp = currentOpponent || { name: "Kullanıcı", emoji: "👤", isFavorite: false, isFriend: false };
+      document.getElementById("chat-opp-avatar").textContent = opp.emoji;
+      document.getElementById("chat-opp-name").textContent = opp.name;
+      document.getElementById("chat-mode-badge").textContent = withCards ? "Oyun Sonrası Sohbet" : "Direkt Sohbet";
+      updateChatUserButtons();
+
+      const msgBox = document.getElementById("chat-messages");
+      msgBox.innerHTML = "";
+
+      addSystemMessage(withCards
+        ? "Seçilen soru kartlarıyla sohbet odası açıldı."
+        : "Oyunsuz direkt sohbet odasına bağlanıldı.");
+
+      if (withCards && selectedQuestionCards.length > 0) {
+        addSystemMessage(`📌 Seçilen Soru Kartları:
+1) ${selectedQuestionCards[0]}
+${selectedQuestionCards[1] ? '2) ' + selectedQuestionCards[1] : ''}`);
+      }
+
+      switchView('view-chat');
+    }
+
+    function addSystemMessage(text) {
+      const msgBox = document.getElementById("chat-messages");
+      const div = document.createElement("div");
+      div.className = "msg-system";
+      div.style.whiteSpace = "pre-line";
+      div.textContent = text;
+      msgBox.appendChild(div);
+      msgBox.scrollTop = msgBox.scrollHeight;
+    }
+
+    function addChatMessage(text, sender) {
+      const msgBox = document.getElementById("chat-messages");
+      const div = document.createElement("div");
+      div.className = `msg-bubble ${sender === 'me' ? 'msg-me' : 'msg-other'}`;
+      div.textContent = text;
+      msgBox.appendChild(div);
+      msgBox.scrollTop = msgBox.scrollHeight;
+    }
+
+    function useIcebreaker(text) {
+      document.getElementById("chat-input").value = text;
+      sendChatMessage();
+    }
+
+    function sendChatMessage() {
+      const input = document.getElementById("chat-input");
+      const text = input.value.trim();
+      if (!text) return;
+      addChatMessage(text, 'me');
+      input.value = "";
+    }
+
+    // Arkadaşlar & Favoriler
+    function saveFriends() {
+      localStorage.setItem("hadikonus_friends", JSON.stringify(friendsList));
+      updateFriendsBadge();
+    }
+
+    function updateChatUserButtons() {
+      if (!currentOpponent) return;
+      const favBtn = document.getElementById("btn-fav-user");
+      const addBtn = document.getElementById("btn-add-friend-chat");
+
+      favBtn.className = `icon-action-btn ${currentOpponent.isFavorite ? 'fav-active' : ''}`;
+      favBtn.textContent = currentOpponent.isFavorite ? "⭐ Favoride" : "⭐ Favori";
+
+      addBtn.className = `icon-action-btn ${currentOpponent.isFriend ? 'friend-added' : ''}`;
+      addBtn.textContent = currentOpponent.isFriend ? "✓ Eklendi" : "➕ Ekle";
+    }
+
+    function toggleFavoriteCurrent() {
+      if (!currentOpponent) return;
+      currentOpponent.isFavorite = !currentOpponent.isFavorite;
+      if (currentOpponent.isFavorite && !currentOpponent.isFriend) {
+        addCurrentToFriends(true);
+      } else {
+        const existing = friendsList.find(f => f.name === currentOpponent.name);
+        if (existing) existing.isFavorite = currentOpponent.isFavorite;
+        saveFriends();
+      }
+      updateChatUserButtons();
+      showToast(currentOpponent.isFavorite ? "Favorilere eklendi." : "Favorilerden çıkarıldı.");
+    }
+
+    function addCurrentToFriends(silent = false) {
+      if (!currentOpponent || currentOpponent.isFriend) return;
+      currentOpponent.isFriend = true;
+      friendsList.unshift({
+        id: Date.now(),
+        name: currentOpponent.name,
+        emoji: currentOpponent.emoji,
+        isFavorite: currentOpponent.isFavorite
+      });
+      saveFriends();
+      updateChatUserButtons();
+      if (!silent) showToast(`${currentOpponent.name} arkadaş listene eklendi.`);
+    }
+
+    function updateFriendsBadge() {
+      const badge = document.getElementById("friends-count-badge");
+      if (friendsList.length > 0) {
+        badge.style.display = "inline-block";
+        badge.textContent = friendsList.length;
+      } else {
+        badge.style.display = "none";
+      }
+    }
+
+    function renderFriendsList() {
+      const container = document.getElementById("friends-list-container");
+      container.innerHTML = "";
+
+      if (friendsList.length === 0) {
+        container.innerHTML = `
+          <div class="empty-state-box">
+            <span style="font-size: 32px;">👥</span>
+            <div style="font-weight: 700; color: var(--text-dark);">Henüz ekli arkadaşın yok</div>
+            <p style="font-size: 13px; max-width: 260px;">
+              Sohbet ettiğin kişileri <strong>➕ Ekle</strong> butonuyla veya yukarıdaki kutuya kullanıcı adı / #ID yazarak listene ekleyebilirsin.
+            </p>
+          </div>
+        `;
+        return;
+      }
+
+      const sorted = [...friendsList].sort((a, b) => (b.isFavorite ? 1 : 0) - (a.isFavorite ? 1 : 0));
+
+      sorted.forEach(friend => {
+        const card = document.createElement("div");
+        card.className = "user-card";
+        card.innerHTML = `
+          <div class="user-meta">
+            <span style="font-size: 24px;">${friend.emoji}</span>
+            <div>
+              <div style="font-size: 14px; font-weight: 700;">
+                ${friend.name} ${friend.isFavorite ? '⭐' : ''}
+              </div>
+              <div style="font-size: 11.5px; color: var(--text-muted);">
+                ${friend.isFavorite ? 'Favori Kullanıcı' : 'Kayıtlı Arkadaş'}
+              </div>
+            </div>
+          </div>
+          <div style="display:flex; gap:6px;">
+            <button class="icon-action-btn ${friend.isFavorite ? 'fav-active' : ''}" onclick="toggleFriendFav(${friend.id})" title="Favori">⭐</button>
+            <button class="icon-action-btn" onclick="removeFriend(${friend.id})" title="Sil" style="color: #DC2626;">✕</button>
+          </div>
+        `;
+        container.appendChild(card);
+      });
+    }
+
+    function toggleFriendFav(id) {
+      const f = friendsList.find(item => item.id === id);
+      if (f) {
+        f.isFavorite = !f.isFavorite;
+        saveFriends();
+        renderFriendsList();
+      }
+    }
+
+    function removeFriend(id) {
+      friendsList = friendsList.filter(item => item.id !== id);
+      saveFriends();
+      renderFriendsList();
+      showToast("Kullanıcı listeden çıkarıldı.");
+    }
+
+    function manualAddFriend() {
+      const input = document.getElementById("new-friend-input");
+      const name = input.value.trim();
+      if (!name) return;
+      const randomAni = animals[Math.floor(Math.random() * animals.length)];
+      friendsList.unshift({
+        id: Date.now(),
+        name: name,
+        emoji: randomAni.emoji,
+        isFavorite: false
+      });
+      input.value = "";
+      saveFriends();
+      renderFriendsList();
+      showToast(`${name} arkadaş listene eklendi.`);
+    }
+
+    // Oda Kur / Gir
+    function generateNewRoomCode() {
+      const code = "HK-" + Math.floor(1000 + Math.random() * 9000);
+      document.getElementById("generated-room-code").textContent = code;
+      showToast("Yeni oda kodu oluşturuldu.");
+    }
+
+    function copyRoomCode() {
+      const code = document.getElementById("generated-room-code").textContent;
+      navigator.clipboard?.writeText(code);
+      showToast(`Oda kodu kopyalandı: ${code}`);
+    }
+
+    function joinExistingRoom() {
+      const code = document.getElementById("join-room-input").value.trim().toUpperCase();
+      if (!code) {
+        showToast("Lütfen geçerli bir oda kodu girin!");
+        return;
+      }
+      showToast(`${code} odasına bağlanılıyor...`);
+    }
+
+    document.getElementById("faq-toggle").addEventListener("click", () => {
+      document.getElementById("faq-box").classList.toggle("open");
+    });
+
+    // Başlangıç
+    renderUserProfile();
+    setOnlineCount(1);
+    updateFriendsBadge();
+    renderScoreboard();
+  </script>
+</body>
+</html>
 
