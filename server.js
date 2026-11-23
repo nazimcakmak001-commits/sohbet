@@ -6,7 +6,206 @@ const { WebSocketServer } = require("ws");
 
 const PORT = process.env.PORT || 3000;
 const SECRET = process.env.SESSION_SECRET || crypto.randomBytes(32).toString("hex");
-const page = fs.readFileSync(path.join(__dirname, "public", "index.html"));
+const htmlPath = fs.existsSync(path.join(__dirname, "public", "index.html"))
+  ? path.join(__dirname, "public", "index.html")
+  : path.join(__dirname, "index.html");
+const rawPage = fs.readFileSync(htmlPath, "utf8");
+
+const CLIENT_WS_SCRIPT = `
+  <script>
+    (function initRealtimeSocket() {
+      if (window.__hadikonusWsInit) return;
+      window.__hadikonusWsInit = true;
+      const protocol = window.location.protocol === "https:" ? "wss:" : "ws:";
+      const wsUrl = protocol + "//" + window.location.host;
+      let socket = null;
+      let reconnectTimer = null;
+
+      function updateStatusDot(connected) {
+        const dot = document.getElementById("status-dot");
+        if (!dot) return;
+        dot.style.backgroundColor = connected ? "#22C55E" : "#F59E0B";
+      }
+
+      function sendWs(payload) {
+        if (socket && socket.readyState === WebSocket.OPEN) {
+          socket.send(JSON.stringify(payload));
+        }
+      }
+
+      function syncProfileToServer() {
+        if (!socket || socket.readyState !== WebSocket.OPEN) return;
+        const cleanName = String((typeof currentUser !== "undefined" && currentUser.name) || "Hızlı Baykuş")
+          .replace(/#.*$/, "")
+          .trim()
+          .replace(/[^\\p{L}\\p{N}_ -]/gu, "")
+          .slice(0, 18) || "Hızlı Baykuş";
+        const savedToken = localStorage.getItem("hadikonus_ws_token") || "";
+        sendWs({
+          t: "login",
+          name: cleanName,
+          sym: (typeof currentUser !== "undefined" && currentUser.emoji) || "🦉",
+          token: savedToken
+        });
+      }
+
+      function connect() {
+        try {
+          socket = new WebSocket(wsUrl);
+        } catch (e) {
+          scheduleReconnect();
+          return;
+        }
+
+        socket.addEventListener("open", () => {
+          updateStatusDot(true);
+          syncProfileToServer();
+          sendWs({ t: "count" });
+        });
+
+        socket.addEventListener("message", (event) => {
+          let msg = null;
+          try {
+            msg = JSON.parse(event.data);
+          } catch (e) {
+            return;
+          }
+          if (!msg || !msg.t) return;
+
+          if (msg.t === "count" && typeof msg.n === "number") {
+            if (typeof setOnlineCount === "function") setOnlineCount(msg.n);
+          } else if (msg.t === "hello") {
+            if (msg.token) localStorage.setItem("hadikonus_ws_token", msg.token);
+            if (msg.name && msg.name.includes("#")) {
+              const parts = msg.name.split("#");
+              if (typeof userTagId !== "undefined") userTagId = "#" + parts.pop();
+              localStorage.setItem("hadikonus_userid", "#" + msg.name.split("#").pop());
+              const tagEl = document.getElementById("user-tag-id");
+              if (tagEl) tagEl.textContent = "#" + msg.name.split("#").pop();
+            }
+          } else if (msg.t === "searching") {
+            const tEl = document.getElementById("matching-status-title");
+            const dEl = document.getElementById("matching-status-desc");
+            if (tEl) tEl.textContent = "Rakip bekleniyor...";
+            if (dEl) dEl.textContent = "Şu an " + (typeof onlineCount !== "undefined" ? onlineCount : 1) + " kişi çevrimiçi. Başka bir kullanıcı eşleşme aradığında otomatik bağlanacaksın.";
+          } else if (msg.t === "paired") {
+            window.currentOpponent = {
+              name: msg.name || "Rakip",
+              emoji: msg.sym || "👤",
+              isFavorite: false,
+              isFriend: false
+            };
+            if (typeof currentOpponent !== "undefined") currentOpponent = window.currentOpponent;
+            if (typeof showToast === "function") showToast("Eşleşme bulundu: " + window.currentOpponent.name);
+            if (typeof matchMode !== "undefined" && matchMode === "direct") {
+              sendWs({ t: "skipgame" });
+              if (typeof selectedQuestionCards !== "undefined") selectedQuestionCards = [];
+              if (typeof enterChatRoom === "function") enterChatRoom(false);
+            } else {
+              if (typeof setupGameArena === "function") setupGameArena();
+              if (typeof switchView === "function") switchView("view-game");
+            }
+          } else if (msg.t === "msg") {
+            if (typeof msg.text === "string" && msg.text.trim() && typeof addChatMessage === "function") {
+              addChatMessage(msg.text, "other");
+            }
+          } else if (msg.t === "left") {
+            if (typeof showToast === "function") showToast("Karşı taraf sohbetten ayrıldı.");
+            if (typeof addSystemMessage === "function") addSystemMessage("Karşı taraf odadan ayrıldı.");
+          } else if (msg.t === "roomwait") {
+            if (typeof showToast === "function") showToast("Oda " + msg.code + " açıldı, arkadaşın bekleniyor...");
+          } else if (msg.t === "roomerr") {
+            if (typeof showToast === "function") showToast("Oda kodu 4-8 karakter (harf/rakam) olmalı.");
+          }
+        });
+
+        socket.addEventListener("close", () => {
+          updateStatusDot(false);
+          scheduleReconnect();
+        });
+
+        socket.addEventListener("error", () => {
+          updateStatusDot(false);
+        });
+      }
+
+      function scheduleReconnect() {
+        if (reconnectTimer) return;
+        reconnectTimer = setTimeout(() => {
+          reconnectTimer = null;
+          connect();
+        }, 2000);
+      }
+
+      if (typeof window.startMatchmaking === "function") {
+        const origStartMatchmaking = window.startMatchmaking;
+        window.startMatchmaking = function (mode) {
+          origStartMatchmaking(mode);
+          sendWs({
+            t: "find",
+            mode: mode,
+            game: typeof selectedGame !== "undefined" ? selectedGame : "rps",
+            pref: typeof matchPref !== "undefined" ? matchPref : "global",
+            coords: (typeof matchPref !== "undefined" && matchPref === "nearby" && typeof userCoords !== "undefined") ? userCoords : null
+          });
+        };
+      }
+
+      if (typeof window.cancelMatchmaking === "function") {
+        const origCancelMatchmaking = window.cancelMatchmaking;
+        window.cancelMatchmaking = function () {
+          sendWs({ t: "idle" });
+          origCancelMatchmaking();
+        };
+      }
+
+      if (typeof window.sendChatMessage === "function") {
+        const origSendChatMessage = window.sendChatMessage;
+        window.sendChatMessage = function () {
+          const input = document.getElementById("chat-input");
+          const text = input ? input.value.trim() : "";
+          if (!text) return;
+          sendWs({ t: "msg", text });
+          origSendChatMessage();
+        };
+      }
+
+      if (typeof window.saveCustomUsername === "function") {
+        const origSaveCustomUsername = window.saveCustomUsername;
+        window.saveCustomUsername = function () {
+          origSaveCustomUsername();
+          syncProfileToServer();
+        };
+      }
+
+      const rerollBtn = document.getElementById("reroll-btn");
+      if (rerollBtn) {
+        rerollBtn.addEventListener("click", () => {
+          setTimeout(syncProfileToServer, 0);
+        });
+      }
+
+      if (typeof window.joinExistingRoom === "function") {
+        const origJoinExistingRoom = window.joinExistingRoom;
+        window.joinExistingRoom = function () {
+          const input = document.getElementById("join-room-input");
+          const code = input ? input.value.trim().toUpperCase() : "";
+          origJoinExistingRoom();
+          if (code) {
+            sendWs({ t: "room", code });
+          }
+        };
+      }
+
+      connect();
+    })();
+  </script>
+`;
+
+const page = rawPage.includes("initRealtimeSocket")
+  ? rawPage
+  : rawPage.replace("</body>", CLIENT_WS_SCRIPT + "\n</body>");
+
 const SYMS = ["🦊","🐼","🐯","🦉","🐙","🦄","🐸","🐧","🦁","🐳","🦋","🐺","🐨","🦖","🌵","🍀","⭐","🔥","🌙","⚡","🦙","🐱","🦅","🐬"];
 const rnd = a => a[Math.floor(Math.random() * a.length)];
 
@@ -16,7 +215,7 @@ const ADMIN_PASS = process.env.ADMIN_PASS || "";
 function adminPage() {
   const mins = Math.floor((Date.now() - stats.start) / 60000);
   const rows = [
-    ["Şu an çevrimiçi", wss.clients.size],
+    ["Şu an çevrimiçi", activeCount()],
     ["En yüksek eşzamanlı kişi", stats.peak],
     ["Toplam bağlantı (ziyaret)", stats.visits],
     ["Kurulan eşleşme", stats.pairs],
@@ -40,7 +239,16 @@ const wss = new WebSocketServer({ server });
 let waiting = null;
 
 const send = (ws, o) => { if (ws && ws.readyState === 1) ws.send(JSON.stringify(o)); };
-const broadcastCount = () => { stats.peak = Math.max(stats.peak, wss.clients.size); wss.clients.forEach(c => send(c, { t: "count", n: wss.clients.size })); };
+const activeCount = () => {
+  let n = 0;
+  wss.clients.forEach(c => { if (c.readyState === 1) n++; });
+  return n;
+};
+const broadcastCount = () => {
+  const n = activeCount();
+  stats.peak = Math.max(stats.peak, n);
+  wss.clients.forEach(c => send(c, { t: "count", n }));
+};
 
 const rooms = new Map();
 function joinRoom(ws, code) {
@@ -194,7 +402,8 @@ wss.on("connection", ws => {
     if (ws.stamp.length >= 12) return;      // hız sınırı
     ws.stamp.push(now);
     let m; try { m = JSON.parse(raw); } catch { return; }
-    if (m.t === "find") find(ws);
+    if (m.t === "count") send(ws, { t: "count", n: activeCount() });
+    else if (m.t === "find") find(ws);
     else if (m.t === "login") login(ws, m);
     else if (m.t === "room") joinRoom(ws, m.code);
     else if (m.t === "idle") unpair(ws);
