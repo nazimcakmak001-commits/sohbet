@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="tr">
 <head>
-  <meta charset="UTF-8a" />
+  <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>hadikonus — Oyna, tanış, sohbet et.</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -834,14 +834,26 @@
 
     .penalty-keeper {
       position: absolute;
-      bottom: 4px;
       left: 50%;
-      transform: translateX(-50%);
+      top: 73%;
+      transform: translate(-50%, -50%);
       font-size: 30px;
-      transition: all 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+      transition: left 0.4s cubic-bezier(0.22, 1, 0.36, 1), top 0.4s cubic-bezier(0.22, 1, 0.36, 1), transform 0.4s cubic-bezier(0.22, 1, 0.36, 1);
       pointer-events: none;
       z-index: 3;
       filter: drop-shadow(0 3px 4px rgba(0,0,0,0.45));
+    }
+
+    .penalty-ball-fly {
+      position: absolute;
+      left: 50%;
+      top: 115%;
+      transform: translate(-50%, -50%);
+      font-size: 26px;
+      transition: left 0.5s ease-out, top 0.5s ease-out, transform 0.5s ease-out;
+      pointer-events: none;
+      z-index: 4;
+      filter: drop-shadow(0 3px 4px rgba(0,0,0,0.4));
     }
 
     .penalty-ball-row {
@@ -1955,14 +1967,6 @@
 
       <div class="chat-messages" id="chat-messages"></div>
 
-      <div class="reply-composer-bar" id="reply-composer-bar">
-        <div style="overflow:hidden;">
-          <div id="reply-target-sender" style="font-weight:800; color:var(--primary); font-size:11px;">Alıntılanan Mesaj</div>
-          <div id="reply-target-text" style="white-space:nowrap; overflow:hidden; text-overflow:ellipsis; color:var(--text-dark);"></div>
-        </div>
-        <button type="button" class="pill-icon-btn" onclick="clearReplyTarget()" title="Alıntıyı kaldır">✕</button>
-      </div>
-
       <form class="chat-input-box" onsubmit="handleSendMessage(event)">
         <input type="text" class="chat-input" id="chat-input" placeholder="Bir mesaj yaz..." autocomplete="off" required />
         <button type="submit" class="send-btn">Gönder</button>
@@ -2732,6 +2736,25 @@
     }
 
     // --- KARŞILIKLI PENALTI (BİRİ ATAR, DİĞERİ TUTAR) ---
+    function penZonePos(z) {
+      const col = z % 3;
+      const row = Math.floor(z / 3);
+      return { l: ["17%", "50%", "83%"][col], t: row === 0 ? "27%" : "73%" };
+    }
+
+    function penKeeperStyle(z) {
+      if (z === null || z === undefined) return "left:50%;top:73%;transform:translate(-50%,-50%);";
+      const pos = penZonePos(z);
+      const rot = (z % 3 - 1) * 22;
+      return `left:${pos.l};top:${pos.t};transform:translate(-50%,-50%) rotate(${rot}deg);`;
+    }
+
+    function penBallStyle(z) {
+      if (z === null || z === undefined) return "left:50%;top:115%;transform:translate(-50%,-50%);";
+      const pos = penZonePos(z);
+      return `left:${pos.l};top:${pos.t};transform:translate(-50%,-50%) scale(0.8);`;
+    }
+
     function renderPenaltyGame() {
       const p = state.penalty;
       const arena = document.getElementById("game-arena");
@@ -2750,6 +2773,11 @@
         : (p.role === "shooter"
             ? "⚽ Senin Atış Sıran: Şut köşesi seç ve çek!"
             : "🧤 Senin Kaleci Sıran: Rakibin şutunu tutmak için köşe seç!");
+
+      const keeperZone = p.anim
+        ? p.anim.keeper
+        : (p.role === "keeper" && p.selectedZone !== null ? p.selectedZone : null);
+      const ballZone = p.anim ? p.anim.ball : null;
 
       arena.innerHTML = `
         <div style="width:100%; display:flex; justify-content:space-between; align-items:center; font-size:12px; font-weight:700;">
@@ -2771,13 +2799,14 @@
                 ${p.busy || p.finished ? "disabled" : ""}
               >${label}</button>
             `).join("")}
-            <div class="penalty-keeper" id="pen-keeper">🧤</div>
+            <div class="penalty-keeper" id="pen-keeper" style="${penKeeperStyle(keeperZone)}">🧤</div>
+            <div class="penalty-ball-fly" id="pen-ball" style="${penBallStyle(ballZone)}">⚽</div>
           </div>
 
-          <div class="penalty-ball-row">
-            <span class="penalty-ball" id="pen-ball">⚽</span>
+          <div class="penalty-ball-row" style="margin-top:26px;">
             <button
               type="button"
+              id="pen-shoot-btn"
               class="btn-primary"
               style="width:auto; padding:10px 18px; font-size:13.5px;"
               onclick="shootPenalty()"
@@ -2798,9 +2827,19 @@
     }
 
     function pickPenaltyZone(idx) {
-      if (state.penalty.busy || state.penalty.finished) return;
-      state.penalty.selectedZone = idx;
-      renderPenaltyGame();
+      const p = state.penalty;
+      if (p.busy || p.finished) return;
+      p.selectedZone = idx;
+      document.querySelectorAll("#game-arena .penalty-zone").forEach((b, i) => {
+        b.classList.toggle("active-zone", i === idx);
+      });
+      const btn = document.getElementById("pen-shoot-btn");
+      if (btn) btn.disabled = false;
+      // Kaleci rolündeysen eldiven seçtiğin köşeye hemen atlar
+      if (p.role === "keeper") {
+        const k = document.getElementById("pen-keeper");
+        if (k) k.style.cssText = penKeeperStyle(idx);
+      }
     }
 
     function shootPenalty() {
@@ -2810,63 +2849,74 @@
 
       const zoneNames = ["Sol Üst", "Orta Üst", "Sağ Üst", "Sol Alt", "Orta Alt", "Sağ Alt"];
       const chosen = p.selectedZone;
-      const keeperChoice = Math.floor(Math.random() * 6);
-      const keeperLeft = ["62%", "50%", "38%", "62%", "50%", "38%"][keeperChoice] || "50%";
-      const keeperEl = document.getElementById("pen-keeper");
-      if (keeperEl) {
-        keeperEl.style.left = keeperLeft;
-        keeperEl.style.transform = "translateX(-50%) rotate(" + ((keeperChoice % 3 - 1) * 18) + "deg)";
-      }
-
       const p1Label = p.passAndPlay ? "Oyuncu 1" : (state.profile.name || "Sen");
       const p2Label = p.passAndPlay ? "Oyuncu 2" : (state.currentPartner?.name || "Rakip");
 
+      let ballZone, keeperZone;
       if (p.role === "shooter") {
-        p.myShots += 1;
-        const isGoal = chosen !== keeperChoice;
-        if (isGoal) {
-          p.myGoals += 1;
-          p.lastMsg = `⚽ GOL! ${p1Label} (${zoneNames[chosen]}) topu ağlara gönderdi!`;
-        } else {
-          p.lastMsg = `🧤 KURTARIŞ! Kaleci ${zoneNames[keeperChoice]} köşesinde uzandı!`;
-        }
+        ballZone = chosen;
+        keeperZone = Math.floor(Math.random() * 6);
       } else {
-        p.oppShots += 1;
-        const oppShotZone = Math.floor(Math.random() * 6);
-        const saved = chosen === oppShotZone;
-        if (saved) {
-          p.lastMsg = `🧤 HARİKA KURTARIŞ! ${zoneNames[chosen]} köşesinde ${p2Label}'in şutunu çıkardın!`;
-        } else {
-          p.oppGoals += 1;
-          p.lastMsg = `🥅 Rakip gol attı (${zoneNames[oppShotZone]}). Şimdi tekrar senin şut sıran!`;
-        }
+        keeperZone = chosen;
+        ballZone = Math.floor(Math.random() * 6);
       }
 
-      renderPenaltyGame();
+      // Animasyon: eldiven ve top kendi köşesine atlar
+      document.querySelectorAll("#game-arena .penalty-zone").forEach((b) => (b.disabled = true));
+      const shootBtn = document.getElementById("pen-shoot-btn");
+      if (shootBtn) shootBtn.disabled = true;
+      const keeperEl = document.getElementById("pen-keeper");
+      const ballEl = document.getElementById("pen-ball");
+      if (keeperEl) keeperEl.style.cssText = penKeeperStyle(keeperZone);
+      if (ballEl) ballEl.style.cssText = penBallStyle(ballZone);
 
       setTimeout(() => {
-        const totalShotsDone = p.myShots + p.oppShots;
-        if (p.myShots >= p.maxShotsPerSide && p.oppShots >= p.maxShotsPerSide) {
-          p.finished = true;
-          p.busy = false;
-          const summary = p.myGoals > p.oppGoals
-            ? `🏆 ${p1Label} Kazandı (${p.myGoals}-${p.oppGoals})`
-            : p.myGoals === p.oppGoals
-              ? `🤝 Berabere (${p.myGoals}-${p.oppGoals})`
-              : `👏 ${p2Label} Kazandı (${p.myGoals}-${p.oppGoals})`;
-          recordGameScore("penalty", Math.max(15, p.myGoals * 20), summary);
-          p.lastMsg = `${summary} • Penaltı serisi tamamlandı!`;
-          showToast(summary);
-          renderPenaltyGame();
-          return;
+        if (p.role === "shooter") {
+          p.myShots += 1;
+          if (ballZone !== keeperZone) {
+            p.myGoals += 1;
+            p.lastMsg = `⚽ GOL! ${p1Label} (${zoneNames[ballZone]}) topu ağlara gönderdi!`;
+          } else {
+            p.lastMsg = `🧤 KURTARIŞ! Kaleci ${zoneNames[keeperZone]} köşesinde uzandı!`;
+          }
+        } else {
+          p.oppShots += 1;
+          if (keeperZone === ballZone) {
+            p.lastMsg = `🧤 HARİKA KURTARIŞ! ${zoneNames[keeperZone]} köşesinde ${p2Label}'in şutunu çıkardın!`;
+          } else {
+            p.oppGoals += 1;
+            p.lastMsg = `🥅 Rakip gol attı (${zoneNames[ballZone]}). Şimdi tekrar senin şut sıran!`;
+          }
         }
 
-        p.role = totalShotsDone % 2 === 0 ? "shooter" : "keeper";
-        p.activePlayer = p.role === "shooter" ? 0 : 1;
-        p.selectedZone = null;
-        p.busy = false;
+        p.anim = { keeper: keeperZone, ball: ballZone };
         renderPenaltyGame();
-      }, 750);
+
+        setTimeout(() => {
+          p.anim = null;
+          const totalShotsDone = p.myShots + p.oppShots;
+          if (p.myShots >= p.maxShotsPerSide && p.oppShots >= p.maxShotsPerSide) {
+            p.finished = true;
+            p.busy = false;
+            const summary = p.myGoals > p.oppGoals
+              ? `🏆 ${p1Label} Kazandı (${p.myGoals}-${p.oppGoals})`
+              : p.myGoals === p.oppGoals
+                ? `🤝 Berabere (${p.myGoals}-${p.oppGoals})`
+                : `👏 ${p2Label} Kazandı (${p.myGoals}-${p.oppGoals})`;
+            recordGameScore("penalty", Math.max(15, p.myGoals * 20), summary);
+            p.lastMsg = `${summary} • Penaltı serisi tamamlandı!`;
+            showToast(summary);
+            renderPenaltyGame();
+            return;
+          }
+
+          p.role = totalShotsDone % 2 === 0 ? "shooter" : "keeper";
+          p.activePlayer = p.role === "shooter" ? 0 : 1;
+          p.selectedZone = null;
+          p.busy = false;
+          renderPenaltyGame();
+        }, 750);
+      }, 650);
     }
 
     function renderBattleshipGame() {
@@ -4225,79 +4275,20 @@
 
       if (msgsEl) {
         const gameName = GAME_META[state.selectedGame]?.name || "Penaltı";
-        msgsEl.innerHTML = `<div class="msg-system">${partner.avatar} ${partner.name} ile eşleştin (${gameName}). Mesaja sağa kaydırarak veya tıklayarak alıntıla!</div>`;
+        msgsEl.innerHTML = `<div class="msg-system">${partner.avatar} ${partner.name} ile eşleştin (${gameName}).</div>`;
       }
-      clearReplyTarget();
-    }
-    function setReplyTarget(senderName, text) {
-      state.replyingTo = { senderName, text };
-      const bar = document.getElementById("reply-composer-bar");
-      const senderEl = document.getElementById("reply-target-sender");
-      const textEl = document.getElementById("reply-target-text");
-      if (senderEl) senderEl.textContent = `↩ ${senderName} mesajına yanıt veriliyor`;
-      if (textEl) textEl.textContent = text;
-      if (bar) bar.classList.add("active");
-      const input = document.getElementById("chat-input");
-      if (input) input.focus();
     }
 
-    function clearReplyTarget() {
-      state.replyingTo = null;
-      const bar = document.getElementById("reply-composer-bar");
-      if (bar) bar.classList.remove("active");
-    }
-
-    function appendChatMessage(text, sender = "me", quote = null) {
+    function appendChatMessage(text, sender = "me") {
       const msgsEl = document.getElementById("chat-messages");
       if (!msgsEl) return;
-      const senderLabel = sender === "me"
-        ? (state.profile.name || "Sen")
-        : (state.currentPartner?.name || "Rakip");
 
       const bubble = document.createElement("div");
       bubble.className = `msg-bubble ${sender === "me" ? "msg-me" : "msg-other"}`;
 
-      if (quote && quote.text) {
-        const qBox = document.createElement("div");
-        qBox.className = "msg-quote-preview";
-        qBox.innerHTML = `<strong>${quote.senderName}:</strong> ${quote.text}`;
-        bubble.appendChild(qBox);
-      }
-
       const bodyText = document.createElement("span");
       bodyText.textContent = text;
       bubble.appendChild(bodyText);
-
-      // WhatsApp benzeri sağa kaydırarak veya çift/tek tıklayarak alıntılama
-      let startX = 0;
-      let deltaX = 0;
-
-      bubble.addEventListener("touchstart", (e) => {
-        if (!e.touches || !e.touches.length) return;
-        startX = e.touches[0].clientX;
-        deltaX = 0;
-      }, { passive: true });
-
-      bubble.addEventListener("touchmove", (e) => {
-        if (!e.touches || !e.touches.length) return;
-        const diff = e.touches[0].clientX - startX;
-        if (diff > 0) {
-          deltaX = Math.min(diff, 64);
-          bubble.style.transform = `translateX(${deltaX * 0.45}px)`;
-        }
-      }, { passive: true });
-
-      bubble.addEventListener("touchend", () => {
-        bubble.style.transform = "";
-        if (deltaX >= 28) {
-          setReplyTarget(senderLabel, text);
-        }
-        deltaX = 0;
-      });
-
-      bubble.addEventListener("dblclick", () => {
-        setReplyTarget(senderLabel, text);
-      });
 
       msgsEl.appendChild(bubble);
       msgsEl.scrollTop = msgsEl.scrollHeight;
@@ -4308,9 +4299,7 @@
       const input = document.getElementById("chat-input");
       const text = (input ? input.value : "").trim();
       if (!text) return;
-      const activeQuote = state.replyingTo ? { ...state.replyingTo } : null;
-      appendChatMessage(text, "me", activeQuote);
-      clearReplyTarget();
+      appendChatMessage(text, "me");
       if (input) input.value = "";
 
       setTimeout(() => {
@@ -4319,20 +4308,14 @@
           "Kesinlikle katılıyorum 😄",
           "Hangi oyunu seçersek ben varım!"
         ];
-        const replyText = replies[Math.floor(Math.random() * replies.length)];
-        appendChatMessage(replyText, "other", { senderName: state.profile.name || "Sen", text });
+        appendChatMessage(replies[Math.floor(Math.random() * replies.length)], "other");
       }, 650);
     }
 
     function sendIcebreaker(text) {
-      const activeQuote = state.replyingTo ? { ...state.replyingTo } : null;
-      appendChatMessage(text, "me", activeQuote);
-      clearReplyTarget();
+      appendChatMessage(text, "me");
       setTimeout(() => {
-        appendChatMessage("Selam! Ben de tam şimdi oyun modundaydım, süper oldu!", "other", {
-          senderName: state.profile.name || "Sen",
-          text
-        });
+        appendChatMessage("Selam! Ben de tam şimdi oyun modundaydım, süper oldu!", "other");
       }, 550);
     }
 
@@ -4461,6 +4444,60 @@
       const box = document.getElementById("faq-box");
       if (box) box.classList.toggle("open");
     }
+
+    // ===== GERÇEK ÇEVRİMİÇİ SAYACI (ntfy.sh ile) =====
+    const PRESENCE_TOPIC = "hadikonus-presence-k7x29q";
+    const presence = {
+      id: Math.random().toString(36).slice(2, 10),
+      peers: new Map(),
+      es: null
+    };
+
+    function presenceRender() {
+      const now = Date.now();
+      presence.peers.forEach((t, id) => {
+        if (now - t > 40000) presence.peers.delete(id);
+      });
+      const el = document.getElementById("online-status");
+      if (el) el.textContent = `${presence.peers.size + 1} çevrimiçi`;
+    }
+
+    function presenceSend(type) {
+      const body = JSON.stringify({ id: presence.id, t: type });
+      const url = `https://ntfy.sh/${PRESENCE_TOPIC}`;
+      if (type === "bye" && navigator.sendBeacon) {
+        navigator.sendBeacon(url, body);
+        return;
+      }
+      fetch(url, { method: "POST", body, keepalive: true }).catch(() => {});
+    }
+
+    function presenceConnect() {
+      try {
+        presence.es = new EventSource(`https://ntfy.sh/${PRESENCE_TOPIC}/sse?since=25s`);
+        presence.es.onmessage = (e) => {
+          try {
+            const d = JSON.parse(e.data);
+            if (d.event !== "message") return;
+            const m = JSON.parse(d.message);
+            if (!m || !m.id || m.id === presence.id) return;
+            if (m.t === "bye") presence.peers.delete(m.id);
+            else presence.peers.set(m.id, Date.now());
+            presenceRender();
+          } catch (err) {}
+        };
+      } catch (err) {}
+    }
+
+    presenceConnect();
+    presenceSend("hb");
+    setInterval(() => presenceSend("hb"), 15000);
+    setInterval(presenceRender, 5000);
+    document.addEventListener("visibilitychange", () => {
+      if (!document.hidden) presenceSend("hb");
+    });
+    window.addEventListener("pagehide", () => presenceSend("bye"));
+    presenceRender();
 
     document.getElementById("reroll-btn").addEventListener("click", rerollIdentity);
     updateProfileUI();
