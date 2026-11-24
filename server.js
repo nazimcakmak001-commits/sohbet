@@ -16,10 +16,160 @@ const CLIENT_WS_SCRIPT = `
     (function initRealtimeSocket() {
       if (window.__hadikonusWsInit) return;
       window.__hadikonusWsInit = true;
+      window.__disableMessageQuote = true;
+
       const protocol = window.location.protocol === "https:" ? "wss:" : "ws:";
       const wsUrl = protocol + "//" + window.location.host;
       let socket = null;
       let reconnectTimer = null;
+
+      function applyOnlineCount(n) {
+        if (typeof n !== "number" || Number.isNaN(n)) return;
+        const safeCount = Math.max(0, Math.floor(n));
+        if (typeof onlineCount !== "undefined") {
+          try { onlineCount = safeCount; } catch (e) {}
+        }
+        window.onlineCount = safeCount;
+        if (typeof setOnlineCount === "function") {
+          try { setOnlineCount(safeCount); } catch (e) {}
+        }
+        const candidates = [
+          document.getElementById("online-count"),
+          document.getElementById("onlineCount"),
+          document.getElementById("active-users-count"),
+          ...document.querySelectorAll("[data-online-count], .online-count")
+        ];
+        candidates.forEach((el) => {
+          if (!el) return;
+          if (/çevrimiçi|online/i.test(el.textContent) && el.children.length === 0) {
+            el.textContent = safeCount + " çevrimiçi";
+          } else if (el.children.length === 0) {
+            el.textContent = String(safeCount);
+          }
+        });
+      }
+
+      // Mesaja sağ tıkla ve tıklayarak alıntıla özelliğini devre dışı bırak
+      document.addEventListener("contextmenu", (e) => {
+        const msgEl = e.target.closest(".message, .chat-msg, .msg, [data-msg-id], [data-quote], .quote-btn, .reply-btn");
+        if (msgEl) {
+          e.preventDefault();
+          e.stopPropagation();
+        }
+      }, true);
+
+      document.addEventListener("click", (e) => {
+        const quoteTrigger = e.target.closest("[data-quote], [data-reply], .quote-btn, .reply-btn, .message-quote, .alinti-btn");
+        if (quoteTrigger) {
+          e.preventDefault();
+          e.stopPropagation();
+        }
+      }, true);
+
+      // Penaltı oyununda top ve eldiven hareket motoru
+      function initPenaltyMotion() {
+        let ballX = 0.5;
+        let ballY = 0.78;
+        let ballVx = 0.008;
+        let ballVy = -0.006;
+        let gloveX = 0.5;
+        let gloveDir = 1;
+        let kickActive = false;
+        let kickProgress = 0;
+
+        function triggerKick() {
+          kickActive = true;
+          kickProgress = 0;
+          const targets = [-0.28, 0, 0.28];
+          const chosen = targets[Math.floor(Math.random() * targets.length)];
+          ballVx = chosen * 0.032;
+          ballVy = -0.028;
+        }
+
+        document.addEventListener("click", (e) => {
+          if (e.target.closest("#penalty-shoot-btn, .penalty-shoot, .shoot-btn, [data-penalty-shoot]")) {
+            triggerKick();
+          }
+        });
+
+        function stepPenalty() {
+          // Kaleci eldiveni sürekli sağa-sola hareket eder
+          gloveX += gloveDir * 0.012;
+          if (gloveX > 0.82) { gloveX = 0.82; gloveDir = -1; }
+          if (gloveX < 0.18) { gloveX = 0.18; gloveDir = 1; }
+
+          if (kickActive) {
+            kickProgress += 0.04;
+            ballX += ballVx;
+            ballY += ballVy;
+            if (ballX < 0.12 || ballX > 0.88) ballVx *= -1;
+            if (kickProgress >= 1 || ballY < 0.2) {
+              kickActive = false;
+              kickProgress = 0;
+              ballX = 0.5;
+              ballY = 0.78;
+            }
+          } else {
+            // Top bekleme modunda hafif canlı hareket eder
+            ballX = 0.5 + Math.sin(Date.now() / 450) * 0.04;
+            ballY = 0.78 + Math.cos(Date.now() / 600) * 0.015;
+          }
+
+          const ballEl = document.getElementById("penalty-ball") || document.querySelector(".penalty-ball, .ball, [data-ball]");
+          const gloveEl = document.getElementById("penalty-glove") || document.querySelector(".penalty-glove, .glove, .goalkeeper-glove, [data-glove]");
+
+          if (ballEl) {
+            ballEl.style.position = ballEl.style.position || "relative";
+            ballEl.style.left = ((ballX - 0.5) * 220) + "px";
+            ballEl.style.top = ((ballY - 0.78) * 180) + "px";
+            ballEl.style.transform = "rotate(" + (kickProgress * 360) + "deg)";
+          }
+
+          if (gloveEl) {
+            gloveEl.style.position = gloveEl.style.position || "relative";
+            gloveEl.style.left = ((gloveX - 0.5) * 220) + "px";
+            gloveEl.style.transform = "rotate(" + (gloveDir * 14) + "deg)";
+          }
+
+          const canvas = document.getElementById("penalty-canvas") || document.querySelector("canvas[data-game='penalty'], canvas#penalty");
+          if (canvas && canvas.getContext) {
+            const ctx = canvas.getContext("2d");
+            const w = canvas.width;
+            const h = canvas.height;
+            ctx.clearRect(0, 0, w, h);
+
+            // Kale çizgisi
+            ctx.strokeStyle = "#ffffff";
+            ctx.lineWidth = 3;
+            ctx.strokeRect(w * 0.2, h * 0.14, w * 0.6, h * 0.22);
+
+            // Kaleci eldiveni
+            const gx = gloveX * w;
+            const gy = h * 0.28;
+            ctx.fillStyle = "#f59e0b";
+            ctx.beginPath();
+            ctx.arc(gx, gy, 16, 0, Math.PI * 2);
+            ctx.fill();
+
+            // Top
+            const bx = ballX * w;
+            const by = ballY * h;
+            ctx.fillStyle = "#ffffff";
+            ctx.beginPath();
+            ctx.arc(bx, by, 12, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.strokeStyle = "#111827";
+            ctx.lineWidth = 2;
+            ctx.stroke();
+          }
+
+          requestAnimationFrame(stepPenalty);
+        }
+
+        requestAnimationFrame(stepPenalty);
+      }
+
+      initPenaltyMotion();
 
       function updateStatusDot(connected) {
         const dot = document.getElementById("status-dot");
@@ -73,7 +223,7 @@ const CLIENT_WS_SCRIPT = `
           if (!msg || !msg.t) return;
 
           if (msg.t === "count" && typeof msg.n === "number") {
-            if (typeof setOnlineCount === "function") setOnlineCount(msg.n);
+            applyOnlineCount(msg.n);
           } else if (msg.t === "hello") {
             if (msg.token) localStorage.setItem("hadikonus_ws_token", msg.token);
             if (msg.name && msg.name.includes("#")) {
@@ -86,8 +236,9 @@ const CLIENT_WS_SCRIPT = `
           } else if (msg.t === "searching") {
             const tEl = document.getElementById("matching-status-title");
             const dEl = document.getElementById("matching-status-desc");
+            const liveNum = typeof window.onlineCount === "number" ? window.onlineCount : 1;
             if (tEl) tEl.textContent = "Rakip bekleniyor...";
-            if (dEl) dEl.textContent = "Şu an " + (typeof onlineCount !== "undefined" ? onlineCount : 1) + " kişi çevrimiçi. Başka bir kullanıcı eşleşme aradığında otomatik bağlanacaksın.";
+            if (dEl) dEl.textContent = "Şu an " + liveNum + " kişi çevrimiçi. Başka bir kullanıcı eşleşme aradığında otomatik bağlanacaksın.";
           } else if (msg.t === "paired") {
             window.currentOpponent = {
               name: msg.name || "Rakip",
@@ -121,6 +272,7 @@ const CLIENT_WS_SCRIPT = `
 
         socket.addEventListener("close", () => {
           updateStatusDot(false);
+          applyOnlineCount(Math.max(0, (typeof window.onlineCount === "number" ? window.onlineCount : 1) - 1));
           scheduleReconnect();
         });
 
@@ -247,7 +399,7 @@ const activeCount = () => {
 const broadcastCount = () => {
   const n = activeCount();
   stats.peak = Math.max(stats.peak, n);
-  wss.clients.forEach(c => send(c, { t: "count", n }));
+  wss.clients.forEach(c => { if (c.readyState === 1) send(c, { t: "count", n }); });
 };
 
 const rooms = new Map();
@@ -416,6 +568,7 @@ wss.on("connection", ws => {
     else if (m.t === "decline") decline(ws, m.name);
     else if (m.t === "status") sendStatus(ws, m.names);
     else if (m.t === "dm") dm(ws, m.name);
+    else if (m.t === "penalty" && ws.partner) send(ws.partner, { t: "penalty", dir: m.dir });
     else if (m.t === "msg" && ws.partner) { stats.msgs++; send(ws.partner, { t: "msg", text: String(m.text || "").slice(0, 500) }); }
     else if (m.t === "typing" && ws.partner) send(ws.partner, { t: "typing", v: !!m.v });
   });
@@ -423,7 +576,13 @@ wss.on("connection", ws => {
 });
 
 setInterval(() => {
-  wss.clients.forEach(c => { if (!c.alive) return c.terminate(); c.alive = false; c.ping(); });
+  let dropped = false;
+  wss.clients.forEach(c => {
+    if (!c.alive) { c.terminate(); dropped = true; return; }
+    c.alive = false;
+    c.ping();
+  });
+  if (dropped) broadcastCount();
 }, 30000);
 
 server.listen(PORT, () => console.log("Sohbet çalışıyor: " + PORT));
